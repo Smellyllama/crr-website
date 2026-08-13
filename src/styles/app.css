@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+@plugin 'daisyui' {
+	themes: crr --default;
+}
+
+/*
+  Club theme. Base/neutral/status colours and spacing are copied from
+  daisyUI's stock "light" theme as placeholders — only primary and secondary
+  are the real club colours so far. The third accent colour (for calls to
+  action) is still to be chosen per CLAUDE.md; swap --color-accent and
+  --color-accent-content once that's picked.
+*/
+@plugin 'daisyui/theme' {
+	name: 'crr';
+	default: true;
+	color-scheme: light;
+
+	/* Club colours (Pantone via kit supplier) */
+	--color-primary: #262141; /* PMS 4147 — dark navy */
+	--color-primary-content: #ffffff;
+	--color-secondary: #8aabc6; /* PMS 4149 — pale blue */
+	--color-secondary-content: #262141;
+
+	/* Placeholder — daisyUI "light" theme defaults */
+	--color-base-100: oklch(100% 0 0);
+	--color-base-200: oklch(98% 0 0);
+	--color-base-300: oklch(95% 0 0);
+	--color-base-content: oklch(21% 0.006 285.885);
+	--color-accent: oklch(77% 0.152 181.912);
+	--color-accent-content: oklch(38% 0.063 188.416);
+	--color-neutral: oklch(14% 0.005 285.823);
+	--color-neutral-content: oklch(92% 0.004 286.32);
+	--color-info: oklch(74% 0.16 232.661);
+	--color-info-content: oklch(29% 0.066 243.157);
+	--color-success: oklch(76% 0.177 163.223);
+	--color-success-content: oklch(37% 0.077 168.94);
+	--color-warning: oklch(82% 0.189 84.429);
+	--color-warning-content: oklch(41% 0.112 45.904);
+	--color-error: oklch(71% 0.194 13.428);
+	--color-error-content: oklch(27% 0.105 12.094);
+
+	--radius-selector: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
+}
+
+/*
+  Extra brand shades daisyUI's theme spec has no slot for. Registered in
+  @theme so Tailwind also generates utilities for them (bg-primary-tint, etc).
+*/
+@theme {
+	--color-primary-tint: #514d67; /* primary, 20% lighter */
+	--color-primary-tint-2: #7d7a8d; /* primary, 40% lighter */
+}
