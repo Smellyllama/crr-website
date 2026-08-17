@@ -55,7 +55,23 @@ I'm not a developer. I'm technically confident, good at following instructions a
 
 - No shop. Kit is displayed with photos and prices; members order by email
 - No members-only login area for now
-- Strava integration is a later phase, not part of the initial build
+- Strava integration is a later phase, not part of the initial build. Club is
+  [Chard Road Runners on Strava](https://www.strava.com/clubs/246805/leaderboard)
+  (club id `246805`). Two ready-made embeds to drop in when this phase starts:
+
+  ```html
+  <!-- Summary widget: recent activity feed, no ride list -->
+  <iframe allowtransparency="true" frameborder="0" height="160" scrolling="no"
+    src="https://www.strava.com/clubs/246805/latest-rides/67f798de53aa60017d6658b4a388a9950668f49f?show_rides=false"
+    width="300"></iframe>
+
+  <!-- Activity widget: same feed, with individual rides listed -->
+  <iframe allowtransparency="true" frameborder="0" height="454" scrolling="no"
+    src="https://www.strava.com/clubs/246805/latest-rides/67f798de53aa60017d6658b4a388a9950668f49f?show_rides=true"
+    width="300"></iframe>
+  ```
+
+  Likely home for these is the Home page or a Results sidebar — not decided yet.
 
 ## Housekeeping
 
