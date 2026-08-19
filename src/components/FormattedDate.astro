@@ -1,17 +1,17 @@
 ---
 interface Props {
 	date: Date;
+	// True when the exact day isn't known — render month and year only.
+	approximate?: boolean;
 }
 
-const { date } = Astro.props;
+const { date, approximate = false } = Astro.props;
 ---
 
 <time datetime={date.toISOString()}>
 	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		})
+		approximate
+			? date.toLocaleDateString('en-us', { year: 'numeric', month: 'long' })
+			: date.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })
 	}
 </time>
