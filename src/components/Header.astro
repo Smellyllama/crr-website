@@ -1,12 +1,33 @@
 ---
 import { NAV_LINKS, SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+
+interface Props {
+	/** Overlay transparently on a hero instead of sitting in normal flow. */
+	overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
 ---
 
-<header class="navbar bg-primary px-4 text-primary-content shadow-sm sm:px-6 lg:px-8">
+<header
+	id="site-header"
+	data-scrolled="false"
+	class:list={[
+		'navbar px-4 text-primary-content sm:px-6 lg:px-8',
+		overlay
+			? 'fixed inset-x-0 top-0 z-50 bg-transparent transition-colors duration-300 data-[scrolled=true]:bg-primary data-[scrolled=true]:shadow-sm'
+			: 'bg-primary shadow-sm',
+	]}
+>
 	<div class="navbar-start">
 		<div class="dropdown">
-			<div tabindex="0" role="button" class="btn btn-ghost text-primary-content lg:hidden" aria-label="Open menu">
+			<div
+				tabindex="0"
+				role="button"
+				class="btn btn-ghost text-primary-content focus-visible:outline-white lg:hidden"
+				aria-label="Open menu"
+			>
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
 				</svg>
@@ -26,7 +47,7 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 		<a
 			href="/"
-			class="btn btn-ghost px-2 text-lg font-semibold text-primary-content hover:text-secondary [font-family:var(--font-outfit)]"
+			class="btn btn-ghost px-2 text-lg font-semibold text-primary-content hover:text-secondary focus-visible:outline-white [font-family:var(--font-outfit)]"
 		>
 			{SITE_TITLE}
 		</a>
@@ -43,3 +64,24 @@ import HeaderLink from './HeaderLink.astro';
 		</ul>
 	</div>
 </header>
+{
+	overlay && (
+		<script>
+			const header = document.getElementById('site-header');
+			const hero = document.getElementById('hero');
+			if (header && hero) {
+				const setHeaderHeight = () => {
+					document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
+				};
+				const onScroll = () => {
+					const threshold = hero.offsetHeight - header.offsetHeight;
+					header.dataset.scrolled = String(window.scrollY > threshold);
+				};
+				setHeaderHeight();
+				onScroll();
+				window.addEventListener('resize', setHeaderHeight);
+				window.addEventListener('scroll', onScroll, { passive: true });
+			}
+		</script>
+	)
+}

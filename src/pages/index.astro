@@ -1,21 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import heroContoursDesktop from '../assets/hero-contours-desktop.svg?raw';
+import heroContoursMobile from '../assets/hero-contours-mobile.svg?raw';
 ---
 
-<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<section class="relative overflow-hidden bg-primary text-primary-content">
-		<img
-			src="/hero-contours-desktop.svg"
-			alt=""
-			class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover opacity-30 sm:block"
-		/>
-		<img
-			src="/hero-contours-mobile.svg"
-			alt=""
-			class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30 sm:hidden"
-		/>
-		<div class="relative mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 lg:px-8">
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION} overlayHeader>
+	<section id="hero" class="site-hero relative overflow-hidden bg-primary text-primary-content">
+		<div class="contours contours--desktop absolute inset-0 hidden sm:block" set:html={heroContoursDesktop} />
+		<div class="contours contours--mobile absolute inset-0 sm:hidden" set:html={heroContoursMobile} />
+		<div class="hero-content relative mx-auto flex max-w-3xl flex-col justify-center px-4 pb-16 text-center sm:px-6 lg:px-8">
 			<h1 class="text-4xl font-bold sm:text-5xl">Chard Road Runners</h1>
 			<p class="mt-4 text-lg text-primary-content/80">{SITE_DESCRIPTION}</p>
 		</div>
@@ -26,3 +20,34 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		</p>
 	</section>
 </Layout>
+
+<style>
+	.site-hero {
+		display: flex;
+		min-height: clamp(28rem, 70svh, 44rem);
+	}
+
+	.hero-content {
+		padding-top: var(--header-height, 4rem);
+	}
+
+	.contours {
+		/* Stroke colours are baked into the SVGs (#8AABC6 / #c5d6e6, both
+		   already club secondary shades) — no currentColor to drive here. */
+		opacity: 0.5;
+	}
+
+	.contours :global(svg) {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.contours--desktop :global(g) {
+		stroke-width: 7;
+	}
+
+	.contours--mobile :global(g) {
+		stroke-width: 9;
+	}
+</style>

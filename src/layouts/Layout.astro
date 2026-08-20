@@ -11,9 +11,11 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	/** Let the header float transparently over a page-level hero. */
+	overlayHeader?: boolean;
 }
 
-const { title, description, image } = Astro.props;
+const { title, description, image, overlayHeader = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,7 +24,7 @@ const { title, description, image } = Astro.props;
 		<BaseHead title={title} description={description} image={image} />
 	</head>
 	<body class="flex min-h-screen flex-col bg-base-100 text-base-content">
-		<Header />
+		<Header overlay={overlayHeader} />
 		<main class="flex-1">
 			<slot />
 		</main>
