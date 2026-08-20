@@ -3,20 +3,18 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Layout from '../../layouts/Layout.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+const posts = (await getCollection('race-reports', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.raceDate.valueOf() - a.data.raceDate.valueOf(),
 );
 ---
 
-<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<Layout title="Race Reports" description="Race reports and club news from Chard Road Runners.">
 	<section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
 		<ul class="grid grid-cols-1 gap-8 sm:grid-cols-2">
 			{
 				posts.map((post, index) => (
 					<li class:list={[{ 'sm:col-span-2': index === 0 }]}>
-						<a href={`/blog/${post.id}/`} class="group block">
+						<a href={`/race-reports/${post.id}/`} class="group block">
 							{post.data.heroImage && (
 								<Image
 									width={720}

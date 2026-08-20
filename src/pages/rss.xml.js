@@ -3,7 +3,7 @@ import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 export async function GET(context) {
-	const posts = await getCollection('blog', ({ data }) => !data.draft);
+	const posts = await getCollection('race-reports', ({ data }) => !data.draft);
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
@@ -12,7 +12,7 @@ export async function GET(context) {
 			title: post.data.title,
 			description: post.data.excerpt,
 			pubDate: post.data.raceDate,
-			link: `/blog/${post.id}/`,
+			link: `/race-reports/${post.id}/`,
 		})),
 	});
 }

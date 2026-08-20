@@ -10,7 +10,7 @@ export const SITE_DESCRIPTION =
 export const NAV_LINKS: { href: string; label: string }[] = [
 	{ href: '/', label: 'Home' },
 	{ href: '/join-us', label: 'Join Us' },
-	{ href: '/news', label: 'News' },
+	{ href: '/race-reports', label: 'Race Reports' },
 	{ href: '/our-races', label: 'Our Races' },
 	{ href: '/results', label: 'Results' },
 	{ href: '/contact', label: 'Contact' },

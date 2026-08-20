@@ -11,7 +11,7 @@ Six top-level items. Anything more and the mobile menu becomes a list nobody rea
 ```
 Home
 Join Us
-News            (race reports + club news)
+Race Reports    (race reports + club news)
 Our Races       (Chard Flyer, Forde Abbey 10k)
 Results         (championship, handicap, records)
 Contact
@@ -53,7 +53,7 @@ Merges the current Home-page joining instructions with the membership form page.
 
 ---
 
-## 3. News
+## 3. Race Reports
 
 The blog. This is the piece the current site is missing entirely and the reason members will come back.
 
