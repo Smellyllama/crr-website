@@ -1,0 +1,13 @@
+{
+	// Static-assets Worker config. Without this file, `wrangler deploy` can't
+	// detect a Worker to configure and silently runs `astro add cloudflare`,
+	// which bolts on the SSR adapter (and its Cloudflare Images pipeline)
+	// on every deploy — overriding the passthroughImageService set in
+	// astro.config.mjs and breaking all images. This file stops that: it
+	// tells Wrangler exactly what to deploy, so it never needs to guess.
+	"name": "crr-website",
+	"compatibility_date": "2026-08-20",
+	"assets": {
+		"directory": "./dist"
+	}
+}
