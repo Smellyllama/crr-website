@@ -1,10 +1,73 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+import ImageFallback from '../components/ImageFallback.astro';
+import { formatDistance } from '../utils/distance';
 import Layout from '../layouts/Layout.astro';
+
+const races = (await getCollection('races')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout title="Our Races" description="The Chard Flyer and Forde Abbey 10k, hosted by Chard Road Runners.">
-	<section class="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 lg:px-8">
-		<h1 class="text-4xl font-bold text-primary">Our Races</h1>
-		<p class="mt-4 text-lg text-base-content/70">Page content coming soon.</p>
+	<section class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+		<h1 class="text-center text-4xl font-bold text-primary">Our Races</h1>
+		<ul class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2">
+			{
+				races.map((race) => {
+					const { data } = race;
+					const note = data.seriesNote || data.juniorRaceNote;
+					return (
+						<li class="overflow-hidden rounded-box border border-base-300 shadow-sm">
+							<div class="aspect-[2/1] overflow-hidden">
+								{data.heroImage ? (
+									<Image
+										width={640}
+										height={320}
+										src={data.heroImage}
+										alt={data.heroImageAlt ?? ''}
+										class="h-full w-full object-cover"
+									/>
+								) : (
+									<ImageFallback />
+								)}
+							</div>
+							<div class="p-5">
+								<div class="flex flex-wrap items-center gap-2">
+									<h2 class="text-xl font-bold text-base-content">{data.title}</h2>
+									{data.juniorRace && <span class="badge badge-secondary badge-outline">Junior race</span>}
+								</div>
+								<p class="mt-1 text-sm text-base-content/60">
+									{data.nextDate ? <FormattedDate date={data.nextDate} /> : 'Date to be confirmed'}
+									{' · '}
+									{formatDistance(data.distance)}
+									{data.venue && ` · ${data.venue}`}
+								</p>
+								{note && <p class="mt-3 text-base-content/70">{note}</p>}
+								<div class="mt-4 flex flex-wrap items-center gap-3">
+									{data.entriesOpen && data.entryUrl ? (
+										<a href={data.entryUrl} class="btn btn-secondary btn-sm">
+											Enter now
+										</a>
+									) : (
+										<span class="badge badge-outline">Entries not yet open</span>
+									)}
+									{data.resultsUrl && (
+										<a href={data.resultsUrl} class="link link-secondary text-sm">
+											Results
+										</a>
+									)}
+									{data.facebookEventUrl && (
+										<a href={data.facebookEventUrl} class="link link-secondary text-sm">
+											Facebook event
+										</a>
+									)}
+								</div>
+							</div>
+						</li>
+					);
+				})
+			}
+		</ul>
 	</section>
 </Layout>
