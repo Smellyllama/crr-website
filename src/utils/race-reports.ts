@@ -1,8 +1,9 @@
 import type { CollectionEntry } from "astro:content";
 
+export { formatDistance } from "./distance";
+
 type RaceReport = CollectionEntry<"race-reports">;
 type Race = RaceReport["data"]["races"][number];
-type Distance = NonNullable<Race["distance"]>;
 
 // The only date a race report is ordered by. There is no top-level `date`
 // field on purpose — a post can cover several races on different days, so
@@ -39,11 +40,4 @@ function isSameDay(a: Date, b: Date): boolean {
 export function postedIsMeaningfullyLater(posted: Date | undefined, earliestRaceDate: Date): boolean {
 	if (!posted) return false;
 	return !isSameDay(posted, earliestRaceDate) && posted > earliestRaceDate;
-}
-
-// distance is { value, unit } rather than a string so a site-wide mi/km
-// switch can convert it later — always render through this, never raw.
-export function formatDistance(distance: Distance): string {
-	const value = Number.isInteger(distance.value) ? distance.value : distance.value.toFixed(1);
-	return `${value}${distance.unit}`;
 }
