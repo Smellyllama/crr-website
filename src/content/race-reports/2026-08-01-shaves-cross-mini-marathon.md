@@ -1,23 +1,25 @@
 ---
 title: "Shaves Cross Mini Marathon"
-raceDate: 2026-08-01
+races:
+  - name: "Shaves Cross Mini Marathon"
+    distance: { value: 5, unit: "mi" }
+    raceDate: 2026-08-01
+dateApproximate: false
 posted: 2026-08-14T15:42:00
 author: "Kate Dobson"
 category: "Race Report"
-race: "Shaves Cross Mini Marathon"
-distance: "5 miles"
+draft: false
 heroImage: "./images/2026-08-01-shaves-cross-01-title.jpg"
 images:
   - src: "./images/2026-08-01-shaves-cross-02-racing.jpg"
-    alt: "Racing near the front of the field"
+    alt: "Runners on the start line at Shaves Cross"
   - src: "./images/2026-08-01-shaves-cross-03-results-board.jpg"
     alt: "The whiteboard showing finishing order"
   - src: "./images/2026-08-01-shaves-cross-04-wayne.jpg"
-    alt: "Wayne with the Shaves Cross Sports perpetual cup"
+    alt: "Wayne running"
   - src: "./images/2026-08-01-shaves-cross-05-steve.jpg"
-    alt: "Steve collecting his award"
+    alt: "Steve running"
 excerpt: "Five miles, no chip timing, and a whiteboard for results — a historic local race with more uphill than seems geometrically possible."
-draft: false
 ---
 
 Shaves Cross Mini Marathon, which unlike the name would suggest is definitely not a marathon.

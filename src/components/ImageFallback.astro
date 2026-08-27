@@ -1,0 +1,40 @@
+---
+// Stand-in for the image slot on posts with no photos. Renders a subtle
+// LIDAR-style contour pattern instead of leaving a gap or a broken icon —
+// keeps the missing-image case looking intentional rather than broken.
+interface Props {
+	class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<div class:list={["contour-fallback", className]} role="presentation">
+	<svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+		<rect width="200" height="100" class="fill-[var(--color-primary)]" />
+		<g fill="none" class="stroke-[var(--color-secondary)]" stroke-width="1" opacity="0.4">
+			<circle cx="40" cy="30" r="14" />
+			<circle cx="40" cy="30" r="24" />
+			<circle cx="40" cy="30" r="34" />
+			<circle cx="165" cy="70" r="16" />
+			<circle cx="165" cy="70" r="26" />
+			<circle cx="165" cy="70" r="36" />
+			<circle cx="110" cy="15" r="10" />
+			<circle cx="110" cy="15" r="20" />
+		</g>
+	</svg>
+</div>
+
+<style>
+	.contour-fallback {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.contour-fallback svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+</style>

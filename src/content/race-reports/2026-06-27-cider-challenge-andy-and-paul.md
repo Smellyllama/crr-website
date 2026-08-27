@@ -1,17 +1,19 @@
 ---
 title: "Cider Challenge: Andy and Paul Go Long"
-raceDate: 2026-06-27
-posted: 2026-07-27T21:40:00  # Andrew started 20:00 Friday; Paul ran the Saturday
+races:
+  - name: "Cider Challenge"
+    raceDate: 2026-06-27
+    # lapped timed event, 5.4km laps
+dateApproximate: false
+posted: 2026-07-27T21:40:00
 author: "Phil Goodridge-Reynolds"
 category: "Race Report"
-race: "Cider Challenge"
-distance: "Ultra"
+draft: false
 heroImage: "./images/2026-06-27-cider-challenge-01-paul-and-andy.jpg"
 images:
   - src: "./images/2026-06-27-cider-challenge-02-race.jpg"
     alt: "Runners on the Cider Challenge lap course"
 excerpt: "Helen covered the shorter races. Here's what happened when Andrew ran through the night for 63 miles and Paul chased a marathon in the heat."
-draft: false
 ---
 
 If you've been wondering where my high quality, witty banter race reports have gone, I've been on a brief hiatus since Neroche 10k, because it's hard to dedicate time to talking about running when you can't go running. But I'm now back and will endeavour to bring you the latest race reports a bit closer to when they actually happened 🤣.

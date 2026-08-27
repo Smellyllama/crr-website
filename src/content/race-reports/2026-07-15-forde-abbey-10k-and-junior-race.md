@@ -1,12 +1,17 @@
 ---
 title: "Forde Abbey 10k and Junior Race"
-raceDate: 2026-07-15
+races:
+  - name: "Forde Abbey 10k"
+    distance: { value: 10, unit: "km" }
+    raceDate: 2026-07-15
+  - name: "Forde Abbey Junior Race"
+    raceDate: 2026-07-15
+dateApproximate: false
 posted: 2026-08-03T00:00:00
 author: "Phil Goodridge-Reynolds"
 category: "Race Report"
-race: "Forde Abbey 10k"
-distance: "10k"
 clubRace: true
+draft: false
 heroImage: "./images/2026-07-15-forde-abbey-01-abbey-and-flyer.jpg"
 images:
   - src: "./images/2026-07-15-forde-abbey-02-group-at-start.jpg"
@@ -16,7 +21,6 @@ images:
   - src: "./images/2026-07-15-forde-abbey-04-river-crossing-2.jpg"
     alt: "Runners at the river crossing"
 excerpt: "A red weather warning, a postponement, and a clash with a rather large sporting event — and still 199 finishers in the 10k and exactly 100 in the junior race."
-draft: false
 ---
 
 In a change of pace, a report from one of our own races!

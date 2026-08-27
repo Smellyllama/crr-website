@@ -2,10 +2,11 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
+import ImageFallback from '../../components/ImageFallback.astro';
 import Layout from '../../layouts/Layout.astro';
-const posts = (await getCollection('race-reports', ({ data }) => !data.draft)).sort(
-	(a, b) => b.data.raceDate.valueOf() - a.data.raceDate.valueOf(),
-);
+import { getEarliestRaceDate, sortByRaceDateDesc } from '../../utils/race-reports';
+
+const posts = sortByRaceDateDesc(await getCollection('race-reports', ({ data }) => !data.draft));
 ---
 
 <Layout title="Race Reports" description="Race reports and club news from Chard Road Runners.">
@@ -15,20 +16,21 @@ const posts = (await getCollection('race-reports', ({ data }) => !data.draft)).s
 				posts.map((post, index) => (
 					<li class:list={[{ 'sm:col-span-2': index === 0 }]}>
 						<a href={`/race-reports/${post.id}/`} class="group block">
-							{post.data.heroImage && (
-								<Image
-									width={720}
-									height={360}
-									src={post.data.heroImage}
-									alt=""
-									class="mb-2 rounded-box"
-								/>
-							)}
-							<h4 class:list={['font-bold text-base-content group-hover:text-secondary', index === 0 ? 'text-3xl' : 'text-xl']}>
-								{post.data.title}
-							</h4>
+							<div class="mb-2 aspect-[2/1] overflow-hidden rounded-box">
+								{post.data.heroImage ? (
+									<Image width={720} height={360} src={post.data.heroImage} alt="" class="h-full w-full object-cover" />
+								) : (
+									<ImageFallback />
+								)}
+							</div>
+							<div class="flex items-center gap-2">
+								<h4 class:list={['font-bold text-base-content group-hover:text-secondary', index === 0 ? 'text-3xl' : 'text-xl']}>
+									{post.data.title}
+								</h4>
+								{post.data.clubRace && <span class="badge badge-secondary badge-sm">Club race</span>}
+							</div>
 							<p class="text-base-content/60 group-hover:text-secondary">
-								<FormattedDate date={post.data.raceDate} approximate={post.data.dateApproximate} />
+								<FormattedDate date={getEarliestRaceDate(post.data.races)} approximate={post.data.dateApproximate} />
 							</p>
 							<p class="mt-1 text-base-content/70">{post.data.excerpt}</p>
 						</a>
