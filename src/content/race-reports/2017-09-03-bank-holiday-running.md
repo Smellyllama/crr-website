@@ -12,9 +12,8 @@ posted: 2017-09-03T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-# Original image URLs — match these to your downloaded media, then
-# move them to ./images/ and set heroImage / images properly.
-#   https://chardrunningclub.wordpress.com/wp-content/uploads/2017/09/crr-battle-of-sedgemoor.jpg
+heroImage: "./images/2017-08-27-battle-of-sedgemoor-01.jpg"
+heroImageAlt: "Chard Road Runners after the Battle of Sedgemoor 10k: Andrew Leeson, Claire Gibbs, Nicola Smith, Elizabeth Smith, Hannah Dowling and Kieron Chapman"
 excerpt: "Chard RR's were spread across a few events on Bank Holiday Sunday 2 races being a 10k Road Race and a 10k off-road trail race and…"
 ---
 

@@ -46,6 +46,9 @@ const raceReports = defineCollection({
 
       // Optional throughout: posts without photos must render cleanly.
       heroImage: image().optional(),
+      // Only meaningful alongside heroImage. Provisional on archive posts
+      // where nobody who was there has confirmed who's in the photo.
+      heroImageAlt: z.string().optional(),
       images: z
         .array(z.object({ src: image(), alt: z.string() }))
         .default([]),

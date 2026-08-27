@@ -9,9 +9,8 @@ posted: 2018-02-25T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-# Original image URLs — match these to your downloaded media, then
-# move them to ./images/ and set heroImage / images properly.
-#   https://chardrunningclub.wordpress.com/wp-content/uploads/2018/02/slay-the-dragon.jpg
+heroImage: "./images/2018-02-25-slay-the-dragon-01.jpg"
+heroImageAlt: "Nine Chard Road Runners at the Slay the Dragon 10k"
 excerpt: "Whether it was the sunshine or the anticipation of championship points, the Slay the Dragon 10 trail race saw Chard Road Runners out in their largest…"
 ---
 

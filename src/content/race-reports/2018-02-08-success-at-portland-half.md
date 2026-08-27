@@ -9,9 +9,8 @@ posted: 2018-02-08T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-# Original image URLs — match these to your downloaded media, then
-# move them to ./images/ and set heroImage / images properly.
-#   https://chardrunningclub.wordpress.com/wp-content/uploads/2018/02/wayne-portland-half.jpg
+heroImage: "./images/2018-02-04-portland-half-01.jpg"
+heroImageAlt: "Wayne Loveridge, who finished first at the Portland Coastal Half Marathon"
 excerpt: "CRR's were also off to the chilly coastal Half Marathon around Portland, representing CRR's was Wayne Loveridge, taking off from the front Wayne was quickly into…"
 ---
 

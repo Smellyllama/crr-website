@@ -10,6 +10,8 @@ posted: 2018-02-11T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
+heroImage: "./images/2018-02-11-humdinger-01.jpg"
+heroImageAlt: "Claire Gibbs and Helen Baxter at the Humdinger"
 excerpt: "Claire Gibbs and Helen Baxter were the only representatives of Chard Road Runners at the Humdinger event. A challenging course up the side of the Quantocks…"
 ---
 

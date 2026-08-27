@@ -10,9 +10,8 @@ posted: 2017-12-03T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-# Original image URLs — match these to your downloaded media, then
-# move them to ./images/ and set heroImage / images properly.
-#   https://chardrunningclub.wordpress.com/wp-content/uploads/2017/12/image.jpg
+heroImage: "./images/2017-12-03-full-montycute-01.jpg"
+heroImageAlt: "Wayne Loveridge, Adrian Male, Helen Baxter and Lizzie Smith at the Full MontyCute 10, Helen and Lizzie dressed as Mrs Christmas"
 excerpt: "Chard Road Runners had four entrants into the final race of the club championship, the Full Montecute, a challenging 10 mile course with as many hills…"
 ---
 

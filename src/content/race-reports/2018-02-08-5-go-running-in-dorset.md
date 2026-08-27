@@ -9,9 +9,8 @@ posted: 2018-02-08T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-# Original image URLs — match these to your downloaded media, then
-# move them to ./images/ and set heroImage / images properly.
-#   https://chardrunningclub.wordpress.com/wp-content/uploads/2018/02/blackmore-vale.jpg
+heroImage: "./images/2018-02-04-blackmore-vale-01.jpg"
+heroImageAlt: "Matt Baker, Stevie Potter, James Musselwhite, Claire Gibbs and Helen Baxter before the Blackmore Vale Half Marathon"
 excerpt: "CRR's were off to Dorset this weekend for the Blackmore Vale Half Marathon, setting out from Bishops Caundel, Matt Baker and Stevie Potter led Chard Road…"
 ---
 

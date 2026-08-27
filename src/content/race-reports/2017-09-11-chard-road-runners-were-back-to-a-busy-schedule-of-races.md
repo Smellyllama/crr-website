@@ -1,6 +1,5 @@
 ---
-title: "A Busy Schedule of Races"
-# TODO review title — original was "Chard Road Runners were back to a busy schedule of races"
+title: "CRR - Back to a Busy Schedule of Races"
 races:
   - name: "Bad Cow Frolic"
     raceDate: 2017-09-09
