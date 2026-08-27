@@ -5,7 +5,7 @@
 hero:
   heading: "Chard Road Runners"
   strapline: "A running club in Chard, Somerset. Every pace welcome, and nobody gets left behind."
-  primaryCta: { label: "Join us", href: "/join" }
+  primaryCta: { label: "Join us", href: "/join-us" }
   secondaryCta: { label: "Club nights", href: "#club-nights" }
 
 clubNights:
@@ -34,7 +34,7 @@ couchTo5k:
   # Leave dates empty until confirmed — the page shows emptyState instead
   nextCourse: ""
   emptyState: "Dates for the next course aren't set yet — drop us a message and we'll let you know."
-  cta: { label: "Find out more", href: "/join" }
+  cta: { label: "Find out more", href: "/join-us" }
 
 latestReports:
   heading: "Latest race reports"
