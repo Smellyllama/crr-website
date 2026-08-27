@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import ImageFallback from './ImageFallback.astro';
+import { formatDistance } from '../utils/distance';
+
+interface Props {
+	heading: string;
+	intro: string;
+	linkLabel: string;
+}
+
+const { heading, intro, linkLabel } = Astro.props;
+
+const races = (await getCollection('races')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class="text-3xl font-bold text-base-content">{heading}</h2>
+		<p class="mt-3 text-base-content/70">{intro}</p>
+	</div>
+	<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+		{
+			races.map((race) => {
+				const note = race.data.seriesNote || race.data.juniorRaceNote;
+				return (
+					<li>
+						<a
+							href="/our-races"
+							class="group block overflow-hidden rounded-box border border-base-300 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+						>
+							<div class="aspect-[2/1] overflow-hidden">
+								{race.data.heroImage ? (
+									<Image
+										width={480}
+										height={240}
+										src={race.data.heroImage}
+										alt={race.data.heroImageAlt ?? ''}
+										class="h-full w-full object-cover"
+									/>
+								) : (
+									<ImageFallback />
+								)}
+							</div>
+							<div class="p-4">
+								<h3 class="text-lg font-bold text-base-content group-hover:text-secondary">{race.data.title}</h3>
+								<p class="text-sm text-base-content/60">
+									{race.data.nextDate && (
+										<>
+											<FormattedDate date={race.data.nextDate} /> ·{' '}
+										</>
+									)}
+									{formatDistance(race.data.distance)}
+								</p>
+								{note && <p class="mt-2 text-sm text-base-content/70">{note}</p>}
+							</div>
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+	<div class="mt-8 text-center">
+		<a href="/our-races" class="link link-secondary font-medium">{linkLabel}</a>
+	</div>
+</section>

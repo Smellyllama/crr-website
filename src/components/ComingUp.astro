@@ -1,0 +1,21 @@
+---
+// Placeholder section — there's no calendar collection yet. Swap the
+// emptyState message for a real query once one exists.
+interface Props {
+	heading: string;
+	linkLabel: string;
+	emptyState: string;
+}
+
+const { heading, linkLabel, emptyState } = Astro.props;
+---
+
+<section class="bg-base-200">
+	<div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
+		<h2 class="text-3xl font-bold text-base-content">{heading}</h2>
+		<p class="mt-4 text-base-content/70">{emptyState}</p>
+		<div class="mt-6">
+			<a href="/results#race-calendar" class="link link-secondary font-medium">{linkLabel}</a>
+		</div>
+	</div>
+</section>

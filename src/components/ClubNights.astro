@@ -1,0 +1,43 @@
+---
+interface Night {
+	day: string;
+	time: string;
+	venue: string;
+	summary: string;
+	detail: string;
+}
+
+interface Props {
+	heading: string;
+	intro: string;
+	nights: Night[];
+	reassurance: string;
+}
+
+const { heading, intro, nights, reassurance } = Astro.props;
+---
+
+<section id="club-nights" class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class="text-3xl font-bold text-base-content">{heading}</h2>
+		<p class="mt-3 text-base-content/70">{intro}</p>
+	</div>
+	<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+		{
+			nights.map((night) => (
+				<li class="card border border-base-300 bg-base-100 shadow-sm">
+					<div class="card-body">
+						<h3 class="card-title text-primary">
+							{night.day}
+							<span class="text-base font-normal text-base-content/60">· {night.time}</span>
+						</h3>
+						<p class="text-sm font-medium text-base-content/80">{night.venue}</p>
+						<span class="badge badge-secondary badge-outline w-fit">{night.summary}</span>
+						<p class="mt-2 text-base-content/70">{night.detail}</p>
+					</div>
+				</li>
+			))
+		}
+	</ul>
+	<p class="mx-auto mt-8 max-w-2xl text-center text-base-content/70">{reassurance}</p>
+</section>

@@ -1,0 +1,39 @@
+---
+interface Cta {
+	label: string;
+	href: string;
+}
+
+interface Props {
+	heading: string;
+	body: string;
+	// Empty until a course date is confirmed.
+	nextCourse: string;
+	// Shown instead of nextCourse when it's empty.
+	emptyState: string;
+	cta: Cta;
+}
+
+const { heading, body, nextCourse, emptyState, cta } = Astro.props;
+---
+
+<section class="bg-primary text-primary-content">
+	<div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
+		<h2 class="text-3xl font-bold">{heading}</h2>
+		<p class="mt-4 text-primary-content/80">{body}</p>
+		{
+			nextCourse ? (
+				<p class="mt-6 inline-block rounded-box bg-primary-content/10 px-5 py-2 font-semibold">{nextCourse}</p>
+			) : (
+				<p class="mt-6 rounded-box border border-dashed border-primary-content/40 px-5 py-3 text-primary-content/70">
+					{emptyState}
+				</p>
+			)
+		}
+		<div class="mt-8">
+			<a href={cta.href} class="btn btn-secondary focus-visible:outline-white">
+				{cta.label}
+			</a>
+		</div>
+	</div>
+</section>
