@@ -11,7 +11,9 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import Layout from '../layouts/Layout.astro';
 
 const home = await getEntry('pages', 'home');
-if (!home) throw new Error('Missing src/content/pages/home.md');
+// The `page` check both proves the file is there and narrows it to the
+// home shape, so the sections below are type-checked.
+if (home?.data.page !== 'home') throw new Error('Missing src/content/pages/home.md');
 
 const { hero, clubNights, handicap, couchTo5k, latestReports, upcoming, ourRaces } = home.data;
 ---

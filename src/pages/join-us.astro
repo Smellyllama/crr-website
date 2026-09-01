@@ -1,10 +1,136 @@
 ---
+import { getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import { splitWhat3Words } from '../utils/what3words';
+
+const entry = await getEntry('pages', 'join-us');
+// The `page` check both proves the file is there and narrows it to the
+// join-us shape, so the sections below are type-checked.
+if (entry?.data.page !== 'join-us') throw new Error('Missing src/content/pages/join-us.md');
+
+const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry.data;
 ---
 
-<Layout title="Join Us" description="How to join Chard Road Runners.">
-	<section class="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 lg:px-8">
-		<h1 class="text-4xl font-bold text-primary">Join Us</h1>
-		<p class="mt-4 text-lg text-base-content/70">Page content coming soon.</p>
+<Layout title={hero.heading} description={hero.strapline}>
+	<section class="bg-primary text-primary-content">
+		<div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 lg:px-8">
+			<h1 class="text-4xl font-bold sm:text-5xl">{hero.heading}</h1>
+			<p class="mt-4 text-lg text-primary-content/80">{hero.strapline}</p>
+		</div>
+	</section>
+
+	<section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+		<div class="mx-auto max-w-2xl text-center">
+			<h2 class="text-3xl font-bold text-primary sm:text-4xl">{firstVisit.heading}</h2>
+			{firstVisit.intro && <p class="mt-4 text-lg text-base-content/80">{firstVisit.intro}</p>}
+		</div>
+		<div class="card mt-10 border border-base-300 bg-base-100 shadow-sm">
+			<div class="card-body">
+				<dl class="divide-y divide-base-300">
+					{
+						firstVisit.steps.map((step) => (
+							<div class="grid gap-1 py-5 first:pt-0 last:pb-0 sm:grid-cols-[9rem_1fr] sm:gap-6">
+								<dt class="font-bold text-primary">{step.label}</dt>
+								<dd class="whitespace-pre-line text-base-content/80">
+									{splitWhat3Words(step.detail.trim()).map((part) =>
+										part.href ? (
+											<a
+												href={part.href}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="link link-primary font-medium"
+											>
+												{part.text}
+											</a>
+										) : (
+											<Fragment>{part.text}</Fragment>
+										)
+									)}
+								</dd>
+							</div>
+						))
+					}
+				</dl>
+			</div>
+		</div>
+		<p class="mx-auto mt-10 max-w-2xl text-center text-lg text-base-content/80">{firstVisit.reassurance}</p>
+	</section>
+
+	<section class="bg-base-200">
+		<div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+			<h2 class="text-center text-3xl font-bold text-primary">{whichNight.heading}</h2>
+			<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+				<li class="card border border-base-300 bg-base-100 shadow-sm">
+					<div class="card-body">
+						<p class="text-base-content/80">{whichNight.tuesday}</p>
+					</div>
+				</li>
+				<li class="card border border-base-300 bg-base-100 shadow-sm">
+					<div class="card-body">
+						<p class="text-base-content/80">{whichNight.thursday}</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-2xl text-center">
+			<h2 class="text-3xl font-bold text-primary">{membership.heading}</h2>
+			{membership.intro && <p class="mt-3 text-base-content/80">{membership.intro}</p>}
+		</div>
+		<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+			{
+				membership.options.map((option) => (
+					<li class="card border border-base-300 bg-base-100 shadow-sm">
+						<div class="card-body">
+							<h3 class="card-title text-primary">{option.name}</h3>
+							<p class="text-4xl font-bold text-primary">{option.price}</p>
+							<p class="text-base-content/80">{option.detail}</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+		<div class="card mt-6 border border-base-300 bg-base-200">
+			<div class="card-body items-center text-center">
+				<p class="text-base-content/80">{membership.howToPay}</p>
+				<p class="mt-1 select-all rounded-box bg-base-100 px-6 py-3 font-mono text-2xl font-bold tracking-widest text-primary">
+					{membership.connectMyClubCode}
+				</p>
+				{membership.renewal && <p class="mt-1 text-base-content/80">{membership.renewal}</p>}
+				<p class="mt-1 text-base-content/80">
+					{membership.membershipSecretary} &middot;{' '}
+					<a href={`mailto:${membership.membershipEmail}`} class="link link-primary font-medium">
+						{membership.membershipEmail}
+					</a>
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-primary text-primary-content">
+		<div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
+			<h2 class="text-3xl font-bold">{couchTo5k.heading}</h2>
+			<p class="mt-4 text-primary-content/80">{couchTo5k.body}</p>
+			{
+				couchTo5k.nextCourse ? (
+					<p class="mt-6 inline-block rounded-box bg-primary-content/10 px-5 py-2 font-semibold">
+						{couchTo5k.nextCourse}
+					</p>
+				) : (
+					<p class="mt-6 rounded-box border border-dashed border-primary-content/40 px-5 py-3 text-primary-content/70">
+						{couchTo5k.emptyState}
+					</p>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="bg-base-200">
+		<div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
+			<h2 class="text-2xl font-bold text-primary">{questions.heading}</h2>
+			<p class="mt-3 text-base-content/80">{questions.body}</p>
+		</div>
 	</section>
 </Layout>

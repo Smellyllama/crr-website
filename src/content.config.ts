@@ -107,53 +107,126 @@ const night = z.object({
   detail: z.string(),
 });
 
-// Single-entry collection: src/content/pages/home.md. Every string the
-// homepage shows lives here — components take props, they don't hold copy.
+// Copy nobody has written yet is parked in the content file as "TODO — …".
+// Stripping it here means the page renders without that line, rather than
+// publishing a note that was meant for whoever edits the file.
+const draftable = z
+  .string()
+  .optional()
+  .transform((value) =>
+    value?.trimStart().startsWith("TODO") ? undefined : value
+  );
+
+// src/content/pages/home.md
+const homePage = z.object({
+  page: z.literal("home"),
+  hero: z.object({
+    heading: z.string(),
+    strapline: z.string(),
+    primaryCta: cta,
+    secondaryCta: cta,
+  }),
+  clubNights: z.object({
+    heading: z.string(),
+    intro: z.string(),
+    nights: z.array(night),
+    reassurance: z.string(),
+  }),
+  handicap: z.object({
+    heading: z.string(),
+    body: z.string(),
+  }),
+  couchTo5k: z.object({
+    heading: z.string(),
+    body: z.string(),
+    // Empty until a course date is confirmed — the page shows
+    // emptyState instead of a blank or invented date.
+    nextCourse: z.string().default(""),
+    // Shown when nextCourse is empty.
+    emptyState: z.string(),
+    cta,
+  }),
+  latestReports: z.object({
+    heading: z.string(),
+    linkLabel: z.string(),
+    emptyState: z.string(),
+  }),
+  upcoming: z.object({
+    heading: z.string(),
+    linkLabel: z.string(),
+    emptyState: z.string(),
+  }),
+  ourRaces: z.object({
+    heading: z.string(),
+    intro: z.string(),
+    linkLabel: z.string(),
+  }),
+});
+
+// src/content/pages/join-us.md
+const joinUsPage = z.object({
+  page: z.literal("join-us"),
+  hero: z.object({
+    heading: z.string(),
+    strapline: z.string(),
+  }),
+  firstVisit: z.object({
+    heading: z.string(),
+    intro: draftable,
+    // Rendered as a labelled list. `detail` may hold what3words references
+    // (///word.word.word) and, for the address, meaningful line breaks.
+    steps: z
+      .array(z.object({ label: z.string(), detail: z.string() }))
+      .min(1),
+    reassurance: z.string(),
+  }),
+  whichNight: z.object({
+    heading: z.string(),
+    // Each already names its own day — the template adds no heading of
+    // its own, so the day stays part of the copy.
+    tuesday: z.string(),
+    thursday: z.string(),
+  }),
+  membership: z.object({
+    heading: z.string(),
+    intro: draftable,
+    options: z
+      .array(
+        z.object({
+          name: z.string(),
+          price: z.string(),
+          detail: z.string(),
+        })
+      )
+      .min(1),
+    renewal: draftable,
+    howToPay: z.string(),
+    connectMyClubCode: z.string(),
+    // Empty until there's a form to point at. Nothing renders while it is,
+    // so the page never shows a dead link.
+    formUrl: z.string().default(""),
+    membershipSecretary: z.string(),
+    membershipEmail: z.string().email(),
+  }),
+  couchTo5k: z.object({
+    heading: z.string(),
+    body: z.string(),
+    // Same pattern as the homepage: emptyState shows while this is blank.
+    nextCourse: z.string().default(""),
+    emptyState: z.string(),
+  }),
+  questions: z.object({
+    heading: z.string(),
+    body: z.string(),
+  }),
+});
+
+// One collection, one file per page, each page its own shape. The `page`
+// field picks the branch — which also means a validation error names the
+// field that's wrong instead of listing every page's fields at once.
 const pages = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/pages" }),
-  schema: z.object({
-    hero: z.object({
-      heading: z.string(),
-      strapline: z.string(),
-      primaryCta: cta,
-      secondaryCta: cta,
-    }),
-    clubNights: z.object({
-      heading: z.string(),
-      intro: z.string(),
-      nights: z.array(night),
-      reassurance: z.string(),
-    }),
-    handicap: z.object({
-      heading: z.string(),
-      body: z.string(),
-    }),
-    couchTo5k: z.object({
-      heading: z.string(),
-      body: z.string(),
-      // Empty until a course date is confirmed — the page shows
-      // emptyState instead of a blank or invented date.
-      nextCourse: z.string().default(""),
-      // Shown when nextCourse is empty.
-      emptyState: z.string(),
-      cta,
-    }),
-    latestReports: z.object({
-      heading: z.string(),
-      linkLabel: z.string(),
-      emptyState: z.string(),
-    }),
-    upcoming: z.object({
-      heading: z.string(),
-      linkLabel: z.string(),
-      emptyState: z.string(),
-    }),
-    ourRaces: z.object({
-      heading: z.string(),
-      intro: z.string(),
-      linkLabel: z.string(),
-    }),
-  }),
+  schema: z.discriminatedUnion("page", [homePage, joinUsPage]),
 });
 
 export const collections = { "race-reports": raceReports, races, pages };

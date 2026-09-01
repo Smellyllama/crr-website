@@ -1,0 +1,85 @@
+---
+# src/content/pages/join-us.md
+
+# Tells the schema which set of sections to expect. Don't change it.
+page: "join-us"
+
+hero:
+  heading: "Join us"
+  strapline: "Everyone welcome, regardless of pace or previous running experience."
+
+firstVisit:
+  heading: "Your first night"
+  intro: "TODO — one or two sentences aimed at someone nervous about turning up alone."
+  steps:
+    - label: "When"
+      detail: "Tuesday or Thursday, running at 7:00pm. Aim to arrive by 6:45 for the often humorous preamble."
+    - label: "Where"
+      detail: |
+        Chard Cricket Club
+        Dening Field
+        Zembard Lane
+        Chard
+        Somerset
+        TA20 1JL
+
+        Club house: ///alleyway.revives.flicked
+    - label: "Parking"
+      detail: >
+        There is often parking at the Cricket Club (gate to the car park
+        ///valley.flat.charts). If it's busy, parking is also available in
+        Essex Close Public Parking (///cards.pounces.graph). If you live
+        locally, we encourage runners to walk or run to the club.
+    - label: "Who to look for"
+      detail: "You'll find runners outside the cricket club house in the drier months, and often in the changing room foyer when it's less so."
+    - label: "What to bring"
+      detail: "Bring whatever you need to be comfortable running — trainers, water, a head torch if it's dark, a towel."
+    - label: "Afterwards"
+      detail: "The club showers and bar are available after Tuesday runs. Thursday is run only."
+  reassurance: >
+    New runners are encouraged to try a few nights before considering joining
+    the club, and we welcome runners of all paces. Don't feel you have to turn
+    up every week — come and run when you want.
+
+whichNight:
+  heading: "Which night?"
+  tuesday: "Tuesday is the big social night. As many groups as we need to get everyone out for a comfortable run, then the bar is open afterwards. And don't forget the monthly bake off."
+  thursday: "Thursday is another run night, usually one group and the same familiar route. Everyone welcome."
+
+membership:
+  heading: "Membership"
+  intro: "TODO — one line on when to join: after a few visits, or straight away?"
+  options:
+    - name: "Chard Road Runners"
+      price: "£18"
+      detail: "Includes a club t-shirt or vest, and membership of the best running club in Chard."
+    - name: "Chard Road Runners + England Athletics"
+      price: "£41"
+      detail: >
+        Club membership and kit, plus England Athletics registration. EA
+        membership brings discounts on affiliated race entries and running
+        kit, and entry to the club ballot for the London Marathon. If you
+        race a lot, it pays for itself.
+  renewal: "TODO — when does membership renew?"
+  howToPay: "Cash, card through Connect My Club, or bank transfer."
+  connectMyClubCode: "67a1c8f4"
+  # TODO: confirm this code is still current — it came from the old Webador site.
+  formUrl: ""
+  membershipSecretary: "Helen Hickley"
+  membershipEmail: "chardroadrunners.membership@outlook.com"
+
+couchTo5k:
+  heading: "Couch to 5k"
+  body: >
+    If you've never run, or haven't run for years, Couch to 5k is a great way
+    to start. It begins with a mix of walking and running in a weekly
+    coach-led session and finishes with your first 5k parkrun. And a medal —
+    who doesn't want a medal. Plenty of members who started on Couch to 5k
+    have gone on to race and run much longer distances.
+  nextCourse: ""
+  emptyState: "Dates for the next course aren't set yet — get in touch and we'll let you know when it starts."
+
+questions:
+  heading: "Any questions?"
+  body: "Drop us an email, or come along to the club and say hi. Old school, like before we all had mobiles."
+---

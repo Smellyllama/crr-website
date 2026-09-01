@@ -2,6 +2,9 @@
 # src/content/pages/home.md
 # All homepage copy lives here. Edit the words, not the components.
 
+# Tells the schema which set of sections to expect. Don't change it.
+page: "home"
+
 hero:
   heading: "Chard Road Runners"
   strapline: "A running club in Chard, Somerset. Every pace welcome, and nobody gets left behind."
