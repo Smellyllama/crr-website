@@ -13,7 +13,9 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 	href={href}
 	class:list={[
 		className,
-		'transition-colors hover:text-secondary',
+		// Explicit colour: the header sits on navy, so it opts out of the
+		// dark-navy default link colour set in global.css.
+		'text-primary-content transition-colors hover:text-secondary',
 		{ 'font-semibold text-secondary': isActive },
 	]}
 	aria-current={isActive ? 'page' : undefined}

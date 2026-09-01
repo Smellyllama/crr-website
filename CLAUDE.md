@@ -12,6 +12,9 @@ See `crr-sitemap.md` in this folder for the full page structure and content plan
 
 - **Astro** — static site, blog template as the starting point
 - **Tailwind CSS v4** via `@tailwindcss/vite` (no `tailwind.config.js`, config lives in CSS)
+  - Base element styles go in `@layer base`, never unlayered. Unlayered CSS beats
+    anything in a cascade layer whatever the selector, so an unlayered `a` or `h2`
+    silently overrides every utility class on that element
 - **daisyUI v5** — component library, configured with `@plugin` in CSS
 - **TypeScript**, strict
 - **Markdown** for race reports and news posts

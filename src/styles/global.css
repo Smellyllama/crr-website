@@ -9,38 +9,53 @@ body {
 	line-height: 1.7;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	font-family: var(--font-outfit);
-	font-weight: 600;
-	line-height: 1.2;
-}
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
+/*
+  Element defaults belong in `@layer base`. Unlayered CSS beats anything in a
+  cascade layer no matter how specific the selector, so an unlayered `h2` or
+  `a` here silently overrides `text-3xl`, `link-primary`, `btn-secondary` and
+  every other Tailwind or daisyUI class on the same element. Inside the layer
+  these are defaults that any class can override, which is the point of them.
+*/
+@layer base {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 0 0 0.5rem 0;
+		font-family: var(--font-outfit);
+		font-weight: 600;
+		line-height: 1.2;
+	}
+	h1 {
+		font-size: 3.052em;
+	}
+	h2 {
+		font-size: 2.441em;
+	}
+	h3 {
+		font-size: 1.953em;
+	}
+	h4 {
+		font-size: 1.563em;
+	}
+	h5 {
+		font-size: 1.25em;
+	}
 
-a {
-	color: var(--color-secondary);
-}
-a:hover {
-	text-decoration: underline;
+	/*
+	  Dark navy, not pale blue: this default applies to body copy links on
+	  light backgrounds, where pale blue only reaches 2.4:1 contrast and fails
+	  WCAG AA. Links on navy surfaces set their own colour on the element —
+	  see Header.astro and Footer.astro.
+	*/
+	a {
+		color: var(--color-primary);
+	}
+	a:hover {
+		text-decoration: underline;
+	}
 }
 
 p {

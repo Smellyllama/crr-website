@@ -10,7 +10,7 @@ const year = new Date().getFullYear();
 			<h3 class="footer-title text-primary-content/70">Club</h3>
 			{
 				FOOTER_PAGE_LINKS.map((link) => (
-					<a href={link.href} class="link link-hover hover:text-secondary">
+					<a href={link.href} class="link link-hover text-primary-content hover:text-secondary">
 						{link.label}
 					</a>
 				))
@@ -18,13 +18,28 @@ const year = new Date().getFullYear();
 		</nav>
 		<nav>
 			<h3 class="footer-title text-primary-content/70">Connect</h3>
-			<a href={SOCIAL_LINKS.facebook} class="link link-hover hover:text-secondary" target="_blank" rel="noopener noreferrer">
+			<a
+				href={SOCIAL_LINKS.facebook}
+				class="link link-hover text-primary-content hover:text-secondary"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				Facebook
 			</a>
-			<a href={SOCIAL_LINKS.strava} class="link link-hover hover:text-secondary" target="_blank" rel="noopener noreferrer">
+			<a
+				href={SOCIAL_LINKS.strava}
+				class="link link-hover text-primary-content hover:text-secondary"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				Strava
 			</a>
-			<a href={ENGLAND_ATHLETICS_URL} class="link link-hover hover:text-secondary" target="_blank" rel="noopener noreferrer">
+			<a
+				href={ENGLAND_ATHLETICS_URL}
+				class="link link-hover text-primary-content hover:text-secondary"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				England Athletics affiliated
 			</a>
 		</nav>
