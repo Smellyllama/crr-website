@@ -10,10 +10,10 @@ hero:
 
 firstVisit:
   heading: "Your first night"
-  intro: "TODO — one or two sentences aimed at someone nervous about turning up alone."
+  intro: "Everyone has a 'first time', ."
   steps:
     - label: "When"
-      detail: "Tuesday or Thursday, running at 7:00pm. Aim to arrive by 6:45 for the often humorous preamble."
+      detail: "Tuesday or Thursday, training at 6:30pm, running at 7:00pm. Aim to arrive to run by 6:45 for the often humorous preamble."
     - label: "Where"
       detail: |
         Chard Cricket Club
@@ -33,22 +33,21 @@ firstVisit:
     - label: "Who to look for"
       detail: "You'll find runners outside the cricket club house in the drier months, and often in the changing room foyer when it's less so."
     - label: "What to bring"
-      detail: "Bring whatever you need to be comfortable running — trainers, water, a head torch if it's dark, a towel."
+      detail: "Bring whatever you need to be comfortable running — trainers, water, a head torch if it's dark, a towel if you want to be dry after a shower."
     - label: "Afterwards"
       detail: "The club showers and bar are available after Tuesday runs. Thursday is run only."
   reassurance: >
     New runners are encouraged to try a few nights before considering joining
-    the club, and we welcome runners of all paces. Don't feel you have to turn
-    up every week — come and run when you want.
+    the club, and we welcome runners of all paces. Club membership fees help cover the costs of the Clubhouse and Club insurance. 
 
 whichNight:
   heading: "Which night?"
-  tuesday: "Tuesday is the big social night. As many groups as we need to get everyone out for a comfortable run, then the bar is open afterwards. And don't forget the monthly bake off."
-  thursday: "Thursday is another run night, usually one group and the same familiar route. Everyone welcome."
+  tuesday: "Tuesday is the big social night. As many groups as we need to get everyone out for a comfortable run, then the bar is open afterwards. And don't forget the monthly handicap races where everyone has a chance to win the trophy and the famous bake off for afters."
+  thursday: "Thursday is another club run night, usually one group and the same familiar route. Everyone welcome."
 
 membership:
   heading: "Membership"
-  intro: "TODO — one line on when to join: after a few visits, or straight away?"
+  intro: "Come for a few runs and make up your mind if you want to stay for longer with a club membership."
   options:
     - name: "Chard Road Runners"
       price: "£18"
@@ -61,21 +60,21 @@ membership:
         kit, and entry to the club ballot for the London Marathon. If you
         race a lot, it pays for itself.
   renewal: "TODO — when does membership renew?"
-  howToPay: "Cash, card through Connect My Club, or bank transfer."
+  howToPay: "Card through Connect My Club, or bank transfer."
   connectMyClubCode: "67a1c8f4"
   # TODO: confirm this code is still current — it came from the old Webador site.
   formUrl: ""
-  membershipSecretary: "Helen Hickley"
+  membershipSecretary: "Hannah Grinter"
   membershipEmail: "chardroadrunners.membership@outlook.com"
 
 couchTo5k:
   heading: "Couch to 5k"
   body: >
     If you've never run, or haven't run for years, Couch to 5k is a great way
-    to start. It begins with a mix of walking and running in a weekly
+    to start. This free 9 week course begins with a mix of walking and running in a weekly
     coach-led session and finishes with your first 5k parkrun. And a medal —
     who doesn't want a medal. Plenty of members who started on Couch to 5k
-    have gone on to race and run much longer distances.
+    have gone on to race and run much longer distances, some of them even enjoy it now.
   nextCourse: ""
   emptyState: "Dates for the next course aren't set yet — get in touch and we'll let you know when it starts."
 
