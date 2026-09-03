@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin/
+
+# /admin/ is the CMS editing screen. It is not secret — anything there is
+# protected by GitHub sign-in, not by hiding it — but there is no reason for
+# it to appear in search results.
+
+# Once astro.config.mjs has the real domain in `site` (it is still the
+# example.com placeholder), add the sitemap line here:
+# Sitemap: https://<the real domain>/sitemap-index.xml

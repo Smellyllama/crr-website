@@ -1,0 +1,635 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.205.1/schema/sveltia-cms.json
+# Sveltia CMS — Chard Road Runners
+#
+# ---------------------------------------------------------------------------
+# THIS FILE MIRRORS src/content.config.ts. THEY MUST NOT DRIFT.
+#
+# The same content is described in two places: the Zod schema Astro validates
+# against at build time, and the form fields below. If they disagree, the CMS
+# happily accepts a post that the build then rejects — and that failure lands
+# on whoever wrote the post, who is the least equipped to fix it.
+#
+# A change to one schema is a change to both, in the same commit.
+# ---------------------------------------------------------------------------
+
+backend:
+  name: github
+  repo: Smellyllama/crr-website
+  branch: main
+  # GitHub OAuth proxy Worker, deployed separately from the site.
+  # Source: crr-cms-auth/ in the project folder.
+  base_url: https://crr-cms-auth.buddygoestravelling.workers.dev
+
+# Simple publishing: Save commits straight to main and Cloudflare rebuilds.
+# Editorial workflow is deliberately NOT enabled — it routes every post
+# through a pull request needing approval, which is friction nobody needs yet.
+
+output:
+  # Leave optional fields out of the file entirely when they are empty,
+  # instead of writing `posted: ''` or `distance: {value: null, unit: null}`.
+  # Astro reads those as the wrong type and fails the build, whereas an
+  # absent key is exactly what `.optional()` and `.default()` expect.
+  # This one option prevents most schema-drift build failures.
+  omit_empty_optional_fields: true
+
+# Fallback only. Every collection below sets its own media folder, because
+# Astro resolves image paths relative to the Markdown file that uses them.
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  # =========================================================================
+  # RACE REPORTS
+  # =========================================================================
+  - name: race-reports
+    label: Race reports
+    label_singular: Race report
+    description: >-
+      Reports from races members have run, plus club news, Couch to 5k updates
+      and social posts.
+    folder: src/content/race-reports
+    create: true
+    # Produces 2026-08-01-shaves-cross-mini-marathon.md — the first race's
+    # date plus the title, so nobody has to name a file by hand.
+    slug: "{{races.0.raceDate | date('YYYY-MM-DD')}}-{{slug}}"
+    # Photos sit in src/content/race-reports/images/ and are referenced as
+    # ./images/name.jpg. media_folder = where the uploaded file is written
+    # (relative to the post); public_folder = the path written into the
+    # frontmatter, which is what Astro resolves.
+    media_folder: images
+    public_folder: ./images
+    summary: "{{title}}"
+    sortable_fields: [title]
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: The headline of the report, as it will appear on the website.
+
+      - label: Races covered
+        name: races
+        widget: list
+        min: 1
+        label_singular: Race
+        summary: "{{fields.name}}"
+        hint: >-
+          One entry per race. A weekend round-up covering three races gets
+          three entries. Put the earliest race first — its date orders the
+          report on the site and names the file.
+        fields:
+          - label: Race name
+            name: name
+            widget: string
+            hint: As it is normally called, for example "Chard Flyer 10k".
+
+          # Optional objects render as an "Add Distance" tickbox. Unticked,
+          # these subfield keys do not exist at all, so they are neither
+          # validated nor written — which is what a timed event needs.
+          # Ticked, the subfields are populated with their defaults and are
+          # both required, so a distance can never be saved half-filled.
+          - label: Distance
+            name: distance
+            widget: object
+            required: false
+            collapsed: false
+            hint: >-
+              Leave "Add Distance" unticked for timed events — a 12-hour, a
+              lapped ultra — that have no fixed distance. Tick it and both
+              boxes have to be filled in.
+            fields:
+              - label: How far
+                name: value
+                widget: number
+                value_type: float
+                hint: Just the number — 10 for a 10k, 13.1 for a half marathon.
+              - label: Miles or kilometres
+                name: unit
+                widget: select
+                # Pre-filled so the units can never be left empty. Most club
+                # races are in km; a mile race means changing it, which is
+                # visible in the form.
+                default: km
+                options:
+                  - { label: Kilometres (km), value: km }
+                  - { label: Miles (mi), value: mi }
+
+          - label: Race date
+            name: raceDate
+            widget: datetime
+            format: "YYYY-MM-DD"
+            date_format: "DD/MM/YYYY"
+            time_format: false
+            hint: The day the race was run — not the day you are writing this.
+
+      - label: Race date is approximate
+        name: dateApproximate
+        widget: boolean
+        required: false
+        default: false
+        hint: >-
+          Tick this if the race date above is a best guess rather than
+          confirmed — common on older reports rescued from the archive. The
+          site then shows only the month and year, so it never states a day
+          that might be wrong.
+
+      - label: Date written
+        name: posted
+        widget: datetime
+        required: false
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        hint: >-
+          Optional. Shown on the report as the date it was written. It is
+          never used to order posts — the race date does that.
+
+      - label: Author
+        name: author
+        widget: string
+        required: false
+        hint: Optional. Leave empty if the report has no byline.
+
+      - label: Category
+        name: category
+        widget: select
+        required: false
+        default: Race Report
+        options:
+          - Race Report
+          - Club News
+          - Couch to 5k
+          - Social
+
+      - label: One of our own races
+        name: clubRace
+        widget: boolean
+        required: false
+        default: false
+        hint: >-
+          Tick only for the Chard Flyer and the Forde Abbey 10k — the two
+          races the club puts on itself. It adds a "Club race" badge.
+
+      - label: Main photo
+        name: heroImage
+        widget: image
+        required: false
+        choose_url: false
+        hint: >-
+          The photo at the top of the report and on the race reports list.
+          Optional — reports without a photo still look fine.
+
+      # INTENTIONAL MISMATCH — do not "fix" this to match Astro.
+      #
+      # `required: false` here does not mean alt text is optional. Alt text is
+      # required whenever a photo is set, enforced by the preSave hook in
+      # index.html. It cannot be enforced by `required: true`, because Sveltia
+      # has no conditional validation and would then demand a description on
+      # the seven posts that have no photo at all.
+      #
+      # src/content.config.ts keeps heroImageAlt optional so those archive
+      # posts still build. The CMS is deliberately stricter than the schema:
+      # new content gets alt text, old content is left alone.
+      - label: Main photo description
+        name: heroImageAlt
+        widget: string
+        required: false
+        hint: >-
+          Describes the photo for people using a screen reader, and shows if
+          the image fails to load. Name the runners if you know who they are.
+          Required whenever there is a photo.
+
+      - label: More photos
+        name: images
+        widget: list
+        required: false
+        label_singular: Photo
+        summary: "{{fields.alt}}"
+        hint: Any other photos to show further down the report.
+        fields:
+          - label: Photo
+            name: src
+            widget: image
+            choose_url: false
+          - label: Photo description
+            name: alt
+            widget: string
+            hint: >-
+              Needed for every photo — it is what a screen reader announces.
+              Describe what is happening, and name the runners if you know them.
+
+      - label: Summary
+        name: excerpt
+        widget: text
+        hint: >-
+          One or two sentences. This appears on the race reports listing page
+          and in search results, so make it read well on its own.
+
+      - label: Draft — hide from the website
+        name: draft
+        widget: boolean
+        required: false
+        default: false
+        hint: >-
+          While this is ticked the report is saved but does not appear on the
+          live site. Untick it when you are ready for people to see it.
+
+      - label: The report
+        name: body
+        widget: markdown
+
+  # =========================================================================
+  # OUR RACES
+  # =========================================================================
+  - name: races
+    label: Our races
+    label_singular: Race
+    description: >-
+      The races the club puts on. Editing these updates the Our Races pages —
+      dates, entry links and race day details.
+    folder: src/content/races
+    create: true
+    slug: "{{fields.slug}}"
+    media_folder: images
+    public_folder: ./images
+    summary: "{{title}}"
+    sortable_fields: [order, title]
+    fields:
+      - label: Race name
+        name: title
+        widget: string
+
+      - label: Web address name
+        name: slug
+        widget: string
+        pattern:
+          - "^[a-z0-9]+(-[a-z0-9]+)*$"
+          - "Lower-case letters, numbers and hyphens only — for example chard-flyer"
+        hint: >-
+          The last part of the page's web address: "chard-flyer" gives
+          /our-races/chard-flyer. Lower-case letters, numbers and hyphens
+          only. Avoid changing it once the page is live, or existing links
+          to it will break.
+
+      - label: Distance
+        name: distance
+        widget: object
+        collapsed: false
+        fields:
+          - label: How far
+            name: value
+            widget: number
+            value_type: float
+            hint: Just the number — 10 for a 10k.
+          - label: Miles or kilometres
+            name: unit
+            widget: select
+            default: km
+            options:
+              - { label: Kilometres (km), value: km }
+              - { label: Miles (mi), value: mi }
+
+      - label: Next race date
+        name: nextDate
+        widget: datetime
+        required: false
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        hint: >-
+          Leave empty if next year's date is not confirmed. The page still
+          works without it — better an empty date than a wrong one.
+
+      - label: Start time
+        name: startTime
+        widget: datetime
+        required: false
+        format: "HH:mm:ss"
+        date_format: false
+        time_format: "HH:mm"
+
+      - label: Venue
+        name: venue
+        widget: string
+        required: false
+        hint: Where the race starts and finishes, for example "Chard Cricket Club".
+
+      - label: Entries are open
+        name: entriesOpen
+        widget: boolean
+        required: false
+        default: false
+        hint: >-
+          The entry link below only appears on the site while this is ticked.
+          Untick it once entries close, so a dead link is not left sitting on
+          the page for the rest of the year.
+
+      - label: Entry link
+        name: entryUrl
+        widget: string
+        required: false
+        pattern:
+          - "^https?://.+"
+          - "Enter a full web address starting with https://"
+        hint: Full web address of the entry page, starting with https://.
+
+      - label: Series
+        name: series
+        widget: string
+        required: false
+        hint: For example "Somerset Series". Leave empty if the race is not in one.
+
+      - label: Series note
+        name: seriesNote
+        widget: string
+        required: false
+
+      - label: There is a junior race
+        name: juniorRace
+        widget: boolean
+        required: false
+        default: false
+
+      - label: Junior race note
+        name: juniorRaceNote
+        widget: string
+        required: false
+        hint: Distance, age groups, start time — whatever parents need to know.
+
+      - label: Race director
+        name: raceDirector
+        widget: string
+        required: false
+
+      - label: Timing provider
+        name: timing
+        widget: string
+        required: false
+
+      - label: Results link
+        name: resultsUrl
+        widget: string
+        required: false
+        pattern:
+          - "^https?://.+"
+          - "Enter a full web address starting with https://"
+
+      - label: Facebook event link
+        name: facebookEventUrl
+        widget: string
+        required: false
+        pattern:
+          - "^https?://.+"
+          - "Enter a full web address starting with https://"
+
+      - label: Main photo
+        name: heroImage
+        widget: image
+        required: false
+        choose_url: false
+
+      # Same intentional mismatch as race-reports above: optional here,
+      # required whenever a photo is set, via the preSave hook in index.html.
+      - label: Main photo description
+        name: heroImageAlt
+        widget: string
+        required: false
+        hint: >-
+          Describes the photo for people using a screen reader. Required
+          whenever there is a photo.
+
+      - label: Order on the Our Races page
+        name: order
+        widget: number
+        required: false
+        default: 99
+        value_type: int
+        hint: Lower numbers come first. Leave it at 99 if you do not mind.
+
+      - label: Race details
+        name: body
+        widget: markdown
+
+  # =========================================================================
+  # PAGES — fixed pages, one file each
+  # =========================================================================
+  - name: pages
+    label: Pages
+    description: >-
+      The wording on the main pages. The layouts are fixed; these are the
+      words that go in them.
+    files:
+      - name: home
+        label: Home page
+        file: src/content/pages/home.md
+        fields:
+          # Tells the Astro schema which set of sections to expect. Not editable.
+          - { name: page, widget: hidden, default: home }
+
+          - label: Top of the page
+            name: hero
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Strapline
+                name: strapline
+                widget: text
+                hint: The line under the main heading.
+              - label: Main button
+                name: primaryCta
+                widget: object
+                fields:
+                  - { label: Button text, name: label, widget: string }
+                  - label: Button link
+                    name: href
+                    widget: string
+                    hint: A path on this site like /join-us, or a full https:// address.
+              - label: Second button
+                name: secondaryCta
+                widget: object
+                fields:
+                  - { label: Button text, name: label, widget: string }
+                  - { label: Button link, name: href, widget: string }
+
+          - label: Club nights
+            name: clubNights
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Introduction, name: intro, widget: text }
+              - label: The nights
+                name: nights
+                widget: list
+                min: 1
+                label_singular: Night
+                summary: "{{fields.day}}"
+                fields:
+                  - { label: Day, name: day, widget: string }
+                  - label: Time
+                    name: time
+                    widget: string
+                    hint: For example 7:00pm.
+                  - { label: Venue, name: venue, widget: string }
+                  - { label: Short summary, name: summary, widget: string }
+                  - { label: Detail, name: detail, widget: text }
+              - { label: Reassurance, name: reassurance, widget: text }
+
+          - label: Handicap race
+            name: handicap
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: text }
+
+          - label: Couch to 5k
+            name: couchTo5k
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: text }
+              - label: Next course dates
+                name: nextCourse
+                widget: string
+                required: false
+                hint: >-
+                  Leave empty until dates are confirmed. While it is empty the
+                  page shows the message below instead, so it never displays a
+                  blank or invented date.
+              - { label: Message when no dates are set, name: emptyState, widget: text }
+              - label: Button
+                name: cta
+                widget: object
+                fields:
+                  - { label: Button text, name: label, widget: string }
+                  - { label: Button link, name: href, widget: string }
+
+          - label: Latest race reports section
+            name: latestReports
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Link text, name: linkLabel, widget: string }
+              - { label: Message when there are no reports, name: emptyState, widget: text }
+
+          - label: Coming up section
+            name: upcoming
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Link text, name: linkLabel, widget: string }
+              - { label: Message when nothing is planned, name: emptyState, widget: text }
+
+          - label: Our races section
+            name: ourRaces
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Introduction, name: intro, widget: text }
+              - { label: Link text, name: linkLabel, widget: string }
+
+      - name: join-us
+        label: Join us page
+        file: src/content/pages/join-us.md
+        fields:
+          # Tells the Astro schema which set of sections to expect. Not editable.
+          - { name: page, widget: hidden, default: join-us }
+
+          - label: Top of the page
+            name: hero
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Strapline, name: strapline, widget: text }
+
+          - label: Your first night
+            name: firstVisit
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Introduction, name: intro, widget: text, required: false }
+              - label: Steps
+                name: steps
+                widget: list
+                min: 1
+                label_singular: Step
+                summary: "{{fields.label}}"
+                fields:
+                  - label: Label
+                    name: label
+                    widget: string
+                    hint: For example When, Where, Parking.
+                  - label: Detail
+                    name: detail
+                    widget: text
+                    hint: >-
+                      Line breaks are kept, so an address can go on several
+                      lines. what3words references (///word.word.word) are fine.
+              - { label: Reassurance, name: reassurance, widget: text }
+
+          - label: Which night
+            name: whichNight
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Tuesday
+                name: tuesday
+                widget: text
+                hint: Name the day in the text — the page adds no heading of its own.
+              - { label: Thursday, name: thursday, widget: text }
+
+          - label: Membership
+            name: membership
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Introduction, name: intro, widget: text, required: false }
+              - label: Membership options
+                name: options
+                widget: list
+                min: 1
+                label_singular: Option
+                summary: "{{fields.name}} — {{fields.price}}"
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - label: Price
+                    name: price
+                    widget: string
+                    hint: Include the pound sign, for example £18.
+                  - { label: Detail, name: detail, widget: text }
+              - { label: Renewal, name: renewal, widget: text, required: false }
+              - { label: How to pay, name: howToPay, widget: text }
+              - { label: Connect My Club code, name: connectMyClubCode, widget: string }
+              - label: Membership form link
+                name: formUrl
+                widget: string
+                required: false
+                hint: >-
+                  Leave empty until there is a form to point at. Nothing is
+                  shown on the page while it is empty, so there is never a
+                  dead link.
+              - { label: Membership secretary, name: membershipSecretary, widget: string }
+              - label: Membership email
+                name: membershipEmail
+                widget: string
+                pattern:
+                  - "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+                  - Enter a valid email address
+
+          - label: Couch to 5k
+            name: couchTo5k
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: text }
+              - label: Next course dates
+                name: nextCourse
+                widget: string
+                required: false
+                hint: Leave empty until dates are confirmed.
+              - { label: Message when no dates are set, name: emptyState, widget: text }
+
+          - label: Questions
+            name: questions
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: text }

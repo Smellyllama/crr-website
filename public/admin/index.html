@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Keep the editing screen out of search results. Also disallowed in
+         /robots.txt — this tag is the belt to that braces, because robots.txt
+         only asks crawlers not to fetch the page, it does not stop one that
+         already knows the URL from listing it. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Chard Road Runners — edit the website</title>
+  </head>
+  <body>
+    <!-- Sveltia CMS. The version is pinned on purpose: Sveltia is still
+         pre-1.0, so an unpinned URL could change the editing screen under
+         a committee member without warning. To update, bump the number
+         below, check the release notes, and test a save before telling
+         anyone: https://github.com/sveltia/sveltia-cms/releases
+
+         No stylesheet is needed — the styles are bundled in the script.
+         Do not add type="module"; the build does not expect it. -->
+    <script src="https://unpkg.com/@sveltia/cms@0.205.1/dist/sveltia-cms.js"></script>
+
+    <script>
+      // Alt text is required when — and only when — there is a photo to
+      // describe.
+      //
+      // The CMS config cannot say that on its own: Sveltia has no conditional
+      // validation, and `required: true` on heroImageAlt would also block the
+      // seven posts that have no photo at all, demanding a description for an
+      // image that does not exist. So the rule lives here instead.
+      //
+      // This is deliberately stricter than src/content.config.ts, where
+      // heroImageAlt stays optional so the archive keeps building. New and
+      // edited content gets alt text; old photo-less posts are left alone.
+      // The mismatch is intentional — see the comments in both files.
+      (function () {
+        if (typeof window.CMS === 'undefined') {
+          // eslint-disable-next-line no-console
+          console.error('Sveltia CMS did not load, so the alt text check is not active.');
+          return;
+        }
+
+        var COLLECTIONS = ['race-reports', 'races'];
+
+        window.CMS.registerEventListener({
+          name: 'preSave',
+          handler: function (args) {
+            var entry = args.entry;
+            if (COLLECTIONS.indexOf(entry.get('collection')) === -1) return;
+
+            var image = entry.getIn(['data', 'heroImage']);
+            var alt = entry.getIn(['data', 'heroImageAlt']);
+
+            if (image && !String(alt || '').trim()) {
+              // The message only reaches the editor when the error is named
+              // `saving_failed` with the real message as its `cause` — that is
+              // what the save toolbar looks for. Throwing anything else still
+              // blocks the save, but shows an empty dialog. Worth re-checking
+              // if the pinned version above is ever bumped.
+              throw new Error('saving_failed', {
+                cause: new Error(
+                  'Add a description for the main photo before saving. ' +
+                    'It is read aloud to people using a screen reader, and ' +
+                    'shows if the image fails to load.',
+                ),
+              });
+            }
+          },
+        });
+      })();
+    </script>
+  </body>
+</html>

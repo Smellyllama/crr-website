@@ -48,6 +48,14 @@ const raceReports = defineCollection({
       heroImage: image().optional(),
       // Only meaningful alongside heroImage. Provisional on archive posts
       // where nobody who was there has confirmed who's in the photo.
+      //
+      // INTENTIONALLY LOOSER THAN THE CMS — do not tighten to match it.
+      // Optional here so the archive posts that arrived without alt text keep
+      // building. The CMS requires it whenever a photo is set, enforced by the
+      // preSave hook in public/admin/index.html, because Sveltia has no
+      // conditional validation and `required: true` would demand a description
+      // on posts that have no photo at all. New content gets alt text; old
+      // content is left alone. See the matching note in public/admin/config.yml.
       heroImageAlt: z.string().optional(),
       images: z
         .array(z.object({ src: image(), alt: z.string() }))
@@ -90,6 +98,8 @@ const races = defineCollection({
       facebookEventUrl: z.string().url().optional(),
 
       heroImage: image().optional(),
+      // Same intentional mismatch as race-reports: optional here, required by
+      // the CMS whenever a photo is set. See the note above.
       heroImageAlt: z.string().optional(),
 
       // Controls order on the Our Races landing page.
