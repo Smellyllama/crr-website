@@ -37,6 +37,15 @@ output:
 media_folder: public/uploads
 public_folder: /uploads
 
+media_libraries:
+  default:
+    config:
+      # Rename uploads to a clean slug: "Baltonsborough 5Mile.jpg" is saved as
+      # "baltonsborough-5mile.jpg". Sveltia keeps the original name by default,
+      # which puts spaces and capitals into URLs and Git paths. Applies to new
+      # uploads only — files already committed keep their names.
+      slugify_filename: true
+
 collections:
   # =========================================================================
   # RACE REPORTS
@@ -46,9 +55,21 @@ collections:
     label_singular: Race report
     description: >-
       Reports from races members have run, plus club news, Couch to 5k updates
-      and social posts.
+      and social posts. There is no Delete button — a mistake is fixed by
+      editing the report, and anything that genuinely needs removing goes
+      through whoever looks after the website.
     folder: src/content/race-reports
     create: true
+    # DELETION IS DISABLED ON PURPOSE — do not set this to true.
+    #
+    # media_folder below is entry-relative, so Sveltia treats the whole of
+    # src/content/race-reports/images/ as this entry's asset folder. Deleting
+    # one report therefore deletes every photo belonging to every report:
+    # commit 13784bc took all 23, restored in 7fb8f5b. The post that triggered
+    # it referenced a single image, and that one belonged to another post.
+    #
+    # Until the media layout is reworked, deleting a report is a Git job.
+    delete: false
     # Produces 2026-08-01-shaves-cross-mini-marathon.md — the first race's
     # date plus the title, so nobody has to name a file by hand.
     slug: "{{races.0.raceDate | date('YYYY-MM-DD')}}-{{slug}}"
@@ -245,9 +266,15 @@ collections:
     label_singular: Race
     description: >-
       The races the club puts on. Editing these updates the Our Races pages —
-      dates, entry links and race day details.
+      dates, entry links and race day details. There is no Delete button — a
+      mistake is fixed by editing the race, and anything that genuinely needs
+      removing goes through whoever looks after the website.
     folder: src/content/races
     create: true
+    # Same entry-relative media trap as race-reports above — deleting either
+    # race would take every photo in src/content/races/images/ with it.
+    # Deleting a race is a Git job until that is reworked.
+    delete: false
     slug: "{{fields.slug}}"
     media_folder: images
     public_folder: ./images

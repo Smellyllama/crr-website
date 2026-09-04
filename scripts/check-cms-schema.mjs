@@ -12,9 +12,18 @@
 // the collection's CMS fields. Runs before `astro build`.
 //
 // A change to one schema is a change to both, in the same commit.
+//
+// The second guard is media. Every image field is resolved against the
+// filesystem, because a path pointing at a file that is not there is a red
+// deploy, and the CMS can produce one without anybody editing the post that
+// breaks: deleting a race report through Sveltia removed every photo in the
+// shared images folder (commit 13784bc), orphaning the paths in twenty other
+// posts. Checking here turns that class of failure into a local error before
+// the push. Image fields are read from the CMS config rather than named here,
+// so a new one is covered the day it is added.
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { parse } from 'yaml';
@@ -64,6 +73,65 @@ const usedPaths = (value, prefix, out) => {
   return out;
 };
 
+/** The dotted paths whose CMS widget holds a file path, e.g. `images.src`. */
+const mediaPaths = (fields, prefix = '') => {
+  const out = new Set();
+  for (const field of fields ?? []) {
+    const path = prefix ? `${prefix}.${field.name}` : field.name;
+    if (field.widget === 'image' || field.widget === 'file') out.add(path);
+    const children = field.fields ?? field.types?.flatMap((t) => t.fields ?? []);
+    for (const child of mediaPaths(children, path)) out.add(child);
+  }
+  return out;
+};
+
+/**
+ * Every [dotted path, value] pair in frontmatter. List indices are collapsed
+ * the same way `usedPaths` collapses them, so each item of a photo list is
+ * reported against the one field that declares it.
+ */
+const valuesByPath = (value, prefix, out) => {
+  if (Array.isArray(value)) {
+    value.forEach((item) => valuesByPath(item, prefix, out));
+  } else if (value && typeof value === 'object' && !(value instanceof Date)) {
+    for (const [key, child] of Object.entries(value)) {
+      const path = prefix ? `${prefix}.${key}` : key;
+      out.push([path, child]);
+      valuesByPath(child, path, out);
+    }
+  }
+  return out;
+};
+
+/**
+ * Where a frontmatter image path actually points. Collection media folders are
+ * entry-relative, so `./images/x.jpg` resolves against the Markdown file that
+ * uses it; an absolute path is a public asset and resolves against `public/`.
+ * Remote URLs are somebody else's to keep alive, so they are left alone.
+ */
+const resolveMedia = (value, file) => {
+  if (/^(https?:)?\/\//.test(value)) return null;
+  return value.startsWith('/') ? join(ROOT, 'public', value) : join(dirname(file), value);
+};
+
+/** Assert every frontmatter key is declared, and every image path resolves. */
+const checkEntry = (file, frontMatter, declared, media, label) => {
+  for (const path of usedPaths(frontMatter, '', new Set())) {
+    if (!declared.has(path)) {
+      problems.push(
+        `${relative(ROOT, file)} uses "${path}", which no field in the ` + `"${label}" CMS collection declares.`,
+      );
+    }
+  }
+  for (const [path, value] of valuesByPath(frontMatter, '', [])) {
+    if (!media.has(path) || typeof value !== 'string' || !value.trim()) continue;
+    const target = resolveMedia(value, file);
+    if (target && !existsSync(target)) {
+      mediaProblems.push(`${relative(ROOT, file)} → "${path}" points at ${value}, which is not on disk.`);
+    }
+  }
+};
+
 const markdownIn = (dir) =>
   readdirSync(dir)
     .filter((name) => name.endsWith('.md'))
@@ -71,6 +139,7 @@ const markdownIn = (dir) =>
 
 const config = parse(readFileSync(CONFIG, 'utf8'));
 const problems = [];
+const mediaProblems = [];
 const covered = new Set();
 
 for (const collection of config.collections) {
@@ -82,20 +151,14 @@ for (const collection of config.collections) {
       continue;
     }
     const declared = declaredPaths(collection.fields);
+    const media = mediaPaths(collection.fields);
     for (const file of markdownIn(dir)) {
       const frontMatter = readFrontMatter(file);
       if (!frontMatter) {
         problems.push(`${relative(ROOT, file)} has no frontmatter.`);
         continue;
       }
-      for (const path of usedPaths(frontMatter, '', new Set())) {
-        if (!declared.has(path)) {
-          problems.push(
-            `${relative(ROOT, file)} uses "${path}", which no field in the ` +
-              `"${collection.name}" CMS collection declares.`,
-          );
-        }
-      }
+      checkEntry(file, frontMatter, declared, media, collection.name);
     }
   } else {
     for (const entry of collection.files ?? []) {
@@ -106,19 +169,13 @@ for (const collection of config.collections) {
         continue;
       }
       const declared = declaredPaths(entry.fields);
+      const media = mediaPaths(entry.fields);
       const frontMatter = readFrontMatter(file);
       if (!frontMatter) {
         problems.push(`${relative(ROOT, file)} has no frontmatter.`);
         continue;
       }
-      for (const path of usedPaths(frontMatter, '', new Set())) {
-        if (!declared.has(path)) {
-          problems.push(
-            `${relative(ROOT, file)} uses "${path}", which no field in the ` +
-              `"${collection.name}/${entry.name}" CMS collection declares.`,
-          );
-        }
-      }
+      checkEntry(file, frontMatter, declared, media, `${collection.name}/${entry.name}`);
     }
   }
 }
@@ -144,7 +201,21 @@ if (problems.length) {
         '  same fields. Add the missing field(s) to the CMS config.\n',
     ),
   );
-  process.exit(1);
 }
 
+if (mediaProblems.length) {
+  console.error(red(`\n✗ Missing images — ${mediaProblems.length} broken path(s)\n`));
+  for (const problem of mediaProblems) console.error(`  ${red('•')} ${problem}`);
+  console.error(
+    yellow(
+      '\n  Either the file was removed and needs restoring from Git, or the path\n' +
+        '  in the frontmatter is wrong. Astro fails the build on these, so fixing\n' +
+        '  it here is cheaper than finding out from a red deploy.\n',
+    ),
+  );
+}
+
+if (problems.length || mediaProblems.length) process.exit(1);
+
 console.log(dim('✓ CMS schema mirrors the content — no undeclared frontmatter keys.'));
+console.log(dim('✓ Every image path resolves on disk.'));
