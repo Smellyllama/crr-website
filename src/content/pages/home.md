@@ -2,7 +2,7 @@
 page: home
 hero:
   heading: Chard Road Runners
-  strapline: A running club in Chard, Somerset. Every pace welcome, and with the loop-back nobody gets left behind.
+  strapline: The best running club in Chard, Somerset. Every pace welcome, and with the loop-back nobody gets left behind.
   primaryCta:
     label: Join us
     href: /join-us
@@ -27,14 +27,14 @@ clubNights:
       time: 7:00pm
       venue: Chard Cricket Club
       summary: Shorter and slower
-      detail: A gentler run that suits beginners and anyone building back up. A good first night if you're not sure.
+      detail: More running of a Thursday, same familiar route at a relaxed pace. The clubhouse and showers aren't open after.
   reassurance: You don't need to be a member to come along, and you don't need to be fast. Come for a couple of runs and see what you think.
 handicap:
   heading: Last Tuesday of the month
   body: Handicap race and bake off. Everyone starts at a different time based on their recent form, so the slowest runner has as good a chance of winning as the quickest. The cake is taken at least as seriously as the running.
 couchTo5k:
-  heading: Never run before?
-  body: Our Couch to 5k takes people from nothing to a 5k finish line over a few weeks. One hour a week, in a group, with club runners alongside you the whole way. It's free, it's for over-18s, and there's a medal at the end.
+  heading: Escape the couch, it's easier than you think!
+  body: Our Couch to 5k takes people from nothing to a 5k finish line in just nine weeks, only one hour a week. Run in a Coach led a group, with club runners alongside you the whole way. Start slowly and build up to your first Parkrun 5km. It's free, it's for over-18s, and there's a medal at the end, everyone loves a medal.
   emptyState: Dates for the next course aren't set yet — drop us a message and we'll let you know.
   cta:
     label: Find out more
@@ -42,7 +42,7 @@ couchTo5k:
 latestReports:
   heading: Latest race reports
   linkLabel: All race reports
-  emptyState: No reports yet — check back after the next race.
+  emptyState: No race reports, something has gone awfully wrong...
 upcoming:
   heading: Coming up
   linkLabel: Full race calendar
