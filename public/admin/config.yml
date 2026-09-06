@@ -122,6 +122,17 @@ collections:
                 name: value
                 widget: number
                 value_type: float
+                # step drives the mobile keypad, not just the arrow buttons.
+                # Sveltia counts the decimal places in step and sets
+                # inputmode="decimal" when there is at least one, "numeric"
+                # otherwise. step defaults to 1, which gave a phone keypad with
+                # no decimal point at all — 13.1 and 26.2 could not be typed.
+                # Desktop was unaffected, the field being a text input.
+                #
+                # 0.01 rather than 0.1 so the arrow buttons, which round to the
+                # step's decimal places, cannot quietly turn a two-decimal trail
+                # distance like 6.55 into 6.6. Typing is not limited by step.
+                step: 0.01
                 hint: Just the number — 10 for a 10k, 13.1 for a half marathon.
               - label: Miles or kilometres
                 name: unit
@@ -306,7 +317,10 @@ collections:
             name: value
             widget: number
             value_type: float
-            hint: Just the number — 10 for a 10k.
+            # See the note on the same field in race-reports above: without
+            # this the phone keypad has no decimal point.
+            step: 0.01
+            hint: Just the number — 10 for a 10k, 13.1 for a half marathon.
           - label: Miles or kilometres
             name: unit
             widget: select
