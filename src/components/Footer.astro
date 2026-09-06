@@ -1,10 +1,15 @@
 ---
-import { ENGLAND_ATHLETICS_URL, FOOTER_PAGE_LINKS, SOCIAL_LINKS } from '../consts';
+import logoLockup from '../assets/crr-logo-lockup.svg?raw';
+import { ENGLAND_ATHLETICS_URL, FOOTER_PAGE_LINKS, SITE_TITLE, SOCIAL_LINKS } from '../consts';
 
 const year = new Date().getFullYear();
 ---
 
 <footer class="bg-primary text-primary-content">
+	<div class="mx-auto max-w-5xl px-4 pt-10 sm:px-6 lg:px-8">
+		{/* Decorative: the club's name is already the footer's copyright line. */}
+		<div class="footer-logo" aria-hidden="true" set:html={logoLockup} />
+	</div>
 	<div class="footer sm:footer-horizontal mx-auto max-w-5xl gap-8 px-4 py-10 sm:px-6 lg:px-8">
 		<nav>
 			<h3 class="footer-title text-primary-content/70">Club</h3>
@@ -45,6 +50,25 @@ const year = new Date().getFullYear();
 		</nav>
 	</div>
 	<div class="border-t border-primary-content/10 px-4 py-4 text-center text-sm text-primary-content/70">
-		&copy; {year} Chard Road Runners
+		&copy; {year} {SITE_TITLE}
 	</div>
 </footer>
+
+<style>
+	/*
+	  The two-tone treatment, which the footer has room for: the mark takes
+	  currentColor and the wordmark takes --logo-accent. On a light ground both
+	  would fall back to currentColor and go purple together.
+	*/
+	.footer-logo {
+		--logo-accent: var(--color-sky);
+		color: var(--color-chalk);
+		width: min(15rem, 60%);
+	}
+
+	.footer-logo :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+</style>

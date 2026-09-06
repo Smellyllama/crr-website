@@ -12,6 +12,21 @@
 # A change to one schema is a change to both, in the same commit.
 # ---------------------------------------------------------------------------
 
+# Shown on the sign-in screen and in the CMS header. The option is `logo.src`
+# — `logo_url` is the deprecated form, and `logo_src` is not an option at all,
+# so it would be ignored silently.
+#
+# This has to be a URL rather than an inlined file, which is why the copy in
+# public/ has its colours baked in instead of using currentColor. That copy
+# carries its own prefers-color-scheme rule, so it suits Sveltia's light and
+# dark themes without needing two files.
+#
+# Sveltia also reuses this as the CMS tab's favicon, where its own docs note a
+# square image works best. This one is roughly 2:1. Point src at /favicon.svg
+# instead if the squashed tab icon annoys you more than a cramped sign-in logo.
+logo:
+  src: /crr-logo-lockup.svg
+
 backend:
   name: github
   repo: Smellyllama/crr-website

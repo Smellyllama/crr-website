@@ -1,6 +1,7 @@
 ---
 import heroContoursDesktop from '../assets/hero-contours-desktop.svg?raw';
 import heroContoursMobile from '../assets/hero-contours-mobile.svg?raw';
+import logoMark from '../assets/crr-logo-mark.svg?raw';
 
 interface Cta {
 	label: string;
@@ -22,7 +23,14 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 	<div class="contours contours--mobile absolute inset-0 sm:hidden" set:html={heroContoursMobile} />
 	<div class="hero-content relative mx-auto flex max-w-3xl flex-col items-center justify-center gap-8 px-4 pb-16 text-center sm:px-6 lg:px-8">
 		<div>
-			<h1 class="text-4xl font-bold sm:text-5xl">{heading}</h1>
+			{/*
+			  The mark sits above the heading rather than replacing it: the club
+			  name stays a real <h1>, per CLAUDE.md’s rule against text baked
+			  into images. The mark reads "CRR", so it badges the hero without
+			  repeating the name, which is why it is decorative here.
+			*/}
+			<div class="hero-logo mx-auto" aria-hidden="true" set:html={logoMark} />
+			<h1 class="mt-6 text-4xl font-bold sm:text-5xl">{heading}</h1>
 			<p class="mt-4 text-lg text-primary-content/80">{strapline}</p>
 		</div>
 		<div class="flex flex-col gap-3 sm:flex-row">
@@ -47,6 +55,22 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 
 	.hero-content {
 		padding-top: var(--header-height, 4rem);
+	}
+
+	/*
+	  Chalk rather than the sky blue: the mark sits directly above the white
+	  heading, and two near-white tones read as one badge, where sky would pull
+	  attention off the h1. The sky blue does its work in the footer lockup.
+	*/
+	.hero-logo {
+		width: min(18rem, 62%);
+		color: var(--color-chalk);
+	}
+
+	.hero-logo :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 
 	.contours {

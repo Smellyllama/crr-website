@@ -1,4 +1,5 @@
 ---
+import logoMark from '../assets/crr-logo-mark.svg?raw';
 import { NAV_LINKS, SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 
@@ -47,9 +48,12 @@ const { overlay = false } = Astro.props;
 		</div>
 		<a
 			href="/"
-			class="btn btn-ghost px-2 text-lg font-semibold text-primary-content hover:text-secondary focus-visible:outline-white [font-family:var(--font-outfit)]"
+			class="btn btn-ghost px-2 text-secondary hover:text-primary-content focus-visible:outline-white"
 		>
-			{SITE_TITLE}
+			{/* The mark reads "CRR", so the link needs the club's full name for
+			    anyone who cannot see it. The SVG itself is decorative. */}
+			<span class="sr-only">{SITE_TITLE}</span>
+			<span class="site-logo" aria-hidden="true" set:html={logoMark} />
 		</a>
 	</div>
 	<div class="navbar-end hidden lg:flex">
@@ -64,6 +68,20 @@ const { overlay = false } = Astro.props;
 		</ul>
 	</div>
 </header>
+
+<style>
+	/* The mark is roughly 2.7:1, so width drives the sizing and height follows. */
+	.site-logo {
+		display: block;
+		width: 5.5rem;
+	}
+
+	.site-logo :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+</style>
 {
 	overlay && (
 		<script>
