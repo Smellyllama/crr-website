@@ -56,4 +56,21 @@
 @theme {
 	--color-primary-tint: #514d67; /* primary, 20% lighter */
 	--color-primary-tint-2: #7d7a8d; /* primary, 40% lighter */
+
+	/*
+	  The logo's sky blue. Named for what it is, NOT accent — the accent colour
+	  for calls to action is still an open decision, and taking that name here
+	  would quietly settle it.
+
+	  Measured contrast: 8.49:1 on the purple, better than the pale blue.
+	  1.76:1 on white, which is worse than the pale blue and already failing.
+	  So: text on dark, and accents. Never on a light background.
+
+	  Note this sits alongside Tailwind's own sky-50…sky-950 scale, so `bg-sky`
+	  is the club colour while `bg-sky-500` is Tailwind's. Reach for the former.
+	*/
+	--color-sky: #96c8fa;
+
+	/* The logo's off-white, for the mark on a purple ground. */
+	--color-chalk: #f2efe9;
 }

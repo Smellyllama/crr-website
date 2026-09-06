@@ -83,16 +83,29 @@ Club colours come from the kit, specified as Pantone by the supplier:
 - **PMS 4147** — `#262141` — primary. Reads as a deep purple, not navy.
 - **PMS 4149** — `#8AABC6` — secondary, pale blue.
 
-An accent colour for calls to action is **still to be chosen**. Two blues give
-nothing to make a primary button stand out, which is how a `btn-secondary` with
-matching foreground and background shipped invisible at 1:1 contrast.
+Two more come from the logo, defined in `src/styles/app.css` as `--color-sky`
+and `--color-chalk`:
+
+- **sky blue** — `#96C8FA` — the logo's wordmark colour.
+- **chalk** — `#F2EFE9` — the logo's mark colour, an off-white.
+
+An accent colour for calls to action is **still to be chosen**, and the sky blue
+is **not** it. It is named `--color-sky`, for what it is, rather than
+`--color-accent` precisely so that naming it does not quietly settle that
+decision. Three blues still give nothing to make a primary button stand out,
+which is how a `btn-secondary` with matching foreground and background shipped
+invisible at 1:1 contrast.
 
 ### Palette rules — not optional
 
 - Pale blue on white is **2.41:1 and fails WCAG AA**. Never use it for text on a
   light background.
-- Dark purple for text on light backgrounds. Pale blue for accents, borders, and
-  text on dark only.
+- Sky blue on white is **1.76:1 — worse than the pale blue**. Same rule, harder:
+  text on dark and accents only, never on a light background.
+- Sky blue on the purple is **8.49:1**, better than the pale blue's 4.6:1. Where a
+  blue goes on the purple and the contrast matters, sky is the stronger choice.
+- Dark purple for text on light backgrounds. Pale blue and sky blue for accents,
+  borders, and text on dark only.
 - Buttons need a foreground colour explicitly different from their fill. Pale
   blue fill with dark purple text gives ~5.7:1 and stays inside the palette.
 - Check contrast by measuring, not by eye.
