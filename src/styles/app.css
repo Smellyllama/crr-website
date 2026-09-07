@@ -74,3 +74,20 @@
 	/* The logo's off-white, for the mark on a purple ground. */
 	--color-chalk: #f2efe9;
 }
+
+/*
+  Where a photo is cropped to a fixed aspect ratio. Club photos are nearly all
+  group shots with heads near the top, and the browser default of dead centre
+  was slicing the tops off them.
+
+  25% down rather than hard to the top: `object-top` saved the heads but left
+  the landscape shots — Forde Abbey, Maiden Newton — as most of a sky with the
+  subject pushed off the bottom. A quarter down fixes the group shots without
+  doing that.
+
+  One value in one place, so it can be tuned once, and so a per-image override
+  in the editor has something to override if it is ever wanted.
+*/
+@utility object-hero {
+	object-position: 50% 25%;
+}

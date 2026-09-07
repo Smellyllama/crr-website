@@ -38,7 +38,7 @@ const races = (await getCollection('races')).sort((a, b) => a.data.order - b.dat
 										height={240}
 										src={race.data.heroImage}
 										alt={race.data.heroImageAlt ?? ''}
-										class="h-full w-full object-cover"
+										class="h-full w-full object-cover object-hero"
 									/>
 								) : (
 									<ImageFallback />
