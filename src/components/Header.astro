@@ -146,13 +146,6 @@ const { overlay = false } = Astro.props;
 		opacity: 1;
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.site-header--overlay,
-		.site-header--overlay::before,
-		.site-header--overlay .site-logo-link {
-			transition: none;
-		}
-	}
 </style>
 {
 	overlay && (

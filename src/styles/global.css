@@ -118,3 +118,26 @@ hr {
 		font-size: 18px;
 	}
 }
+
+/*
+  Reduced motion, site-wide.
+
+  Deliberately outside @layer base, and deliberately !important. Every other
+  base style here belongs in the layer so utilities can override it — this one
+  is the opposite: nothing should be able to override it, including component
+  scoped styles, which Astro emits unlayered. Guarding motion component by
+  component was the alternative and it only works until someone forgets.
+
+  Near-zero rather than `none` so transitionend and animationend still fire.
+  Code that waits for them keeps working instead of hanging.
+*/
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

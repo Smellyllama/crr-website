@@ -6,6 +6,7 @@ import type { ImageMetadata } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { MAIN_CONTENT_ID, SKIP_LINK_LABEL } from '../consts';
 
 interface Props {
 	title: string;
@@ -24,10 +25,52 @@ const { title, description, image, overlayHeader = false } = Astro.props;
 		<BaseHead title={title} description={description} image={image} />
 	</head>
 	<body class="flex min-h-screen flex-col bg-base-100 text-base-content">
+		<a class="skip-link" href={`#${MAIN_CONTENT_ID}`}>{SKIP_LINK_LABEL}</a>
 		<Header overlay={overlayHeader} />
-		<main class="flex-1">
+		{/*
+		  tabindex="-1" so the skip link moves focus here, not just the scroll
+		  position. Without it some browsers scroll to main and leave focus
+		  where it was, so the next Tab goes back into the nav.
+		*/}
+		<main id={MAIN_CONTENT_ID} tabindex="-1" class="flex-1">
 			<slot />
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	/*
+	  The skip link is the first thing in the document, so it is the first stop
+	  for a keyboard user on every page. It sits above the viewport until it
+	  takes focus — moved out of sight rather than display:none or hidden,
+	  either of which would drop it from the tab order and defeat the point.
+
+	  z-index clears the overlay header, which sits at 50 on the homepage.
+	*/
+	.skip-link {
+		position: fixed;
+		top: 0;
+		left: 1rem;
+		z-index: 100;
+		transform: translateY(-100%);
+		padding: 0.75rem 1.25rem;
+		border-end-start-radius: var(--radius-box);
+		border-end-end-radius: var(--radius-box);
+		background: var(--color-primary);
+		color: var(--color-primary-content);
+		font-weight: 600;
+	}
+
+	.skip-link:focus {
+		transform: translateY(0);
+		outline: 2px solid var(--color-chalk);
+		outline-offset: 2px;
+	}
+
+	/* Focus moves to <main> when the link is used; it should not draw a ring
+	   around the whole page in the process. */
+	main:focus {
+		outline: none;
+	}
+</style>
