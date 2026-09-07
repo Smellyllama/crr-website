@@ -97,6 +97,42 @@ const { overlay = false } = Astro.props;
 			box-shadow 150ms ease;
 	}
 
+	/*
+	  A scrim behind the transparent header. Measured against the real hero,
+	  nav text over the brightest contour lines fell to 4.1:1 for the white
+	  links and 1.7:1 for the pale blue current-page link — the same failure
+	  CLAUDE.md warns about for contours behind copy. This puts a floor under
+	  the text without giving up the transparent look.
+
+	  It holds full strength across the bar and only tapers below it, because
+	  a gradient that starts fading at the top leaves the text sitting at half
+	  the scrim it looks like it has.
+
+	  Negative z-index keeps it behind the header's own content while staying
+	  inside the header's stacking context, so it still covers the hero.
+	*/
+	.site-header--overlay::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 -2.5rem 0;
+		z-index: -1;
+		pointer-events: none;
+		background: linear-gradient(to bottom, rgba(38, 33, 65, 0.8) 0%, rgba(38, 33, 65, 0.8) 62%, rgba(38, 33, 65, 0) 100%);
+		background: linear-gradient(
+			to bottom,
+			rgb(from var(--color-primary) r g b / 0.8) 0%,
+			rgb(from var(--color-primary) r g b / 0.8) 62%,
+			rgb(from var(--color-primary) r g b / 0) 100%
+		);
+		transition: opacity 150ms ease;
+	}
+
+	/* Once the bar is solid the scrim has nothing left to do, and the part
+	   hanging below it would read as a smudge over the content. */
+	.site-header--overlay[data-scrolled='true']::before {
+		opacity: 0;
+	}
+
 	.site-header--overlay .site-logo-link {
 		visibility: hidden;
 		opacity: 0;
@@ -112,6 +148,7 @@ const { overlay = false } = Astro.props;
 
 	@media (prefers-reduced-motion: reduce) {
 		.site-header--overlay,
+		.site-header--overlay::before,
 		.site-header--overlay .site-logo-link {
 			transition: none;
 		}
