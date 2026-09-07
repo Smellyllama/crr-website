@@ -17,7 +17,7 @@ const { overlay = false } = Astro.props;
 	class:list={[
 		'navbar px-4 text-primary-content sm:px-6 lg:px-8',
 		overlay
-			? 'fixed inset-x-0 top-0 z-50 bg-transparent transition-colors duration-300 data-[scrolled=true]:bg-primary data-[scrolled=true]:shadow-sm'
+			? 'site-header--overlay fixed inset-x-0 top-0 z-50 bg-transparent data-[scrolled=true]:bg-primary data-[scrolled=true]:shadow-sm'
 			: 'bg-primary shadow-sm',
 	]}
 >
@@ -48,7 +48,7 @@ const { overlay = false } = Astro.props;
 		</div>
 		<a
 			href="/"
-			class="btn btn-ghost px-2 text-secondary hover:text-primary-content focus-visible:outline-white"
+			class="site-logo-link btn btn-ghost px-2 text-secondary hover:text-primary-content focus-visible:outline-white"
 		>
 			{/* The mark reads "CRR", so the link needs the club's full name for
 			    anyone who cannot see it. The SVG itself is decorative. */}
@@ -81,19 +81,58 @@ const { overlay = false } = Astro.props;
 		width: 100%;
 		height: auto;
 	}
+
+	/*
+	  Over the hero the header is transparent, and the hero already carries a
+	  large CRR mark — a second one in the header read as a duplicate. It
+	  arrives with the background rather than sitting there on its own.
+
+	  visibility, not just opacity, so the link leaves the tab order while it
+	  is invisible: a keyboard user tabbing to a logo they cannot see has
+	  nowhere to look. The nav's own Home link covers the same destination.
+	*/
+	.site-header--overlay {
+		transition:
+			background-color 150ms ease,
+			box-shadow 150ms ease;
+	}
+
+	.site-header--overlay .site-logo-link {
+		visibility: hidden;
+		opacity: 0;
+		transition:
+			opacity 150ms ease,
+			visibility 150ms ease;
+	}
+
+	.site-header--overlay[data-scrolled='true'] .site-logo-link {
+		visibility: visible;
+		opacity: 1;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.site-header--overlay,
+		.site-header--overlay .site-logo-link {
+			transition: none;
+		}
+	}
 </style>
 {
 	overlay && (
 		<script>
+			// The header goes solid almost as soon as the page moves. Waiting
+			// until the end of the hero meant content scrolled underneath a
+			// transparent bar for most of the hero's height, which is what
+			// looked untidy on a phone.
+			const SOLID_AFTER_PX = 72;
+
 			const header = document.getElementById('site-header');
-			const hero = document.getElementById('hero');
-			if (header && hero) {
+			if (header) {
 				const setHeaderHeight = () => {
 					document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
 				};
 				const onScroll = () => {
-					const threshold = hero.offsetHeight - header.offsetHeight;
-					header.dataset.scrolled = String(window.scrollY > threshold);
+					header.dataset.scrolled = String(window.scrollY > SOLID_AFTER_PX);
 				};
 				setHeaderHeight();
 				onScroll();
