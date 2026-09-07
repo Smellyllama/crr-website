@@ -167,7 +167,13 @@ and troubleshooting, but learning this stack as I go. So:
   graphics `aria-hidden`.
 - **Alt text on every lead image**, not just in-body ones. Absent alt beats wrong
   alt — never ship the literal word "TODO" as alt text.
-- **No client-side JavaScript on the homepage.** Keep it minimal elsewhere.
+- **Client-side JavaScript is the exception, not the default**, and every piece of
+  it has to earn its place. There are three, all vanilla, all a handful of lines:
+  the header's scroll state, the distance unit toggle, and the inline script in
+  `<head>` that sets the unit before first paint. No framework, no hydration.
+  The rule was once "none at all on the homepage"; the unit switcher broke that
+  deliberately, because a switch that skipped the homepage would have been worse
+  than the JS it saved. Anything new should clear the same bar.
 - Social previews (`og:image`) use the post's own hero image, falling back to the
   contour graphic — never a generic placeholder.
 - Images through Astro's image component so dimensions are known and the page

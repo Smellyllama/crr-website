@@ -1,12 +1,12 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import Distance from '../components/Distance.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import ImageFallback from '../components/ImageFallback.astro';
 import Layout from './Layout.astro';
 import {
 	allRacesSameDay,
-	formatDistance,
 	getEarliestRaceDate,
 	postedIsMeaningfullyLater,
 } from '../utils/race-reports';
@@ -63,7 +63,11 @@ const showPosted = postedIsMeaningfullyLater(posted, earliestRaceDate);
 					{races.map((race) => (
 						<li class="badge badge-outline badge-lg gap-1 whitespace-normal py-4">
 							<span class="font-semibold">{race.name}</span>
-							{race.distance && <span>· {formatDistance(race.distance)}</span>}
+							{race.distance && (
+									<span>
+										· <Distance distance={race.distance} />
+									</span>
+								)}
 							{!sameDay && (
 								<span>
 									· <FormattedDate date={race.raceDate} approximate={dateApproximate} />

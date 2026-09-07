@@ -6,6 +6,7 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
+import { DEFAULT_UNIT, UNIT_ATTRIBUTE, UNIT_STORAGE_KEY } from '../utils/distance';
 import { Font } from 'astro:assets';
 
 interface Props {
@@ -38,6 +39,27 @@ const { title, description, image = FallbackImage } = Astro.props;
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+
+<!--
+  Sets the distance unit before the page paints, so a reader who chose miles
+  never sees kilometres flash first. is:inline keeps it in the head and
+  unbundled — deferred, this would run after paint and the flash would be
+  exactly what it is meant to prevent.
+-->
+<script
+	is:inline
+	define:vars={{ DEFAULT_UNIT, UNIT_ATTRIBUTE, UNIT_STORAGE_KEY }}
+>
+	try {
+		var stored = localStorage.getItem(UNIT_STORAGE_KEY);
+	} catch (e) {
+		// Storage can throw outright in private browsing, not just return null.
+	}
+	document.documentElement.setAttribute(
+		UNIT_ATTRIBUTE,
+		stored === 'mi' || stored === 'km' ? stored : DEFAULT_UNIT,
+	);
+</script>
 
 <Font cssVariable="--font-outfit" preload />
 <Font cssVariable="--font-inter" preload />

@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 import ImageFallback from './ImageFallback.astro';
-import { formatDistance } from '../utils/distance';
+import Distance from './Distance.astro';
 
 interface Props {
 	heading: string;
@@ -52,7 +52,7 @@ const races = (await getCollection('races')).sort((a, b) => a.data.order - b.dat
 											<FormattedDate date={race.data.nextDate} /> ·{' '}
 										</>
 									)}
-									{formatDistance(race.data.distance)}
+									<Distance distance={race.data.distance} />
 								</p>
 								{note && <p class="mt-2 text-sm text-base-content/70">{note}</p>}
 							</div>
