@@ -80,6 +80,28 @@ media_libraries:
       # uploads only — files already committed keep their names.
       slugify_filename: true
 
+      # Shrink photos in the browser before they are committed.
+      #
+      # This matters more here than on most sites because astro.config.mjs uses
+      # passthroughImageService: Cloudflare's builder cannot run Sharp, so Astro
+      # does no resizing or format conversion and serves whatever is committed,
+      # at full size. A 2.9MB phone photo reached visitors as 2.9MB, and the race
+      # reports index was loading 14MB of images for cards shown about 480px wide.
+      #
+      # Doing it here sidesteps that entirely — the work happens in the editor's
+      # browser at upload time, so it does not depend on the build environment.
+      #
+      # raster_image covers jpeg, png and the rest in one entry. 1600px is about
+      # twice the widest the site ever displays an image (the race report hero,
+      # in a 768px container), so it still looks right on a retina phone.
+      #
+      # New uploads only. The 18MB already committed needs a separate pass.
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 1600
+
 collections:
   # =========================================================================
   # RACE REPORTS
