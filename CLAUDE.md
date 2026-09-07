@@ -142,16 +142,27 @@ visual signature.
 
 ## Typography
 
-**Outfit** for headings, **Inter** for body. Referenced through CSS custom
-properties `--font-outfit` and `--font-inter`, defined in `src/styles/global.css`.
+**Outfit** for headings, **Inter** for body. Used through the CSS custom
+properties `--font-outfit` and `--font-inter`. The `fonts` config in
+`astro.config.mjs` defines them; `src/styles/global.css` only consumes them.
 
 Both are geometric sans faces, so the contrast between heading and body is
 subtle. Headings need weight and tighter letter-spacing to separate clearly from
 body copy — don't rely on size alone.
 
-Currently loaded from Google's CDN. Worth self-hosting via `@fontsource` packages
-— faster, and it stops every visitor's IP being sent to Google, which matters for
-a UK club with no cookie banner.
+**Self-hosted.** Astro's Fonts API (`fonts` in `astro.config.mjs`) downloads the
+files at build time and serves them from our own domain, so no visitor's IP
+reaches Google and there is no third-party request to explain on the privacy
+page. Google sees the build, not the reader.
+
+Don't swap this for `@fontsource`. It would be a step back: Astro also generates
+metric-matched local fallbacks — `size-adjust`, `ascent-override` and the rest,
+tuned to Arial — so text does not shift when the real font swaps in. `@fontsource`
+ships the files and nothing else.
+
+Weights are declared in the config and only those are built. Latin subset and
+`font-display: swap` come as standard. Adding a weight to the config costs a
+download on every page, so add one only when a design actually calls for it.
 
 ## How I work
 

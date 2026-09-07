@@ -12,9 +12,11 @@ lastReviewed: ""
 # This page came over from the old site incomplete. Three of the sections
 # below are headings with nothing under them yet.
 #
-# "This website" - the no-cookies claim holds only while the fonts are
-#   self-hosted and nothing third-party is embedded. Recheck before adding a
-#   Strava widget, a map or a Google form.
+# "This website" - the fonts are self-hosted, verified: a build has no request
+#   to fonts.googleapis.com or fonts.gstatic.com, and the files are served from
+#   our own domain. So the no-third-parties claim is true as it stands. It stops
+#   being true the day a Strava widget, an embedded map or a Google form goes on
+#   a page - recheck before adding any of those.
 # "Photographs" - needs a committee position: whether photos of identifiable
 #   members are published, how to ask for one to be taken down, and who to
 #   ask. No galleries before this exists.
