@@ -20,6 +20,12 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],
 	},
+	// styles: ['normal'] on both. Astro includes italic by default, and Inter's
+	// italic was the largest file of the three at 51.6kB — preloaded on every page
+	// for a single line, the "Posted" date on a race report. Dropped, the browser
+	// slants the upright face instead. That is a synthesised oblique rather than
+	// the real italic cut, which is a fair trade at that size and frequency; add
+	// italic back if a design ever leans on it properly.
 	fonts: [
 		{
 			provider: fontProviders.google(),
@@ -27,6 +33,7 @@ export default defineConfig({
 			cssVariable: '--font-outfit',
 			fallbacks: ['sans-serif'],
 			weights: [500, 600, 700],
+			styles: ['normal'],
 		},
 		{
 			provider: fontProviders.google(),
@@ -34,6 +41,7 @@ export default defineConfig({
 			cssVariable: '--font-inter',
 			fallbacks: ['sans-serif'],
 			weights: [400, 500, 700],
+			styles: ['normal'],
 		},
 	],
 });
