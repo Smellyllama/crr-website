@@ -7,21 +7,21 @@ intro: >
   Members can request minutes from club meetings at any time.
 ---
 
-# Constitution
+## Constitution
 
-## Title
+### Title
 
 The Club shall be known as Chard Road Runners. (hereinafter called The Club)
 
-## Objective
+### Objective
 
 To encourage, promote and support running in the Chard vicinity.
 
-## Affiliation
+### Affiliation
 
 The Club shall be affiliated to both England Athletics (EA) and the Association of Running Clubs (ARC).
 
-## Membership
+### Membership
 
 Membership of the Club will consist of fully paid up first claim and second claim members. The membership year runs from 1st April to the 31st March.
 
@@ -57,7 +57,7 @@ If a person is no longer a member of the club they cannot continue to represent 
 
 If a race is licenced through EA and the club member is not a member of EA, then unless the race also accepts ARC race affiliation, the club member must enter the race as non-affiliated.
 
-## Management
+### Management
 
 The Committee shall consist of the following officers: -
 
@@ -87,7 +87,7 @@ Loss or damage caused by criminal or fraudulent conduct
 
 Any other liability which cannot lawfully be limited or excluded
 
-## Powers of the committee
+### Powers of the committee
 
 a.  The Committee shall have the power to make or alter the Constitution and Rules as they may, from time to time, deem necessary, using the process specified in section 'Amendments to the Constitution and Rules'
 
@@ -97,7 +97,7 @@ c.  The Committee will seek to ensure the Rules and Code of Conduct is understoo
 
 d.  The Committee is empowered to apply the disciplinary procedures as outlined in the Constitution for any breaches of the Code of Conduct.
 
-## Election of Committee
+### Election of Committee
 
 a.  
 
@@ -105,23 +105,23 @@ b.  The Annual General Meeting will elect the Officers and other members of the 
 
 c.  Should a committee member not continue in their role to the following AGM then the Committee will decide whether to seek to co-opt another member of the club to fill the role, or cover the activities within the remaining committee. Notice of co-opting a member of the club to a vacant role will be communicated to the club members in advance of confirming the appointment.
 
-## Finance
+### Finance
 
 a.  The Committee shall control the Club finances.
 
 b.  The signatures of two authorised Club Officers shall be required to withdraw any monies from the accounts.
 
-## Affiliations
+### Affiliations
 
 The membership secretary (or whichever committee member is managing club membership) is responsible for maintaining the club's membership to English Athletics and The Association of Running Clubs. The membership secretary manages on behalf of club members, for those that have chosen to join, the individual athlete membership of English Athletics.
 
-## Subscriptions
+### Subscriptions
 
 a.  Details of membership subscriptions are recorded on the membership application form. The form needs to be completed by members annually.
 
 b.  The subscription for each class of membership shall be determined by the Committee prior to the AGM and presented to the membership at the AGM.
 
-## The London Marathon Club Place
+### The London Marathon Club Place
 
 The Club may be awarded one London Marathon place by English Athletics. It is the responsibility of the membership secretary or whichever committee member is managing club membership to make the initial application for the club place and to monitor during the year on a regular basis the relevant website for any changes in timing or conditions related to the club place.
 
@@ -147,19 +147,19 @@ The winner of the ballot is responsible for the payment of the place and for ens
 
 The winner of the ballot is expected to run in club colours unless running for a charity.
 
-## Dress
+### Dress
 
 For all events in which a Club Team (or Teams) is entered, members of the team(s) must wear Club colours.
 
 For all other permitted events where the entrant has declared that they are running as a member of Chard Road Runners then the club member is encouraged to wear Club colours. Club colours do not need to be worn for ultra marathons, park runs or multi sport events, such as triathlons. It is accepted that if the runner is running for charity and is required to wear the charity's vest, or there is a theme for the event such as fancy dress, or where a specific clothing item is required (ie High Viz for night time events, county colours or national vest) then the request does not apply.
 
-## Complaints and disputes
+### Complaints and disputes
 
 All concerns, allegation, or reports of malpractice or abuse relating to the welfare of children or vulnerable adults will be recorded and responded to swiftly and appropriately in accordance with the Club's safeguarding policy and procedures. The Welfare officer shall be the lead officer for members in the event of any safeguarding concerns.
 
 Any complaints of misconduct regarding the behaviour of members and officers shall be dealt with by the club in accordance with its disciplinary process.
 
-## Disciplinary Process
+### Disciplinary Process
 
 The Committee may take disciplinary action as considered appropriate against any member who breaches the Rules, The Code of Conduct or displays behaviour contrary to the club's Constitution. The number of committee members required to conduct the review will be a minimum of three. If it is appropriate for the matter to be reviewed by persons who have no direct interest or involvement in the matter then the committee can appoint a three person disciplinary panel from club members. The disciplinary process is as follows:
 
@@ -185,7 +185,7 @@ The Committee may take disciplinary action as considered appropriate against any
 
 Disciplinary action may, in appropriate circumstances (such as breach of the law), extend to immediate cancellation of membership involving only stages 1 and 9 of the process, in which case the Committee reserves the right to refuse reimbursement of any fees or subscriptions paid.
 
-## Annual General Meeting
+### Annual General Meeting
 
 An Annual General Meeting shall be held each year ideally in March but not later than April. Two weeks' notice of the meeting shall be given to members.
 
@@ -211,17 +211,17 @@ Any member wishing to stand for a position on the committee should let the Secre
 
 If any position remains unfilled, nominations will be accepted on the night of the meeting from the floor.
 
-## Dissolution
+### Dissolution
 
 In the event of the Club having to be dissolved, any one remaining Officer shall call an Extraordinary General Meeting.
 
 The EGM shall, after all the debts have been met, decide on the disposal of any property or assets belonging to the Club. Any surplus assets will be transferred to another club, a sports club in the Chard area, or to England Athletics for use by them related to community sports.
 
-## Amendments to the Constitution and Rules
+### Amendments to the Constitution and Rules
 
 Changes to the Rules and Constitution are proposed by the Committee and communicated to club members. Club members can suggest amendments or objections to proposed changes. If there are no objections or proposed amendments then the change is adopted forthwith. If there are a number of objections or there is no consensus on a proposal then the proposal, along with as appropriate an alternative, is put to members for a vote and the majority decision applied.
 
-# Rules
+## Rules
 
 Members must abide by the club rules.
 
@@ -248,7 +248,7 @@ Not threaten others nor engage in acts of verbal or physical abuse or other type
 
 11. It is a condition of membership that Members only participate in Club organised races when it is known that all marshalling requirements have been met, and that if available the member will volunteer to fulfil marshalling duties for club races.
 
-# Code of Conduct
+## Code of Conduct
 
 1.  Members are encouraged to wear clothing appropriate to the prevailing weather conditions (applies equally to hot and cold conditions), including Hi-viz or bright clothing when dark. Members are encouraged to use a lighting when running in the dark, both for vision and to be seen.
 

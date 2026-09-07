@@ -9,6 +9,14 @@ welfareOfficer:
   email: "lizsmith1990@hotmail.co.uk"
   # TODO confirm with Lizzie that she's happy to be listed here, and that this
   # email is still the right one. Carried over from the old site.
+# Committee notes, not published. They live here rather than in the body
+# because an HTML comment in Markdown reaches the page source.
+#
+# "If it's urgent" - add the Somerset safeguarding number, and decide whether
+#   England Athletics' welfare line belongs here too. Verify any number
+#   before it goes up.
+# "Members aged 16 to 18" - the constitution says this guidance is still to
+#   be provided. Check whether it exists yet; if it does, it belongs here.
 ---
 
 ## Who to talk to
@@ -35,14 +43,8 @@ For concerns about a child where there is no immediate danger, Somerset
 Council's children's social care team can be contacted directly, and you do not
 have to go through the club first.
 
-<!-- TODO: add the Somerset safeguarding contact number, and check whether
-England Athletics' welfare line should be listed here too. Don't publish a
-number without verifying it first. -->
-
 ## Members aged 16 to 18
 
 Club membership is open to those aged 16 and over. Guidance and club rules
 specific to members aged 16 to 18 are held by the committee.
 
-<!-- TODO: the constitution says this guidance "is to be provided". Check
-whether it exists yet — if it does, it belongs on this page. -->

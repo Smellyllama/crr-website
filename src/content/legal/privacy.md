@@ -6,9 +6,23 @@ intro: >
   club is the Data Controller, and is responsible for storing and processing
   that data in a fair, lawful, secure and transparent way.
 lastReviewed: ""
-# TODO: this page is carried over from the old site and is incomplete —
-# see the notes at the bottom. It should be reviewed by the committee before
-# any photo gallery goes live.
+# Committee notes, not published. They live here rather than in the body
+# because an HTML comment in Markdown reaches the page source.
+#
+# This page came over from the old site incomplete. Three of the sections
+# below are headings with nothing under them yet.
+#
+# "This website" - the no-cookies claim holds only while the fonts are
+#   self-hosted and nothing third-party is embedded. Recheck before adding a
+#   Strava widget, a map or a Google form.
+# "Photographs" - needs a committee position: whether photos of identifiable
+#   members are published, how to ask for one to be taken down, and who to
+#   ask. No galleries before this exists.
+# "Your rights" - missing, and legally required: how long data is kept, the
+#   rights of access, correction, erasure and objection, and how to complain
+#   to the ICO. Do not invent the wording - adapt England Athletics' template
+#   for affiliated clubs, or have the committee agree it.
+# "Who to contact" - a real, monitored email address for data queries.
 ---
 
 ## What personal data we hold
@@ -48,30 +62,9 @@ Reasons we process your data include:
 This website is a set of static pages. It does not set cookies, does not track
 visitors, and has no analytics.
 
-<!-- TODO: this paragraph is only true while the fonts are loaded from our own
-domain and there are no third-party embeds. It stops being true the day a
-Strava widget, an embedded map or a Google Form goes on a page. Re-check before
-adding any of those. -->
-
 ## Photographs
-
-<!-- TODO: this section cannot be written until the committee has agreed a
-position. It needs to say: whether photographs of identifiable members are
-published, what someone should do if they want a photo of them removed, and who
-to contact. Do not publish galleries before this exists. -->
 
 ## Your rights
 
-<!-- TODO: the policy carried over from the old site stops before covering
-these, and they are legally required. This section needs to set out: how long
-data is kept, the right to see what's held about you, to have it corrected or
-erased, to object to processing, and to complain to the Information
-Commissioner's Office. It also needs a named contact for data queries.
-
-Don't invent this text. Either adapt England Athletics' template for affiliated
-clubs, or have the committee agree wording. -->
-
 ## Who to contact
 
-<!-- TODO: an email address for data protection queries. Probably the same
-general club address, but it needs to be a real monitored one. -->

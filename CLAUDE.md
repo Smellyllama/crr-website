@@ -31,14 +31,20 @@ See `crr-sitemap.md` for the page structure and content plan. Read it before pro
 
 ## Collections
 
-Three, all in `src/content/`:
+Four, all in `src/content/`:
 
 - **`race-reports`** — race reports and club news. Note the hyphen.
 - **`races`** — the two club-hosted races.
-- **`pages`** — copy for one-off pages (`home.md`, `join-us.md`).
+- **`pages`** — copy for one-off pages (`home.md`, `join-us.md`). A discriminated
+  union: each entry is its own shape, picked by the `page` field.
+- **`legal`** — welfare, inclusion, privacy, and the rules and constitution. One
+  shared shape, and the only collection whose Markdown body is rendered as the
+  page. Routed by `src/pages/[legal].astro`, so a new file gets a route on its
+  own — but its footer link still has to be added to `FOOTER_PAGE_LINKS`.
 
-Each has its own `images/` folder beside the Markdown, because image paths are
-relative to the file. A photo used in two collections needs a copy in both.
+`race-reports` and `races` each have their own `images/` folder beside the
+Markdown, because image paths are relative to the file. A photo used in two
+collections needs a copy in both.
 
 ### race-reports frontmatter
 
@@ -109,6 +115,13 @@ invisible at 1:1 contrast.
 - Buttons need a foreground colour explicitly different from their fill. Pale
   blue fill with dark purple text gives ~5.7:1 and stays inside the palette.
 - Check contrast by measuring, not by eye.
+- A link in body copy needs a non-colour indicator — underline it. Colour plus
+  a hover state is not enough: the default link colour is the dark purple,
+  near enough identical to the body text, so a link in a paragraph is invisible
+  until it is pointed at, and a hover state does not exist on a phone at all.
+  WCAG 1.4.1 rules out colour as the only signal regardless. `.prose a` in
+  `global.css` does this for the two places raw Markdown renders. Same family
+  of mistake as the cascade bug: colour doing work colour cannot do alone.
 
 The daisyUI theme is named `crr`, defined in `src/styles/app.css`, applied via
 `data-theme="crr"` on `<html>`.
