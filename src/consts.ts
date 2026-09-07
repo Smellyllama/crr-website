@@ -20,6 +20,7 @@ export const NAV_LINKS: { href: string; label: string }[] = [
 // findable in one click from any page.
 export const FOOTER_PAGE_LINKS: { href: string; label: string }[] = [
 	{ href: '/welfare', label: 'Welfare' },
+	{ href: '/inclusion', label: 'Inclusion' },
 	{ href: '/rules-and-constitution', label: 'Rules & Constitution' },
 	{ href: '/privacy', label: 'Privacy' },
 	{ href: '/club-kit', label: 'Club Kit' },

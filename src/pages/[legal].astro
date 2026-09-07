@@ -1,0 +1,166 @@
+---
+// The four legal pages — /welfare, /rules-and-constitution, /privacy,
+// /inclusion — all render from one file, since they share a shape. Astro
+// prefers a static route over a dynamic one, so a real page file at the same
+// path would still win; only the slugs listed below are built.
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+import Layout from '../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const pages = await getCollection('legal');
+	return pages.map((page) => ({ params: { legal: page.id }, props: page }));
+}
+type Props = CollectionEntry<'legal'>;
+
+const page = Astro.props;
+const { title, intro, lastUpdated, lastReviewed, welfareOfficer } = page.data;
+const { Content, headings } = await render(page);
+
+// The constitution runs to twenty-odd sections, which is where a contents
+// list earns its place. The shorter pages have a handful of headings and are
+// quicker to read than to navigate, so they get none.
+const contents = headings.filter((heading) => heading.depth <= 2);
+const showContents = contents.length >= 8;
+---
+
+<Layout title={title} description={intro}>
+	<section class="bg-primary text-primary-content">
+		<div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8">
+			<h1 class="text-4xl font-bold sm:text-5xl">{title}</h1>
+			<p class="mt-4 text-lg text-primary-content/80">{intro}</p>
+		</div>
+	</section>
+
+	<div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+		{
+			(lastUpdated || lastReviewed || welfareOfficer) && (
+				<dl class="mb-10 grid gap-4 rounded-box border border-base-300 bg-base-200 p-5 sm:grid-cols-2">
+					{welfareOfficer && (
+						<div class="sm:col-span-2">
+							<dt class="text-sm font-bold text-primary">Welfare officer</dt>
+							<dd class="mt-1 text-base-content/80">
+								{welfareOfficer.name} &middot;{' '}
+								<a href={`mailto:${welfareOfficer.email}`} class="link link-primary font-medium">
+									{welfareOfficer.email}
+								</a>
+							</dd>
+						</div>
+					)}
+					{lastUpdated && (
+						<div>
+							<dt class="text-sm font-bold text-primary">Last updated</dt>
+							<dd class="mt-1 text-base-content/80">
+								<FormattedDate date={lastUpdated} />
+							</dd>
+						</div>
+					)}
+					{lastReviewed && (
+						<div>
+							<dt class="text-sm font-bold text-primary">Last reviewed</dt>
+							<dd class="mt-1 text-base-content/80">
+								<FormattedDate date={lastReviewed} />
+							</dd>
+						</div>
+					)}
+				</dl>
+			)
+		}
+
+		{
+			showContents && (
+				<details class="legal-contents mb-10 rounded-box border border-base-300 bg-base-100 p-5" open>
+					<summary class="cursor-pointer font-bold text-primary">On this page</summary>
+					<nav aria-label="On this page">
+						<ul class="mt-4 space-y-1">
+							{contents.map((heading) => (
+								<li class={heading.depth === 1 ? 'mt-3 first:mt-0 font-semibold' : 'ps-4'}>
+									<a href={`#${heading.slug}`} class="link link-primary">
+										{heading.text}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				</details>
+			)
+		}
+
+		<div class="legal-body prose">
+			<Content />
+		</div>
+	</div>
+</Layout>
+
+<style>
+	/*
+	  Legal text is read in long runs, so the measure matters more than it does
+	  elsewhere: cap the line length and give the headings room to separate the
+	  sections. The container is already max-w-3xl; this keeps the text itself
+	  narrower than the contents card and the meta block above it.
+	*/
+	.legal-body {
+		max-width: 68ch;
+	}
+
+	.legal-body :global(h1) {
+		font-size: 2rem;
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--color-base-300);
+	}
+
+	.legal-body :global(h1:first-child) {
+		margin-top: 0;
+		padding-top: 0;
+		border-top: 0;
+	}
+
+	.legal-body :global(h2) {
+		font-size: 1.35rem;
+		margin-top: 2rem;
+	}
+
+	.legal-body :global(h3) {
+		font-size: 1.1rem;
+		margin-top: 1.5rem;
+	}
+
+	/* Anchored headings land under the sticky header without this. */
+	.legal-body :global(:is(h1, h2, h3)) {
+		scroll-margin-top: 5rem;
+	}
+
+	/*
+	  Underline links in the prose. The base link colour is the dark purple,
+	  which is all but identical to the body text colour, so without this a
+	  link is invisible until hovered — and colour alone would not be enough
+	  even if it were distinguishable.
+	*/
+	.legal-body :global(a) {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	.legal-body :global(ul) {
+		list-style: disc;
+		padding-inline-start: 1.5rem;
+		margin-bottom: 1em;
+	}
+
+	.legal-body :global(li) {
+		margin-bottom: 0.35em;
+	}
+
+	/* Long lists of sections read better in two columns once there is room. */
+	@media (min-width: 640px) {
+		.legal-contents ul {
+			columns: 2;
+			column-gap: 2rem;
+		}
+
+		.legal-contents li {
+			break-inside: avoid;
+		}
+	}
+</style>

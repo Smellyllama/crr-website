@@ -689,3 +689,84 @@ collections:
             fields:
               - { label: Heading, name: heading, widget: string }
               - { label: Body, name: body, widget: text }
+
+  # =========================================================================
+  # LEGAL AND POLICY PAGES
+  # =========================================================================
+  - name: legal
+    label: Policy pages
+    label_singular: Policy page
+    description: >-
+      Welfare, inclusion, privacy, and the rules and constitution. Editing the
+      words here changes the page. There is no Delete button, and no way to add
+      a new one: a new policy page also needs a footer link adding in the code,
+      so it is a job for whoever looks after the website.
+    folder: src/content/legal
+    # Mirrors the `legal` collection in src/content.config.ts.
+    #
+    # create is off because a new file here would get a working route but no
+    # footer link, leaving a page nobody can find. delete is off for the same
+    # reason it is off elsewhere — removal is a Git job.
+    create: false
+    delete: false
+    summary: "{{title}}"
+    sortable_fields: [title]
+    fields:
+      - label: Title
+        name: title
+        widget: string
+        hint: The heading at the top of the page.
+
+      - label: Introduction
+        name: intro
+        widget: text
+        hint: >-
+          The paragraph under the heading. Also used as the page's description
+          in search results and when the page is shared, so make it read on its
+          own.
+
+      - label: Last updated
+        name: lastUpdated
+        widget: datetime
+        required: false
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        hint: >-
+          When the document itself was last changed. Leave empty if it does not
+          apply — nothing is shown rather than a blank date.
+
+      - label: Last reviewed
+        name: lastReviewed
+        widget: datetime
+        required: false
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        hint: >-
+          When the committee last checked the wording was still right, even if
+          nothing changed.
+
+      - label: Welfare officer
+        name: welfareOfficer
+        widget: object
+        required: false
+        collapsed: false
+        hint: >-
+          The welfare page only. Filling this in shows the name and a
+          clickable email at the top of the page.
+        fields:
+          - { label: Name, name: name, widget: string }
+          - label: Email
+            name: email
+            widget: string
+            # Single-quoted: YAML treats backslashes literally here, so the
+            # pattern needs no escaping. The double-quoted one above has to
+            # write \\s for the same effect.
+            pattern:
+              - '^[^@\s]+@[^@\s]+\.[^@\s]+$'
+              - Enter a valid email address
+
+      - label: The page
+        name: body
+        widget: markdown

@@ -6,6 +6,14 @@ const distance = z.object({
   unit: z.enum(["km", "mi"]),
 });
 
+// A date that may legitimately not be set yet. YAML gives us a Date for
+// `2025-02-19`; an unset one arrives as "" from a hand-edited file, and both
+// mean the same thing to a template, so "" is normalised away here.
+const reviewDate = z
+  .union([z.date(), z.literal("")])
+  .optional()
+  .transform((value) => (value === "" ? undefined : value));
+
 const raceReports = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/race-reports" }),
   schema: ({ image }) =>
@@ -239,4 +247,38 @@ const pages = defineCollection({
   schema: z.discriminatedUnion("page", [homePage, joinUsPage]),
 });
 
-export const collections = { "race-reports": raceReports, races, pages };
+// Welfare, privacy, inclusion, and the rules and constitution. Deliberately
+// not part of `pages`: that collection is a discriminated union of one-off
+// page shapes, and these four share one shape — a title, an intro and a
+// Markdown body — so they would only bloat the union. They are also the only
+// content whose Markdown body is rendered as the page.
+//
+// A file here gets its route automatically from src/pages/[legal].astro, but
+// its footer link still has to be added to FOOTER_PAGE_LINKS in consts.ts.
+const legal = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/legal" }),
+  schema: z.object({
+    title: z.string(),
+    intro: z.string(),
+
+    // Only the pages that carry a date have these. An empty string counts as
+    // absent: the CMS omits empty optional fields, but a hand-authored file
+    // can still arrive with `lastReviewed: ""`, and the page shows nothing
+    // rather than a blank or invented date.
+    lastUpdated: reviewDate,
+    lastReviewed: reviewDate,
+
+    // Welfare only. Named here rather than left to the body so the contact
+    // can be rendered as a real mailto and kept findable, per CLAUDE.md.
+    welfareOfficer: z
+      .object({ name: z.string(), email: z.string().email() })
+      .optional(),
+  }),
+});
+
+export const collections = {
+  "race-reports": raceReports,
+  races,
+  pages,
+  legal,
+};
