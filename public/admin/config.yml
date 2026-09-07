@@ -31,6 +31,25 @@ backend:
   name: github
   repo: Smellyllama/crr-website
   branch: main
+  # These are what the History panel in the entry editor lists, so they are
+  # read by committee members, not just in Git. Set explicitly rather than
+  # left to Sveltia's defaults, so a version bump cannot quietly restyle the
+  # history of a site nobody is watching that closely.
+  #
+  # Only {{slug}}, {{collection}}, {{path}} and the {{author-*}} fields exist —
+  # there is no placeholder for an entry's own fields, so the title cannot
+  # appear here. Author is deliberately left out: the History panel already
+  # shows the name and avatar, and Git records the author separately, so
+  # putting it in the text repeats it twice over.
+  #
+  # {{collection}} uses the collection's label_singular, which is why every
+  # collection needs one.
+  commit_messages:
+    create: 'Add {{collection}} “{{slug}}”'
+    update: 'Update {{collection}} “{{slug}}”'
+    delete: 'Delete {{collection}} “{{slug}}”'
+    uploadMedia: 'Add photo “{{path}}”'
+    deleteMedia: 'Remove photo “{{path}}”'
   # GitHub OAuth proxy Worker, deployed separately from the site.
   # Source: crr-cms-auth/ in the project folder.
   base_url: https://crr-cms-auth.buddygoestravelling.workers.dev
@@ -470,6 +489,9 @@ collections:
   # =========================================================================
   - name: pages
     label: Pages
+    # Without this, commit messages read "Update Pages “home”" — the plural
+    # used as a singular. {{collection}} takes label_singular.
+    label_singular: Page
     description: >-
       The wording on the main pages. The layouts are fixed; these are the
       words that go in them.
