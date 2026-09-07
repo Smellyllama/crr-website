@@ -22,8 +22,14 @@ const { title, description, image = FallbackImage } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<!-- Icons, all generated from the logo mark. SVG for modern browsers, .ico
+     (16/32/48) for older ones, and a PNG for iOS: Safari ignores SVG icons
+     entirely, and without this it puts a screenshot of the page on the home
+     screen instead. The PNG is square-cornered and opaque on purpose — iOS
+     applies its own rounded mask and paints black behind any transparency. -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
 	rel="alternate"
