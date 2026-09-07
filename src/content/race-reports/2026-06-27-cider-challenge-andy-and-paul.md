@@ -11,7 +11,7 @@ category: "Race Report"
 draft: false
 heroImage: "./images/2026-06-27-cider-challenge-01-paul-and-andy.jpg"
 images:
-  - src: "./images/2026-06-27-cider-challenge-02-race.jpg"
+  - src: "./images/2026-06-27-cider-challenge-02-race.webp"
     alt: "Runners on the Cider Challenge lap course"
 excerpt: "Helen covered the shorter races. Here's what happened when Andrew ran through the night for 63 miles and Paul chased a marathon in the heat."
 ---

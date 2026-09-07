@@ -15,10 +15,10 @@ posted: 2017-11-03T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-heroImage: "./images/2017-10-29-dartmoor-vale-01.jpg"
+heroImage: "./images/2017-10-29-dartmoor-vale-01.webp"
 heroImageAlt: "Andrew Leeson, James Musselwhite, Paul Masters, Bernie Genge and Nina Wagstaff after the Dartmoor Vale races"
 images:
-  - src: "./images/2017-10-29-dartmoor-vale-02.jpg"
+  - src: "./images/2017-10-29-dartmoor-vale-02.webp"
     alt: "Adrian Male, Claire Gibbs and Matt Saunders after the Herepath Half Marathon"
 excerpt: "Chard road runners were out in larger numbers this weekend with the usual mix of road and trial running. First out to test their metal were…"
 ---

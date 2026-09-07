@@ -13,11 +13,11 @@ heroImage: "./images/2026-08-01-shaves-cross-01-title.jpg"
 images:
   - src: "./images/2026-08-01-shaves-cross-02-racing.jpg"
     alt: "Runners on the start line at Shaves Cross"
-  - src: "./images/2026-08-01-shaves-cross-03-results-board.jpg"
+  - src: "./images/2026-08-01-shaves-cross-03-results-board.webp"
     alt: "The whiteboard showing finishing order"
   - src: "./images/2026-08-01-shaves-cross-04-wayne.jpg"
     alt: "Wayne running"
-  - src: "./images/2026-08-01-shaves-cross-05-steve.jpg"
+  - src: "./images/2026-08-01-shaves-cross-05-steve.webp"
     alt: "Steve running"
 excerpt: "Five miles, no chip timing, and a whiteboard for results — a historic local race with more uphill than seems geometrically possible."
 ---

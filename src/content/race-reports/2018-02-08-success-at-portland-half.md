@@ -9,7 +9,7 @@ posted: 2018-02-08T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-heroImage: "./images/2018-02-04-portland-half-01.jpg"
+heroImage: "./images/2018-02-04-portland-half-01.webp"
 heroImageAlt: "Wayne Loveridge, who finished first at the Portland Coastal Half Marathon"
 excerpt: "CRR's were also off to the chilly coastal Half Marathon around Portland, representing CRR's was Wayne Loveridge, taking off from the front Wayne was quickly into…"
 ---

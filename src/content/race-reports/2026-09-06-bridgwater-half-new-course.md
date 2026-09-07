@@ -11,7 +11,7 @@ posted: 2026-09-06
 author: Matt Glastonvill
 category: Race Report
 clubRace: false
-heroImage: ./images/img_1561.jpeg
+heroImage: ./images/img_1561.webp
 heroImageAlt: CRR Team Photo
 excerpt: Bridgwater Slalom Half Marathon!
 draft: false

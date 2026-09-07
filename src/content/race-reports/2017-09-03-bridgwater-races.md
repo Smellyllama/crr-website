@@ -12,7 +12,7 @@ posted: 2017-09-03T00:00:00
 author: ""  # no byline on the original post
 category: "Race Report"
 draft: false
-heroImage: "./images/2017-09-03-bridgwater-01.jpg"
+heroImage: "./images/2017-09-03-bridgwater-01.webp"
 heroImageAlt: "A Chard Road Runner at the Bridgwater Half Marathon and 10k"
 excerpt: "A quite weekend for CRR's and they waited for the rain to start before heading off to Bridgewater for the Half Marathon and the 10k races…"
 ---
