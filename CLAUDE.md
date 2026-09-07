@@ -201,6 +201,23 @@ and troubleshooting, but learning this stack as I go. So:
 - Images through Astro's image component so dimensions are known and the page
   doesn't shift as they load.
 
+## Measurement and verification
+
+The browser pane's readings have twice been wrong in this project, and both
+times sent work off in the wrong direction:
+
+- A computed style reported a transparent background while the page was
+  demonstrably solid — sending me chasing a CSS cascade bug that didn't exist
+- A 0×0 viewport made every size reading meaningless, nearly prompting a "fix"
+  to layout that wasn't broken
+
+So: pixel measurements and scroll-0 screenshots are the readings to trust.
+Computed-style reads and scrolled screenshots are not reliable here.
+
+**Before acting on a surprising measurement, verify it.** Re-measure at a real
+viewport width, or check on an actual device. A reading that contradicts what
+you can see in a screenshot is a reason to distrust the tool, not the screenshot.
+
 ## Things not to build
 
 - No shop. Kit is displayed with photos and prices; members order by email.
