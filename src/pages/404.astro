@@ -1,0 +1,81 @@
+---
+// Astro writes this to dist/404.html. Cloudflare only serves it because
+// wrangler.jsonc sets assets.not_found_handling to "404-page" — the default is
+// "none", which returns a bare unstyled 404 and never looks for this file. The
+// page and that setting go together; neither works alone.
+//
+// `astro dev` does serve this page for unmatched routes, so the look can be
+// checked locally. What cannot be checked locally is the deployed behaviour:
+// whether Cloudflare reaches for it at all, and whether the response carries
+// a 404 status rather than a 200. That needs `wrangler dev` or a deploy.
+import ContourBackdrop from '../components/ContourBackdrop.astro';
+import logoMark from '../assets/crr-logo-mark.svg?raw';
+import { NAV_LINKS } from '../consts';
+import Layout from '../layouts/Layout.astro';
+
+// The links are the site's own nav, so this page cannot fall out of step with
+// it — a new top-level page appears here the day it appears in the header.
+---
+
+<Layout
+	title="Page not found"
+	description="That page isn't here. Links to the main pages of the Chard Road Runners website."
+>
+	<section class="relative overflow-hidden bg-primary text-primary-content">
+		<ContourBackdrop />
+		<div
+			class="relative mx-auto flex max-w-2xl flex-col items-center gap-10 px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-24"
+		>
+			<div>
+				{/* Decorative — the heading below carries the message. */}
+				<div class="error-logo mx-auto" aria-hidden="true" set:html={logoMark} />
+				<h1 class="mt-6 text-3xl font-bold text-balance sm:text-4xl">
+					We seem to have run into a problem
+				</h1>
+				<p class="mt-4 text-lg text-primary-content/80">
+					The page you were looking for isn't here. It may have moved, or the link that brought you
+					here may be out of date.
+				</p>
+			</div>
+
+			<nav aria-label="Main pages">
+				<ul class="flex flex-wrap justify-center gap-3">
+					{
+						NAV_LINKS.map((link) => (
+							<li>
+								<a
+									href={link.href}
+									class:list={[
+										'btn focus-visible:outline-white',
+										// Home is the way out for most people who land here, so it
+										// gets the filled button and the rest stay outlined.
+										link.href === '/'
+											? 'btn-secondary'
+											: 'btn-outline border-primary-content/50 text-primary-content hover:bg-primary-content/10 hover:text-primary-content',
+									]}
+								>
+									{link.label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	/* Smaller than the homepage's mark: this page is an apology, not an
+	   arrival, so the heading should lead and the badge sit under it. */
+	.error-logo {
+		width: min(12rem, 50%);
+		color: var(--color-chalk);
+	}
+
+	.error-logo :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+</style>

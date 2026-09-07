@@ -8,6 +8,11 @@
 	"name": "crr-website",
 	"compatibility_date": "2026-08-20",
 	"assets": {
-		"directory": "./dist"
+		"directory": "./dist",
+		// Serve dist/404.html (from src/pages/404.astro) with a 404 status when
+		// nothing matches. The default is "none", which returns a bare unstyled
+		// 404 and never looks for the file — so adding the page without this key
+		// changes nothing on the deployed site.
+		"not_found_handling": "404-page"
 	}
 }

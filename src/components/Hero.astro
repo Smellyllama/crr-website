@@ -1,6 +1,5 @@
 ---
-import heroContoursDesktop from '../assets/hero-contours-desktop.svg?raw';
-import heroContoursMobile from '../assets/hero-contours-mobile.svg?raw';
+import ContourBackdrop from './ContourBackdrop.astro';
 import logoMark from '../assets/crr-logo-mark.svg?raw';
 
 interface Cta {
@@ -19,8 +18,7 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 ---
 
 <section id="hero" class="site-hero relative overflow-hidden bg-primary text-primary-content">
-	<div class="contours contours--desktop absolute inset-0 hidden sm:block" set:html={heroContoursDesktop} />
-	<div class="contours contours--mobile absolute inset-0 sm:hidden" set:html={heroContoursMobile} />
+	<ContourBackdrop />
 	<div class="hero-content relative mx-auto flex max-w-3xl flex-col items-center justify-center gap-8 px-4 pb-16 text-center sm:px-6 lg:px-8">
 		<div>
 			{/*
@@ -71,25 +69,5 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 		display: block;
 		width: 100%;
 		height: auto;
-	}
-
-	.contours {
-		/* Stroke colours are baked into the SVGs (#8AABC6 / #c5d6e6, both
-		   already club secondary shades) — no currentColor to drive here. */
-		opacity: 0.5;
-	}
-
-	.contours :global(svg) {
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.contours--desktop :global(g) {
-		stroke-width: 7;
-	}
-
-	.contours--mobile :global(g) {
-		stroke-width: 9;
 	}
 </style>
