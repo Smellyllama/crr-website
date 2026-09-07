@@ -56,6 +56,19 @@ body {
 	a:hover {
 		text-decoration: underline;
 	}
+
+	/*
+	  Links inside body copy are underlined at rest, not only on hover. The
+	  default link colour above is the dark purple, which is all but identical
+	  to the body text colour, so in a paragraph a link was invisible until
+	  pointed at — and WCAG 1.4.1 rules out colour as the only signal anyway.
+	  Scoped to .prose so navigation, buttons and cards, which are obviously
+	  interactive already, are left alone.
+	*/
+	.prose a {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
 }
 
 p {
