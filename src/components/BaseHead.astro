@@ -55,10 +55,12 @@ const { title, description, image = FallbackImage } = Astro.props;
 	} catch (e) {
 		// Storage can throw outright in private browsing, not just return null.
 	}
-	document.documentElement.setAttribute(
-		UNIT_ATTRIBUTE,
-		stored === 'mi' || stored === 'km' ? stored : DEFAULT_UNIT,
-	);
+	// The server already set a default, so only override it for a stored choice.
+	if (stored === 'mi' || stored === 'km') {
+		document.documentElement.setAttribute(UNIT_ATTRIBUTE, stored);
+	}
+	// Lets CSS hide the toggle when scripting is off, where it would do nothing.
+	document.documentElement.setAttribute('data-js', '');
 </script>
 
 <Font cssVariable="--font-outfit" preload />

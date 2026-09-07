@@ -69,6 +69,15 @@ const OPTIONS = [
 </script>
 
 <style>
+	/*
+	  Without scripting the toggle cannot do anything, so it is not shown. The
+	  distances themselves still render: the server sets the default unit on
+	  <html>, and the head script only overrides it for a stored choice.
+	*/
+	:global(html:not([data-js])) .unit-toggle {
+		display: none;
+	}
+
 	.unit-toggle {
 		display: inline-flex;
 		width: max-content;
