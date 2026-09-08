@@ -30,3 +30,6 @@ Media/
 
 # Private notes — kept out of a public repo
 docs/private/
+
+# wrangler local dev state, created by `wrangler dev`
+.wrangler/
