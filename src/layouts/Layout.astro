@@ -7,7 +7,6 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { MAIN_CONTENT_ID, SKIP_LINK_LABEL } from '../consts';
-import { DEFAULT_UNIT, UNIT_ATTRIBUTE } from '../utils/distance';
 
 interface Props {
 	title: string;
@@ -21,12 +20,7 @@ const { title, description, image, overlayHeader = false } = Astro.props;
 ---
 
 <!doctype html>
-<!--
-  data-units is rendered here, not left to JavaScript. The CSS only reveals a
-  distance when it matches, so without it a reader with JS blocked would see no
-  distances at all. The head script overrides this when a choice is stored.
--->
-<html lang="en" data-theme="crr" {...{ [UNIT_ATTRIBUTE]: DEFAULT_UNIT }}>
+<html lang="en" data-theme="crr">
 	<head>
 		<BaseHead title={title} description={description} image={image} />
 	</head>

@@ -167,19 +167,7 @@ and troubleshooting, but learning this stack as I go. So:
   graphics `aria-hidden`.
 - **Alt text on every lead image**, not just in-body ones. Absent alt beats wrong
   alt — never ship the literal word "TODO" as alt text.
-- **Client-side JavaScript is the exception, not the default**, and every piece of
-  it has to earn its place. There are three, all vanilla, all a handful of lines:
-  the header's scroll state, the distance unit toggle, and the inline script in
-  `<head>` that sets the unit before first paint. No framework, no hydration.
-  The rule was once "none at all on the homepage"; the unit switcher broke that
-  deliberately, because a switch that skipped the homepage would have been worse
-  than the JS it saved. Anything new should clear the same bar.
-- **The site has to work with JavaScript blocked.** The unit switch is the test
-  case: `data-units` is rendered on `<html>` by the server, so distances show
-  whether or not a script runs, and the script only overrides it for a stored
-  choice. The toggle itself hides without JS rather than sitting there dead.
-  Written the other way round — attribute set by script — a JS-blocked reader
-  saw no distances at all, because the CSS had nothing to match.
+- **No client-side JavaScript on the homepage.** Keep it minimal elsewhere.
 - Social previews (`og:image`) use the post's own hero image, falling back to the
   contour graphic — never a generic placeholder.
 - Images through Astro's image component so dimensions are known and the page
