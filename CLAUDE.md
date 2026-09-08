@@ -31,15 +31,18 @@ See `crr-sitemap.md` for the page structure and content plan. Read it before pro
   `wrangler.jsonc`: that file is assets-only, and adding a script to it would put
   a Worker in front of unmatched requests and put the 404 handling at risk.
   Setup steps are in `workers/diary-rebuild/README.md`.
-- A git-based CMS (TinaCMS or Decap) is still to be added, so committee members
-  can post without touching code. **This is the single most important outstanding
-  piece** — until it exists, the site depends on one person, which is the problem
-  it was built to solve. Keep content in Markdown collections so it stays easy.
+- **Sveltia CMS**, at `/admin`, so committee members can post without touching
+  code. Loaded from a CDN by `public/admin/index.html` and configured by
+  `public/admin/config.yml`; it commits to `Smellyllama/crr-website` on `main`
+  through GitHub, which is what makes a post a normal commit and a deploy. This
+  is why content stays in Markdown collections. `index.html` also holds the
+  preSave hooks — the validation Sveltia's config format cannot express, such as
+  requiring alt text only when a photo is set. See `docs/handover.md`.
 
 ## Collections
 
-Four, all in `src/content/`: **`race-reports`**, **`races`**, **`pages`** and
-**`legal`**.
+Five, all in `src/content/`: **`race-reports`**, **`races`**, **`pages`**,
+**`legal`** and **`calendar-events`**.
 
 **See `docs/content-model.md`** for what each one holds, the race-reports
 frontmatter rules, and how the two schemas are kept in step.

@@ -10,7 +10,7 @@ See also `docs/handover.md` for the decisions that look like oversights.
 
 ## Collections
 
-Four, all in `src/content/`:
+Five, all in `src/content/`:
 
 - **`race-reports`** — race reports and club news. Note the hyphen.
 - **`races`** — the two club-hosted races.
@@ -20,6 +20,11 @@ Four, all in `src/content/`:
   shared shape, and the only collection whose Markdown body is rendered as the
   page. Routed by `src/pages/[legal].astro`, so a new file gets a route on its
   own — but its footer link still has to be added to `FOOTER_PAGE_LINKS`.
+- **`calendar-events`** — the race diary. Each entry is a rule for roughly when
+  a race happens ("last Sunday in November"), not a date, because every rule was
+  derived from a single race report. Entries ship as `status: expected` and the
+  page must never render those as a specific day. `docs/race-diary.md` has the
+  reasoning; `src/utils/race-diary.ts` is the only place a rule becomes a date.
 
 `race-reports` and `races` each have their own `images/` folder beside the
 Markdown, because image paths are relative to the file. A photo used in two
