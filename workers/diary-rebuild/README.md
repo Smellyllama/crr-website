@@ -1,75 +1,83 @@
 # Weekly rebuild
 
-The race diary is worked out at build time. Without a rebuild it freezes:
-races that have already happened stop dropping off, and the twelve-month window stops
+The race diary is worked out at build time. Without a rebuild it freezes: races
+that have already happened stop dropping off, and the twelve-month window stops
 rolling forward. This Worker rings a deploy hook once a week so that happens on
-its own.
+its own — which is what stops the diary lapsing the way the old hand-maintained
+calendar did.
 
-It is deployed separately from the site and shares nothing with it.
+It is a separate Worker from the site and shares nothing with it. Twenty lines,
+in `src/index.js`.
 
-## Setting it up
+## How it is set up
 
-Two steps, both needing the Cloudflare dashboard, and until both are done the
-diary still goes stale.
+Done already, in the Cloudflare dashboard. Recorded here so the next person can
+see the shape of it, and rebuild it if it is ever lost.
 
-**1. Create the deploy hook.** In the Cloudflare dashboard, open the
-`crr-website` Worker, then **Settings → Builds → Deploy hooks**. Create one
-named something like `weekly-diary-rebuild`, pointed at the `main` branch, and
-copy the URL it gives you. Treat it as a secret: anyone with it can start a
-build.
+1. **A deploy hook on the `crr-website` Worker**, under **Settings → Builds →
+   Deploy hooks**, pointed at `main`. A deploy hook is a secret URL that starts
+   a build when it receives a POST — anyone holding it can start builds, so it
+   is treated as a password.
+2. **This Worker, named `diary-rebuild`**, created under **Workers & Pages →
+   Create application** with the `Smellyllama/crr-website` repository connected
+   and **Root directory** set to `workers/diary-rebuild`. Cloudflare builds this
+   folder on its own machines and reads the `wrangler.jsonc` here, so the weekly
+   schedule travels with the code.
+3. **The deploy hook URL stored as a secret** on this Worker, under **Settings →
+   Variables and Secrets**, named `DEPLOY_HOOK_URL`. The code refuses to run
+   without it — a missing secret throws rather than logging quietly, so a
+   half-finished setup fails loudly instead of looking healthy for months.
 
-**2. Give it to this Worker and deploy.** From this directory:
+**`name` in `wrangler.jsonc` must match the Worker's name in the dashboard.**
+Wrangler deploys to whatever the file says, and a mismatch is not an error: it
+creates a second, different Worker and leaves the real one — the one holding the
+secret — untouched and never running. The dashboard flags this if the two drift.
 
-```
-npx wrangler secret put DEPLOY_HOOK_URL
-```
-
-Paste the URL when prompted, then:
-
-```
-npx wrangler deploy
-```
-
-## Setting it up without a terminal
-
-All of the above can be done from a browser instead, phone included. Slower to
-describe, but it needs nothing installed.
-
-Create the deploy hook as in step 1, then in **Workers & Pages → Create
-application**, connect the `Smellyllama/crr-website` repository and set **Root
-directory** to `workers/diary-rebuild` under the build settings. Leave the
-deploy command at its default `npx wrangler deploy`. Cloudflare then builds this
-directory on its own machines, reading the `wrangler.jsonc` here, so the weekly
-schedule comes across with it.
-
-Then add the secret: the new Worker's **Settings → Variables and Secrets →
-Add**, type **Secret**, name `DEPLOY_HOOK_URL`, paste the URL, **Deploy**.
-
-One side effect worth knowing: connecting the repository means every push to
-`main` rebuilds this Worker as well as the site. Harmless — it is twenty lines
-and builds in seconds — but it will show up as a second build every time.
-
-The cron itself can also be set or changed here, in **Settings → Triggers →
-Cron Triggers**. Prefer changing `wrangler.jsonc` when you can, so the schedule
-stays written down in the repository rather than living only in a dashboard
-nobody thinks to look at.
+One side effect of connecting the repository: every push to `main` rebuilds this
+Worker as well as the site. Harmless, and it builds in seconds, but it shows up
+as a second build every time.
 
 ## Checking it works
 
-`npx wrangler tail crr-diary-rebuild` shows the scheduled runs. A successful one
-logs "Rebuild requested"; a failure throws, so it shows up rather than passing
-quietly.
+The first scheduled run is the Monday after setup, 06:00 UTC. Two ways to see
+it:
 
-To test without waiting for Monday:
+- **In the dashboard** — this Worker's **Logs** tab. A successful run logs
+  "Rebuild requested" with the time. A failure throws, so it appears as an
+  error rather than passing silently. Cross-check against the `crr-website`
+  Worker's build list: a build should appear a moment after.
+- **From a terminal** — `npx wrangler tail diary-rebuild` shows the same thing
+  live.
+
+To test without waiting for Monday, from this directory:
 
 ```
 npx wrangler dev --test-scheduled
 ```
 
-then visit `http://localhost:8787/__scheduled` in another terminal or a browser.
+then visit `http://localhost:8787/__scheduled` in a browser. Note that this
+fires a *real* rebuild if `DEPLOY_HOOK_URL` is set locally.
 
 ## Changing the schedule
 
-`triggers.crons` in `wrangler.jsonc`, standard cron syntax, UTC. Weekly is
-enough: the diary only changes when a month rolls over or somebody edits an
-entry, and an edit already triggers its own build.
+`triggers.crons` in `wrangler.jsonc` — standard cron syntax, always UTC.
+Currently `0 6 * * 1`: Mondays at 06:00, so the week opens with a current diary.
+
+It can also be changed in the dashboard under **Settings → Triggers → Cron
+Triggers**, but prefer the file, so the schedule stays written down in the
+repository rather than living only somewhere nobody thinks to look.
+
+Weekly is enough. The diary only moves when a month rolls over, and an edit
+through the CMS already triggers its own build.
+
+## Deploying from a terminal instead
+
+Only needed if the repository connection is ever removed. From this directory:
+
+```
+npx wrangler secret put DEPLOY_HOOK_URL
+```
+
+```
+npx wrangler deploy
+```

@@ -24,13 +24,16 @@ See `crr-sitemap.md` for the page structure and content plan. Read it before pro
 - **Deployment: live.** Cloudflare Workers, connected to the GitHub repo
   (`Smellyllama/crr-website`). Push to `main` and it builds and deploys itself.
   No manual `wrangler deploy` needed.
-- **A second, separate Worker** — `crr-diary-rebuild` in `workers/diary-rebuild/`
-  — pings a deploy hook once a week so the race diary rolls forward on its own.
-  It is deployed by hand (`npx wrangler deploy` from that directory) and shares
-  nothing with the site. Deliberately not merged into the site's own
-  `wrangler.jsonc`: that file is assets-only, and adding a script to it would put
-  a Worker in front of unmatched requests and put the 404 handling at risk.
-  Setup steps are in `workers/diary-rebuild/README.md`.
+- **A second, separate Worker** — `diary-rebuild` in `workers/diary-rebuild/` —
+  pings a deploy hook once a week so the race diary rolls forward on its own. It
+  has its own Workers Build against this same repository, with the root
+  directory set to that folder, so a push to `main` builds it alongside the site.
+  `name` in its `wrangler.jsonc` must match the Worker's name in the Cloudflare
+  dashboard: Wrangler deploys to whatever the file says, so a mismatch silently
+  targets a different Worker rather than failing. Deliberately not merged into
+  the site's own `wrangler.jsonc` — that file is assets-only, and adding a script
+  to it would put a Worker in front of unmatched requests and risk the 404
+  handling. See `workers/diary-rebuild/README.md`.
 - **Sveltia CMS**, at `/admin`, so committee members can post without touching
   code. Loaded from a CDN by `public/admin/index.html` and configured by
   `public/admin/config.yml`; it commits to `Smellyllama/crr-website` on `main`

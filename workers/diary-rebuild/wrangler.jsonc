@@ -4,7 +4,12 @@
 	// The site's own wrangler.jsonc is assets-only with no `main`. Adding a
 	// script there would put the Worker in front of unmatched requests and put
 	// the 404 handling at risk, for no gain — this needs nothing from the site.
-	"name": "crr-diary-rebuild",
+
+	// Must match the Worker's name in the Cloudflare dashboard exactly. Wrangler
+	// deploys to whatever this says, so a mismatch does not error — it quietly
+	// creates or updates a second, different Worker, leaving the one with the
+	// secret in it untouched and never running.
+	"name": "diary-rebuild",
 	"main": "src/index.js",
 	"compatibility_date": "2026-09-08",
 
