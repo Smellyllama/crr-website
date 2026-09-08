@@ -1,0 +1,15 @@
+{
+	// A separate Worker from the site on purpose.
+	//
+	// The site's own wrangler.jsonc is assets-only with no `main`. Adding a
+	// script there would put the Worker in front of unmatched requests and put
+	// the 404 handling at risk, for no gain — this needs nothing from the site.
+	"name": "crr-diary-rebuild",
+	"main": "src/index.js",
+	"compatibility_date": "2026-09-08",
+
+	// Monday 06:00 UTC, so the week opens with a current diary.
+	"triggers": {
+		"crons": ["0 6 * * 1"]
+	}
+}

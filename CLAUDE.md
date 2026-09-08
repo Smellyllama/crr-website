@@ -24,6 +24,13 @@ See `crr-sitemap.md` for the page structure and content plan. Read it before pro
 - **Deployment: live.** Cloudflare Workers, connected to the GitHub repo
   (`Smellyllama/crr-website`). Push to `main` and it builds and deploys itself.
   No manual `wrangler deploy` needed.
+- **A second, separate Worker** — `crr-diary-rebuild` in `workers/diary-rebuild/`
+  — pings a deploy hook once a week so the race diary rolls forward on its own.
+  It is deployed by hand (`npx wrangler deploy` from that directory) and shares
+  nothing with the site. Deliberately not merged into the site's own
+  `wrangler.jsonc`: that file is assets-only, and adding a script to it would put
+  a Worker in front of unmatched requests and put the 404 handling at risk.
+  Setup steps are in `workers/diary-rebuild/README.md`.
 - A git-based CMS (TinaCMS or Decap) is still to be added, so committee members
   can post without touching code. **This is the single most important outstanding
   piece** — until it exists, the site depends on one person, which is the problem
