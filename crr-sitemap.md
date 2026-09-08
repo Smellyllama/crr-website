@@ -6,16 +6,22 @@ Draft v1. Built from the existing Webador site content. Dates and details carrie
 
 ## Navigation
 
-Six top-level items. Anything more and the mobile menu becomes a list nobody reads.
+Seven top-level items. Anything more and the mobile menu becomes a list nobody
+reads.
 
 ```
 Home
 Join Us
 Race Reports    (race reports + club news)
 Our Races       (Chard Flyer, Forde Abbey 10k)
+Calendar        (club calendar + race diary)
 Results         (championship, handicap, records)
 Contact
 ```
+
+Calendar and Results were one item to begin with. They answer different
+questions — "when is the next race" and "how did we do" — and a single page
+doing both buried the calendar under standings tables.
 
 **Footer:** Welfare · Rules & Constitution · Privacy · Club Kit · Facebook · Strava · Race Calendar · England Athletics affiliation
 
@@ -78,18 +84,34 @@ Each race page: date, distance, entry link, route map and elevation, start time,
 
 ---
 
-## 5. Results
+## 5. Calendar
+
+Two calendars, in this order, kept visibly separate so nobody has to guess
+which is which.
+
+- **Club calendar** — the committee's own Google Calendar, embedded. Club
+  nights, socials, the monthly handicap. Live, because it changes week to week.
+  Its ID is `GOOGLE_CALENDAR_ID` in `src/consts.ts`; empty until somebody sets
+  it, and the page renders the race diary alone until then. It is a third-party
+  embed, so it needs a line on the privacy page before launch.
+- **Race diary** — from the `calendar-events` collection. Twelve months rolling,
+  grouped by month, each entry linked to the race reports that mention it.
+  Dates worked out from a rule are shown as approximate and never as a specific
+  day. See `docs/race-diary.md`.
+
+---
+
+## 6. Results
 
 Everything here reads from Google Sheets, so you keep editing where you already edit.
 
 - **Club Championship** — current standings table, sortable, plus the scoring rules and which races count
 - **Monthly Handicap** — latest month's results and the running standings
 - **Club Records** — by distance and age category
-- **Race Calendar** — upcoming races members are entering, championship races marked
 
 ---
 
-## 6. Contact
+## 7. Contact
 
 - General enquiries email
 - Committee list with roles

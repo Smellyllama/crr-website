@@ -1,34 +1,68 @@
 ---
-import RaceDiary from '../components/RaceDiary.astro';
+// Championship, handicap and records. The race diary used to live here too —
+// it moved to /calendar, because "when is the next race" and "how did we do"
+// are different questions and a page answering both buried the first under
+// the second.
+//
+// Per crr-sitemap.md, everything on this page will read from Google Sheets at
+// build time, so the committee keeps editing where it already edits. Nothing
+// is wired up yet, so each section says so plainly rather than showing an
+// empty table.
 import Layout from '../layouts/Layout.astro';
+
+const sections = [
+	{
+		id: 'championship',
+		heading: 'Club Championship',
+		body: 'Current standings, the scoring rules, and which races count towards them.',
+	},
+	{
+		id: 'handicap',
+		heading: 'Monthly Handicap',
+		body: 'The latest month, and the running standings across the year.',
+	},
+	{
+		id: 'records',
+		heading: 'Club Records',
+		body: 'By distance and age category.',
+	},
+];
 ---
 
-<Layout title="Results" description="The club race diary, plus championship, handicap and records to come.">
+<Layout
+	title="Results"
+	description="Club championship standings, the monthly handicap and club records."
+>
 	<section class="bg-primary text-primary-content">
 		<div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8">
 			<h1 class="text-4xl font-bold sm:text-5xl">Results</h1>
 			<p class="mt-4 text-lg text-primary-content/80">
-				The races members are heading for, and what they wrote about them last time.
+				Championship standings, the monthly handicap, and the club records.
 			</p>
 		</div>
 	</section>
 
 	<div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-		<section id="race-calendar" class="scroll-mt-20">
-			<h2 class="text-2xl font-bold text-primary">Race calendar</h2>
-			<p class="mt-3 text-base-content/80">
-				Races the club runs, twelve months ahead. Most dates are worked out from the last time we
-				ran them, so they show as approximate — check with the organiser before entering. Where a
-				date has been confirmed, it says so.
-			</p>
-			<div class="mt-8">
-				<RaceDiary />
-			</div>
-		</section>
+		{
+			sections.map((section, index) => (
+				<section
+					id={section.id}
+					class:list={[
+						'scroll-mt-20',
+						index > 0 && 'mt-12 border-t border-base-300 pt-8',
+					]}
+				>
+					<h2 class="text-2xl font-bold text-primary">{section.heading}</h2>
+					<p class="mt-3 text-base-content/80">{section.body}</p>
+					<p class="mt-2 text-sm text-base-content/60">Not published yet.</p>
+				</section>
+			))
+		}
 
-		<section class="mt-14 border-t border-base-300 pt-8">
-			<h2 class="text-2xl font-bold text-primary">Championship, handicap and records</h2>
-			<p class="mt-3 text-base-content/80">Still to come.</p>
-		</section>
+		<p class="mt-12 border-t border-base-300 pt-8 text-base-content/80">
+			Looking for upcoming races? They are on the <a href="/calendar" class="link link-primary"
+				>calendar</a
+			>.
+		</p>
 	</div>
 </Layout>

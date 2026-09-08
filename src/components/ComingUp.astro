@@ -1,7 +1,7 @@
 ---
 // The next three races from the diary.
 //
-// Same honesty rule as the full diary on /results: an entry whose date was
+// Same honesty rule as the full diary on /calendar: an entry whose date was
 // worked out from a rule shows "usually the last Sunday in November", never a
 // day. Only a confirmed or fixed date earns a real one.
 import { getCollection } from 'astro:content';
@@ -57,7 +57,7 @@ const next = (await getCollection('calendar-events'))
 		}
 
 		<div class="mt-6 text-center">
-			<a href="/results#race-calendar" class="link link-secondary font-medium">{linkLabel}</a>
+			<a href="/calendar#race-calendar" class="link link-secondary font-medium">{linkLabel}</a>
 		</div>
 	</div>
 </section>

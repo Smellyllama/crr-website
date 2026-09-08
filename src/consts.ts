@@ -14,13 +14,17 @@ export const SKIP_LINK_LABEL = 'Skip to content';
 // The id it targets, and the id on <main>. One constant so they cannot drift.
 export const MAIN_CONTENT_ID = 'main-content';
 
-// The six top-level nav items, per crr-sitemap.md. Keep this list to six —
-// any more and the mobile menu becomes a list nobody reads.
+// The top-level nav, per crr-sitemap.md. Seven items: Calendar and Results were
+// one item until the two turned out to answer different questions — "when is
+// the next race" and "how did we do" — and a page trying to do both buried the
+// calendar under standings tables. Seven is the ceiling. Any more and the
+// mobile menu becomes a list nobody reads.
 export const NAV_LINKS: { href: string; label: string }[] = [
 	{ href: '/', label: 'Home' },
 	{ href: '/join-us', label: 'Join Us' },
 	{ href: '/race-reports', label: 'Race Reports' },
 	{ href: '/our-races', label: 'Our Races' },
+	{ href: '/calendar', label: 'Calendar' },
 	{ href: '/results', label: 'Results' },
 	{ href: '/contact', label: 'Contact' },
 ];
@@ -33,7 +37,9 @@ export const FOOTER_PAGE_LINKS: { href: string; label: string }[] = [
 	{ href: '/rules-and-constitution', label: 'Rules & Constitution' },
 	{ href: '/privacy', label: 'Privacy' },
 	{ href: '/club-kit', label: 'Club Kit' },
-	{ href: '/results#race-calendar', label: 'Race Calendar' },
+	// The diary specifically, not the top of the page — the label promises races
+	// and the club calendar is what sits above it.
+	{ href: '/calendar#race-calendar', label: 'Race Calendar' },
 ];
 
 export const SOCIAL_LINKS = {
@@ -42,3 +48,19 @@ export const SOCIAL_LINKS = {
 };
 
 export const ENGLAND_ATHLETICS_URL = 'https://www.englandathletics.org/';
+
+// The club's Google Calendar, shown on /calendar above the race diary.
+//
+// The calendar's ID, not an embed URL — find it in Google Calendar under
+// Settings > (the calendar) > Integrate calendar. It looks like an email
+// address. The calendar must be set to "Make available to public" or the
+// embed shows a permission error to everyone who is not signed in to it.
+//
+// Empty until somebody sets it, and the page renders the race diary alone
+// rather than an iframe that cannot load. Do not guess a value here.
+//
+// PRIVACY: this is a third-party embed. Every visitor to /calendar makes a
+// request to Google, which is the thing self-hosting the fonts was meant to
+// avoid. It needs a line on the privacy page before launch, and it is the one
+// place on the site where a visitor's IP reaches Google.
+export const GOOGLE_CALENDAR_ID = '';
