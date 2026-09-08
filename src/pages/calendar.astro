@@ -59,12 +59,13 @@ const embedUrl = GOOGLE_CALENDAR_ID
 					</div>
 				) : (
 					/*
-					  No calendar ID set yet. Deliberately says so rather than rendering an
-					  iframe that would show Google's own error page to every visitor.
+					  Not connected yet, and waiting on the .ics work rather than on somebody
+					  pasting an ID — see the note on GOOGLE_CALENDAR_ID in consts.ts. Says so
+					  plainly rather than rendering an iframe that would show Google's own
+					  permission error to every visitor.
 					*/
 					<p class="mt-6 rounded border border-dashed border-base-300 p-4 text-base-content/70">
-						The club calendar is not connected yet. Set <code>GOOGLE_CALENDAR_ID</code> in
-						<code>src/consts.ts</code> to switch it on.
+						The club calendar is not connected yet.
 					</p>
 				)
 			}

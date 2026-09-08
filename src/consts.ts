@@ -51,6 +51,13 @@ export const ENGLAND_ATHLETICS_URL = 'https://www.englandathletics.org/';
 
 // The club's Google Calendar, shown on /calendar above the race diary.
 //
+// A STOPGAP, and agreed as one. The intended version reads the calendar's .ics
+// feed at build time and renders real HTML: styled like the rest of the site,
+// working without JavaScript, and with no request to Google from a visitor's
+// browser. The weekly rebuild keeps it current. That work is blocked on access
+// to the club Google account, so this embed stands in until it lands. Prefer
+// finishing the .ics version over investing in this one.
+//
 // The calendar's ID, not an embed URL — find it in Google Calendar under
 // Settings > (the calendar) > Integrate calendar. It looks like an email
 // address. The calendar must be set to "Make available to public" or the
@@ -59,8 +66,9 @@ export const ENGLAND_ATHLETICS_URL = 'https://www.englandathletics.org/';
 // Empty until somebody sets it, and the page renders the race diary alone
 // rather than an iframe that cannot load. Do not guess a value here.
 //
-// PRIVACY: this is a third-party embed. Every visitor to /calendar makes a
-// request to Google, which is the thing self-hosting the fonts was meant to
-// avoid. It needs a line on the privacy page before launch, and it is the one
-// place on the site where a visitor's IP reaches Google.
+// PRIVACY: this is a third-party embed. Every visitor to /calendar would make
+// a request to Google, which is the thing self-hosting the fonts was meant to
+// avoid. Setting this needs a line on the privacy page, and it would be the
+// one place on the site where a visitor's IP reaches Google. That is the whole
+// reason the .ics version is the one to build.
 export const GOOGLE_CALENDAR_ID = '';
