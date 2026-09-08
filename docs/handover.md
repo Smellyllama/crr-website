@@ -88,7 +88,18 @@ setting applies to new uploads only; that file still needs renaming by hand,
 along with the reference to it in
 `src/content/race-reports/2026-08-31-baltonsborough-somerset-village-show-5-mile-run-results-and-experience.md`.
 
-##
+## Who can edit the site
 
-repo editors;
-Kate D, phillipsk26-png, Write, invited 26-09-08.
+Not listed here. This repository is public, so a list of names and GitHub
+handles in this file would be readable by anyone, and CLAUDE.md rules that out
+for members' details. It would also go stale the first time somebody joined or
+left.
+
+The real list is the one GitHub keeps: **Settings > Collaborators and teams**
+on the repository. That is always current, visible only to people who already
+have access, and it records when each invitation was sent. Nothing needs to be
+copied out of it.
+
+Anyone who can sign in there can also use the CMS at `/admin` — same GitHub
+account, same permissions. Removing somebody from that list removes their CMS
+access too, which is the reason there is nothing else to revoke.

@@ -27,3 +27,6 @@ pnpm-debug.log*
 # Design source material — not used by the build
 Media/
 *.zip
+
+# Private notes — kept out of a public repo
+docs/private/
