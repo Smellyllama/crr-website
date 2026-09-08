@@ -41,6 +41,7 @@
           return;
         }
 
+        // Alt text applies to these two; the diary rule below has its own check.
         var COLLECTIONS = ['race-reports', 'races'];
 
         window.CMS.registerEventListener({
@@ -65,6 +66,34 @@
                     'shows if the image fails to load.',
                 ),
               });
+            }
+
+            // The race diary's either/or, which the config cannot express.
+            //
+            // src/content.config.ts requires exactly one of: a fixed date, or
+            // both "which one" and "which day". Without this the save
+            // succeeds, the build then rejects the file, and the failure lands
+            // on the committee member — the exact thing the CMS is here to
+            // prevent.
+            if (entry.get('collection') === 'calendar-events') {
+              var fixed = String(entry.getIn(['data', 'fixedDate']) || '').trim();
+              var nth = String(entry.getIn(['data', 'nth']) || '').trim();
+              var weekday = String(entry.getIn(['data', 'weekday']) || '').trim();
+              var hasRule = Boolean(nth && weekday);
+
+              if (Boolean(fixed) === hasRule) {
+                throw new Error('saving_failed', {
+                  cause: new Error(
+                    fixed && hasRule
+                      ? 'Use either a fixed date or a rule, not both. Clear the ' +
+                        'fixed date if the race moves, or clear "which one" and ' +
+                        '"which day" if it is always the same date.'
+                      : 'Say when this race happens: either a fixed date like ' +
+                        '"1 January", or both "which one" and "which day" to make ' +
+                        'a rule like "last Sunday".',
+                  ),
+                });
+              }
             }
           },
         });

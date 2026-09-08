@@ -814,3 +814,160 @@ collections:
       - label: The page
         name: body
         widget: markdown
+  # =========================================================================
+  # RACE DIARY
+  # =========================================================================
+  - name: calendar-events
+    label: Race diary
+    label_singular: Race
+    description: >-
+      Races the club runs each year. Most entries say roughly when a race
+      happens rather than giving a date, because the date came from one year's
+      race report and annual races move. The page shows those as approximate on
+      purpose. Only set Status to Confirmed when you have checked this year's
+      date with the organiser.
+    folder: src/content/calendar-events
+    # Committee members should be able to add races they have run.
+    create: true
+    # Off to match the other collections, given the deletion cascade recorded
+    # in docs/handover.md. Removing a race is a Git job.
+    delete: false
+    summary: "{{name}}"
+    sortable_fields: [month, name]
+    fields:
+      - label: Race name
+        name: name
+        widget: string
+        hint: >-
+          Must match the race name used in race reports exactly, or the diary
+          entry cannot list the reports about it. For example "Bicton Blister 10".
+
+      - label: Month
+        name: month
+        widget: number
+        value_type: int
+        min: 1
+        max: 12
+        hint: 1 for January through to 12 for December.
+
+      # THE EITHER/OR THE CMS CANNOT EXPRESS
+      #
+      # src/content.config.ts requires exactly one of: a fixed date, or both
+      # "which one" and "which day". Sveltia has no conditional validation, so
+      # all three are optional here and the rule is enforced two other ways:
+      # the preSave hook in index.html blocks a save that breaks it, and the
+      # Astro build refuses the file if one ever gets through.
+      - label: Fixed date
+        name: fixedDate
+        widget: string
+        required: false
+        hint: >-
+          Only for a race on the same calendar date every year, like
+          "1 January". Leave empty and use the two boxes below instead if the
+          race moves — most do.
+
+      - label: Which one
+        name: nth
+        widget: select
+        required: false
+        options: [first, second, third, fourth, last]
+        hint: >-
+          With the day below, this makes a rule like "last Sunday". Leave both
+          empty if you filled in a fixed date.
+
+      - label: Which day
+        name: weekday
+        widget: select
+        required: false
+        options: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+
+      - label: Distance
+        name: distance
+        widget: object
+        required: false
+        collapsed: false
+        hint: >-
+          Leave "Add Distance" unticked for timed events — a 12-hour, a lapped
+          ultra — that have no fixed distance.
+        fields:
+          - label: How far
+            name: value
+            widget: number
+            value_type: float
+            step: 0.01
+            hint: Just the number — 10 for a 10k, 13.1 for a half marathon.
+          - label: Miles or kilometres
+            name: unit
+            widget: select
+            default: km
+            options:
+              - { label: Kilometres (km), value: km }
+              - { label: Miles (mi), value: mi }
+
+      - label: Status
+        name: status
+        widget: select
+        default: expected
+        options:
+          - { label: Expected - shown as approximate, value: expected }
+          - { label: Confirmed - shows the real date, value: confirmed }
+        hint: >-
+          Leave as Expected unless you have checked this year's date with the
+          organiser. Expected entries never show a specific day, because
+          somebody turning up a week late is worse than a page that says it
+          does not know.
+
+      - label: Confirmed date
+        name: confirmedDate
+        widget: datetime
+        required: false
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        hint: The real date for this year. Only used when Status is Confirmed.
+
+      - label: Last seen
+        name: lastSeen
+        widget: datetime
+        required: false
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        hint: >-
+          The date we have evidence for, from a club race report. It is what
+          the rule was worked out from, not a prediction.
+
+      - label: One of our own races
+        name: clubRace
+        widget: boolean
+        required: false
+        default: false
+
+      - label: Counts for the championship
+        name: championship
+        widget: boolean
+        required: false
+        default: false
+
+      - label: Entry link
+        name: entryUrl
+        widget: string
+        required: false
+        pattern:
+          - "^https?://.+"
+          - Enter a full web address starting with https://
+
+      - label: Results link
+        name: resultsUrl
+        widget: string
+        required: false
+        pattern:
+          - "^https?://.+"
+          - Enter a full web address starting with https://
+
+      - label: Notes
+        name: body
+        widget: markdown
+        hint: >-
+          Anything useful about the race — terrain, where it starts, whether the
+          date has moved before.

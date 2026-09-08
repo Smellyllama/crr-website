@@ -276,9 +276,65 @@ const legal = defineCollection({
   }),
 });
 
+// The race diary. Each entry is a race the club has run, with a rule for
+// roughly when it happens rather than a date — see docs/race-diary.md.
+//
+// Every rule is derived from one observation, from one race report, so an
+// entry is a decent guess and nothing more. That is why `status` defaults to
+// `expected` and why the page must never render an expected entry as a
+// specific day: somebody turning up a week late is worse than a page that
+// admits it does not know.
+const calendarEvents = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/calendar-events" }),
+  schema: z
+    .object({
+      name: z.string(),
+      month: z.number().int().min(1).max(12),
+
+      // Two ways of saying when a race happens.
+      //
+      // fixedDate — a calendar date that never moves ("1 January").
+      // nth + weekday — a rule ("last Sunday"), resolved at build time.
+      //
+      // Exactly one of these. See the refine below.
+      fixedDate: z.string().optional(),
+      nth: z.enum(["first", "second", "third", "fourth", "last"]).optional(),
+      weekday: z
+        .enum([
+          "Monday", "Tuesday", "Wednesday",
+          "Thursday", "Friday", "Saturday", "Sunday",
+        ])
+        .optional(),
+
+      // Optional: timed and lapped events have no fixed distance.
+      distance: distance.optional(),
+
+      // confirmed — a human has checked this year's date with the organiser.
+      // expected  — computed from the rule, and rendered as approximate.
+      status: z.enum(["confirmed", "expected"]).default("expected"),
+
+      // Set when status is "confirmed". Ignored otherwise.
+      confirmedDate: z.date().optional(),
+
+      // The most recent date we have evidence for, from a club race report.
+      // What the rule was derived from — not a prediction.
+      lastSeen: z.date().optional(),
+
+      clubRace: z.boolean().default(false),
+      championship: z.boolean().default(false),
+      entryUrl: z.string().url().optional(),
+      resultsUrl: z.string().url().optional(),
+    })
+    .refine((d) => Boolean(d.fixedDate) !== Boolean(d.nth && d.weekday), {
+      message:
+        "Provide either fixedDate, or both nth and weekday — not both, not neither.",
+    }),
+});
+
 export const collections = {
   "race-reports": raceReports,
   races,
   pages,
   legal,
+  "calendar-events": calendarEvents,
 };
