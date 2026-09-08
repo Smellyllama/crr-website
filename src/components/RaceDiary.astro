@@ -1,0 +1,161 @@
+---
+// The race diary: twelve months forward from the current one, grouped by month.
+//
+// The rule this page exists to hold: an entry whose date was computed from a
+// rule NEVER shows a specific day. It gets "usually the last Sunday in
+// November" instead. Only a date a human confirmed with the organiser, or a
+// fixed date that cannot drift, earns a real one. Someone turning up a week
+// late is a worse outcome than a page that admits what it does not know.
+//
+// Confirmed and approximate are told apart by wording, weight and a solid vs
+// dashed rule — never by colour alone.
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import { formatDistance } from '../utils/distance';
+import { getEarliestRaceDate, sortByRaceDateDesc } from '../utils/race-reports';
+import {
+	describeTiming,
+	diaryCutoff,
+	groupByMonth,
+	hasExactDate,
+	monthName,
+	nextOccurrence,
+} from '../utils/race-diary';
+
+const now = new Date();
+
+const [events, reports] = await Promise.all([
+	getCollection('calendar-events'),
+	getCollection('race-reports', ({ data }) => !data.draft),
+]);
+
+// A race name in the diary matches the race name in a report's `races` array.
+// That is what turns the archive into something useful rather than a list of
+// dates, and it improves on its own every time somebody posts a report.
+const reportsByRace = new Map<string, typeof reports>();
+for (const report of reports) {
+	for (const race of report.data.races) {
+		const list = reportsByRace.get(race.name) ?? [];
+		if (!list.includes(report)) list.push(report);
+		reportsByRace.set(race.name, list);
+	}
+}
+
+const cutoff = diaryCutoff(now, 12);
+
+const months = groupByMonth(
+	events
+		.map((event) => ({ event, date: nextOccurrence(event.data, now) }))
+		.filter((item): item is { event: (typeof events)[number]; date: Date } =>
+			Boolean(item.date && item.date < cutoff),
+		),
+);
+---
+
+<div class="diary">
+	{
+		months.map(({ year, month, items }) => (
+			<section class="diary-month">
+				<h3 class="diary-month-heading">
+					{monthName(month)} <span class="font-normal text-base-content/50">{year}</span>
+				</h3>
+				<ul class="mt-4 flex flex-col gap-3">
+					{items.map(({ event, date }) => {
+						const exact = hasExactDate(event.data);
+						const related = sortByRaceDateDesc(reportsByRace.get(event.data.name) ?? []);
+						return (
+							<li class:list={['diary-entry', exact ? 'is-exact' : 'is-approximate']}>
+								<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+									<h4 class="font-bold text-primary">{event.data.name}</h4>
+									<div class="flex flex-wrap gap-1">
+										{event.data.clubRace && <span class="badge badge-secondary badge-sm">Our race</span>}
+										{event.data.championship && (
+											<span class="badge badge-outline badge-sm">Championship</span>
+										)}
+									</div>
+								</div>
+
+								<p class="diary-when">
+									{exact ? (
+										<strong><FormattedDate date={date} /></strong>
+									) : (
+										describeTiming(event.data)
+									)}
+									{event.data.distance && (
+										<span class="text-base-content/60"> · {formatDistance(event.data.distance)}</span>
+									)}
+								</p>
+
+								{/* Said in words as well as shown, so the difference does not rest
+								    on the border style alone. */}
+								<p class="diary-certainty">
+									{exact ? 'Date confirmed' : 'Approximate — check before entering'}
+								</p>
+
+								{related.length > 0 && (
+									<p class="diary-reports">
+										{related.map((report, index) => (
+											<>
+												{index > 0 && <span aria-hidden="true"> · </span>}
+												<a href={`/race-reports/${report.id}/`} class="link link-primary">
+													{getEarliestRaceDate(report.data.races).getUTCFullYear()} report
+												</a>
+											</>
+										))}
+									</p>
+								)}
+							</li>
+						);
+					})}
+				</ul>
+			</section>
+		))
+	}
+</div>
+
+<style>
+	.diary-month + .diary-month {
+		margin-top: 2.5rem;
+	}
+
+	.diary-month-heading {
+		font-size: 1.35rem;
+		padding-bottom: 0.4rem;
+		border-bottom: 1px solid var(--color-base-300);
+	}
+
+	/*
+	  Solid rule for a date somebody checked, dashed for one worked out from a
+	  rule. Shape rather than colour, so it survives being printed, and so it
+	  does not depend on telling two blues apart.
+	*/
+	.diary-entry {
+		padding: 0.75rem 0 0.75rem 1rem;
+		border-left: 3px solid var(--color-base-300);
+	}
+
+	.diary-entry.is-exact {
+		border-left-style: solid;
+		border-left-color: var(--color-primary);
+	}
+
+	.diary-entry.is-approximate {
+		border-left-style: dashed;
+	}
+
+	.diary-when {
+		margin: 0.15rem 0 0;
+	}
+
+	.diary-certainty {
+		margin: 0.1rem 0 0;
+		font-size: 0.8rem;
+		color: var(--color-base-content);
+		opacity: 0.6;
+	}
+
+	.diary-reports {
+		margin: 0.35rem 0 0;
+		font-size: 0.875rem;
+	}
+</style>

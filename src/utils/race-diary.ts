@@ -92,7 +92,9 @@ export function occurrenceIn(entry: DiaryRule, year: number): Date | undefined {
  * occurrence if it is still ahead, and next year's if it has been and gone.
  */
 export function nextOccurrence(entry: DiaryRule, from: Date): Date | undefined {
-	if (entry.confirmedDate) return entry.confirmedDate;
+	// Only while it is still ahead. Last year's confirmed date left in place
+	// would otherwise pin the entry in the past for ever.
+	if (entry.confirmedDate && entry.confirmedDate >= startOfDay(from)) return entry.confirmedDate;
 	const thisYear = occurrenceIn(entry, from.getUTCFullYear());
 	if (thisYear && thisYear >= startOfDay(from)) return thisYear;
 	return occurrenceIn(entry, from.getUTCFullYear() + 1);
@@ -124,14 +126,35 @@ export function describeTiming(entry: DiaryRule): string {
 	return `expected in ${month}`;
 }
 
-/** Twelve months from the month `from` falls in, oldest first. */
-export function diaryWindow(from: Date, months = 12): { year: number; month: number }[] {
-	const out: { year: number; month: number }[] = [];
-	for (let i = 0; i < months; i += 1) {
-		const d = new Date(Date.UTC(from.getUTCFullYear(), from.getUTCMonth() + i, 1));
-		out.push({ year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 });
+/**
+ * The far end of the diary: twelve months from `from`, to the day.
+ *
+ * A rolling range rather than twelve calendar months. Bucketing by calendar
+ * month loses any race that has just been: on 8 September the Bridgwater races
+ * of the 6th roll to next September, which falls outside a September-to-August
+ * set of buckets, and they disappear from the diary for a year. A range that
+ * runs to the same date next year keeps them, in a group labelled with the
+ * year they belong to.
+ */
+export function diaryCutoff(from: Date, months = 12): Date {
+	return new Date(
+		Date.UTC(from.getUTCFullYear(), from.getUTCMonth() + months, from.getUTCDate()),
+	);
+}
+
+/** Group occurrences by the month they fall in, earliest first. */
+export function groupByMonth<T extends { date: Date }>(
+	items: T[],
+): { year: number; month: number; items: T[] }[] {
+	const groups = new Map<string, { year: number; month: number; items: T[] }>();
+	for (const item of [...items].sort((a, b) => a.date.getTime() - b.date.getTime())) {
+		const year = item.date.getUTCFullYear();
+		const month = item.date.getUTCMonth() + 1;
+		const key = `${year}-${month}`;
+		if (!groups.has(key)) groups.set(key, { year, month, items: [] });
+		groups.get(key)!.items.push(item);
 	}
-	return out;
+	return [...groups.values()];
 }
 
 export const monthName = (month: number): string => MONTH_NAMES[month - 1];
