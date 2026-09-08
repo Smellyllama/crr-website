@@ -21,7 +21,14 @@ const { overlay = false } = Astro.props;
 			: 'bg-primary shadow-sm',
 	]}
 >
-	<div class="navbar-start">
+	{/*
+	  w-auto, because daisyUI gives .navbar-start a flat 50% of the bar. At 1024px
+	  — the exact width the desktop nav appears at — that reserved 512px for a
+	  138px logo and left the seven nav items 500px to fit in, so they wrapped to
+	  a second row and the header grew from 64px to 108px. The logo takes what it
+	  needs and the nav takes the rest.
+	*/}
+	<div class="navbar-start w-auto">
 		<div class="dropdown">
 			<div
 				tabindex="0"
@@ -56,7 +63,7 @@ const { overlay = false } = Astro.props;
 			<span class="site-logo" aria-hidden="true" set:html={logoMark} />
 		</a>
 	</div>
-	<div class="navbar-end hidden lg:flex">
+	<div class="navbar-end hidden w-auto flex-1 lg:flex">
 		<ul class="menu menu-horizontal gap-1 px-1">
 			{
 				NAV_LINKS.map((link) => (
