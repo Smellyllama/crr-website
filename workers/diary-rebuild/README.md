@@ -30,6 +30,30 @@ Paste the URL when prompted, then:
 npx wrangler deploy
 ```
 
+## Setting it up without a terminal
+
+All of the above can be done from a browser instead, phone included. Slower to
+describe, but it needs nothing installed.
+
+Create the deploy hook as in step 1, then in **Workers & Pages → Create
+application**, connect the `Smellyllama/crr-website` repository and set **Root
+directory** to `workers/diary-rebuild` under the build settings. Leave the
+deploy command at its default `npx wrangler deploy`. Cloudflare then builds this
+directory on its own machines, reading the `wrangler.jsonc` here, so the weekly
+schedule comes across with it.
+
+Then add the secret: the new Worker's **Settings → Variables and Secrets →
+Add**, type **Secret**, name `DEPLOY_HOOK_URL`, paste the URL, **Deploy**.
+
+One side effect worth knowing: connecting the repository means every push to
+`main` rebuilds this Worker as well as the site. Harmless — it is twenty lines
+and builds in seconds — but it will show up as a second build every time.
+
+The cron itself can also be set or changed here, in **Settings → Triggers →
+Cron Triggers**. Prefer changing `wrangler.jsonc` when you can, so the schedule
+stays written down in the repository rather than living only in a dashboard
+nobody thinks to look at.
+
 ## Checking it works
 
 `npx wrangler tail crr-diary-rebuild` shows the scheduled runs. A successful one
