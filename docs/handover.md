@@ -87,3 +87,8 @@ filenames. Sveltia keeps the original name by default, which is how
 setting applies to new uploads only; that file still needs renaming by hand,
 along with the reference to it in
 `src/content/race-reports/2026-08-31-baltonsborough-somerset-village-show-5-mile-run-results-and-experience.md`.
+
+##
+
+repo editors;
+Kate D, phillipsk26-png, Write, invited 26-09-08.
