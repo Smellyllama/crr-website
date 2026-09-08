@@ -89,3 +89,38 @@ date, set `status: confirmed` with the real date, and add the entry link.
 Eight weeks is the window that matters — nobody enters a June race from a page
 they're reading in January. Bounding it is what makes the job finishable, and a
 finishable job is one that still gets done in a year's time.
+
+---
+
+## Retiring a race that no longer runs
+
+Some of the seed entries are races that have since stopped. **Tick "Retired -
+race no longer runs" in the CMS. Do not delete the entry.**
+
+A retired entry disappears from the diary and from the homepage's next three.
+The file stays in the repository, which is the whole point of it: it is a record
+that somebody looked at this race and found it gone.
+
+**Deleting instead would undo itself.** The entries here were derived from the
+club's own race reports, and those reports are not going anywhere. Any later
+pass over them — by hand or scripted — finds the same 2017 result for a race
+that died in 2019 and adds it straight back, because nothing in the repository
+says otherwise. A retired entry is what says otherwise.
+
+So, for anything that derives diary entries from race reports:
+
+> Skip a race name that already has an entry in `src/content/calendar-events`,
+> whether or not that entry is retired. Existing entries win. New ones are only
+> for names that appear nowhere.
+
+The CMS entry list has **Still running** and **Retired** filters for finding
+them. There is no default filter, so the list shows everything until you narrow
+it.
+
+### The ones flagged as worth reviewing
+
+The notes above single these out as possibly not belonging: **Cornish
+Marathon**, **Bovington**, **New Forest**, the three **Bad Cow** entries, and
+**Chard Chaser** (in its second year in 2017). They shipped rather than being
+dropped, on the basis that retiring one is easier than inventing it back. This
+is the toggle for doing that.

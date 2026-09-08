@@ -18,6 +18,7 @@ import {
 	diaryCutoff,
 	groupByMonth,
 	hasExactDate,
+	isRunning,
 	monthName,
 	nextOccurrence,
 } from '../utils/race-diary';
@@ -45,6 +46,7 @@ const cutoff = diaryCutoff(now, 12);
 
 const months = groupByMonth(
 	events
+		.filter((event) => isRunning(event.data))
 		.map((event) => ({ event, date: nextOccurrence(event.data, now) }))
 		.filter((item): item is { event: (typeof events)[number]; date: Date } =>
 			Boolean(item.date && item.date < cutoff),

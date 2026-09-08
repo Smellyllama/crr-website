@@ -320,6 +320,16 @@ const calendarEvents = defineCollection({
       // What the rule was derived from — not a prediction.
       lastSeen: z.date().optional(),
 
+      // A race that has stopped running. The entry stays — that is the point.
+      //
+      // Deleting it would leave nothing saying "we looked at this one and it is
+      // gone", so the next pass through the race reports would find the same
+      // 2017 result and add it straight back. A retired entry is a tombstone:
+      // hidden from the diary, and a record that the decision was already made.
+      // Anything deriving entries from race reports must skip a name that
+      // already has a retired entry. See docs/race-diary.md.
+      retired: z.boolean().default(false),
+
       clubRace: z.boolean().default(false),
       championship: z.boolean().default(false),
       entryUrl: z.string().url().optional(),

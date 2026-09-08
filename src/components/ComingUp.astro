@@ -6,7 +6,7 @@
 // day. Only a confirmed or fixed date earns a real one.
 import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
-import { describeTiming, hasExactDate, nextOccurrence } from '../utils/race-diary';
+import { describeTiming, hasExactDate, isRunning, nextOccurrence } from '../utils/race-diary';
 
 interface Props {
 	heading: string;
@@ -20,6 +20,7 @@ const { heading, linkLabel, emptyState } = Astro.props;
 
 const now = new Date();
 const next = (await getCollection('calendar-events'))
+	.filter((event) => isRunning(event.data))
 	.map((event) => ({ event, date: nextOccurrence(event.data, now) }))
 	.filter((item): item is { event: (typeof item)['event']; date: Date } => Boolean(item.date))
 	.sort((a, b) => a.date.getTime() - b.date.getTime())

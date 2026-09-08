@@ -833,7 +833,21 @@ collections:
     # in docs/handover.md. Removing a race is a Git job.
     delete: false
     summary: "{{name}}"
-    sortable_fields: [month, name]
+    sortable_fields: [month, name, retired]
+    # No `default` on purpose. A default filter of retired=false would hide
+    # every entry written before the field existed, because their files have no
+    # `retired` key at all — the schema defaults it, the file does not carry it.
+    # The list shows everything and these narrow it on request.
+    view_filters:
+      filters:
+        - name: still-running
+          label: Still running
+          field: retired
+          pattern: false
+        - name: retired
+          label: Retired
+          field: retired
+          pattern: true
     fields:
       - label: Race name
         name: name
@@ -936,6 +950,18 @@ collections:
         hint: >-
           The date we have evidence for, from a club race report. It is what
           the rule was worked out from, not a prediction.
+
+      - label: Retired - race no longer runs
+        name: retired
+        widget: boolean
+        required: false
+        default: false
+        hint: >-
+          Tick this when a race has stopped happening. It disappears from the
+          diary on the website, and the entry stays here as a record that we
+          already checked. Do not delete the race instead - a deleted entry
+          leaves nothing to say it was looked at, so the next trawl through
+          the race reports would add it straight back.
 
       - label: One of our own races
         name: clubRace

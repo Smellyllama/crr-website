@@ -24,6 +24,7 @@ export interface DiaryRule {
 	weekday?: Weekday;
 	status?: "confirmed" | "expected";
 	confirmedDate?: Date;
+	retired?: boolean;
 }
 
 const WEEKDAY_INDEX: Record<Weekday, number> = {
@@ -48,6 +49,18 @@ const NTH_WORDS: Record<Nth, string> = {
 	fourth: "fourth",
 	last: "last",
 };
+
+/**
+ * Whether an entry belongs on the site at all.
+ *
+ * One predicate rather than `!data.retired` written at each call site, so the
+ * diary and the homepage cannot come to disagree about which races still run.
+ * A retired entry stays in the repository as a record that somebody checked —
+ * it is only hidden from readers.
+ */
+export function isRunning(entry: DiaryRule): boolean {
+	return !entry.retired;
+}
 
 /** The nth given weekday of a month, e.g. the last Sunday in November 2026. */
 export function resolveRule(year: number, month: number, nth: Nth, weekday: Weekday): Date {
