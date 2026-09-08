@@ -1,21 +1,81 @@
 ---
-// Placeholder section — there's no calendar collection yet. Swap the
-// emptyState message for a real query once one exists.
+// The next three races from the diary.
+//
+// Same honesty rule as the full diary on /results: an entry whose date was
+// worked out from a rule shows "usually the last Sunday in November", never a
+// day. Only a confirmed or fixed date earns a real one.
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import { describeTiming, hasExactDate, nextOccurrence } from '../utils/race-diary';
+
 interface Props {
 	heading: string;
 	linkLabel: string;
+	// Shown when the diary is empty, which should only happen before any races
+	// are entered — every entry rolls to next year rather than running out.
 	emptyState: string;
 }
 
 const { heading, linkLabel, emptyState } = Astro.props;
+
+const now = new Date();
+const next = (await getCollection('calendar-events'))
+	.map((event) => ({ event, date: nextOccurrence(event.data, now) }))
+	.filter((item): item is { event: (typeof item)['event']; date: Date } => Boolean(item.date))
+	.sort((a, b) => a.date.getTime() - b.date.getTime())
+	.slice(0, 3);
 ---
 
 <section class="bg-base-200">
-	<div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
-		<h2 class="text-3xl font-bold text-base-content">{heading}</h2>
-		<p class="mt-4 text-base-content/70">{emptyState}</p>
-		<div class="mt-6">
+	<div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
+		<h2 class="text-center text-3xl font-bold text-base-content">{heading}</h2>
+
+		{
+			next.length === 0 ? (
+				<p class="mt-4 text-center text-base-content/70">{emptyState}</p>
+			) : (
+				<ul class="mx-auto mt-8 flex max-w-md flex-col gap-3">
+					{next.map(({ event, date }) => {
+						const exact = hasExactDate(event.data);
+						return (
+							<li class:list={['coming-up-entry', exact ? 'is-exact' : 'is-approximate']}>
+								<span class="font-bold text-primary">{event.data.name}</span>
+								<span class="block text-sm text-base-content/80">
+									{exact ? (
+										<strong>
+											<FormattedDate date={date} />
+										</strong>
+									) : (
+										describeTiming(event.data)
+									)}
+								</span>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+
+		<div class="mt-6 text-center">
 			<a href="/results#race-calendar" class="link link-secondary font-medium">{linkLabel}</a>
 		</div>
 	</div>
 </section>
+
+<style>
+	/* Matching the diary: solid rule for a checked date, dashed for a worked-out
+	   one, so the two mean the same thing in both places. */
+	.coming-up-entry {
+		padding: 0.5rem 0 0.5rem 0.85rem;
+		border-left: 3px solid var(--color-base-300);
+	}
+
+	.coming-up-entry.is-exact {
+		border-left-style: solid;
+		border-left-color: var(--color-primary);
+	}
+
+	.coming-up-entry.is-approximate {
+		border-left-style: dashed;
+	}
+</style>
