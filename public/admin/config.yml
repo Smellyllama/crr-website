@@ -309,8 +309,11 @@ collections:
         name: excerpt
         widget: text
         hint: >-
-          One or two sentences. This appears on the race reports listing page
-          and in search results, so make it read well on its own.
+          One or two sentences. It appears on the race reports listing page, in
+          search results, in the ready-to-paste block at the foot of the post,
+          and it is the sentence Facebook shows when somebody shares the report
+          - Facebook takes it from the page and ignores anything typed into the
+          share box. It does a lot of work, so make it read well on its own.
 
       - label: Draft — hide from the website
         name: draft

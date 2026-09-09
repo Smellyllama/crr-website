@@ -1,0 +1,149 @@
+---
+// Share links for a race report.
+//
+// Plain links to Facebook and WhatsApp, plus a block of text ready to paste
+// anywhere else. No API, no SDK, no third-party script — nothing here talks to
+// Facebook or WhatsApp until somebody taps a link, and then it is their own
+// app doing it, not us.
+//
+// INSTAGRAM has no share-by-link at all. There is no URL you can send someone
+// to that opens Instagram with a post ready; the platform does not offer one to
+// the web, deliberately. The paste block below is the answer for Instagram, and
+// it is why the block earns its place rather than being a convenience.
+//
+// FACEBOOK ignores any text you try to send it. sharer.php takes the URL and
+// nothing else — the headline, description and picture all come from the page's
+// own Open Graph tags, set in BaseHead. So the sentence somebody sees on
+// Facebook is the report's `excerpt`, and improving one improves the other.
+interface Props {
+	title: string;
+	excerpt: string;
+}
+
+const { title, excerpt } = Astro.props;
+
+// Absolute, because a share link containing "/race-reports/..." would send
+// people to their own machine. Built the same way as the canonical URL in
+// BaseHead so the two cannot disagree about what this page's address is.
+const url = new URL(Astro.url.pathname, Astro.site).href;
+
+// What lands in the clipboard. A blank line between each part because most
+// places people paste this — Facebook, Instagram, a WhatsApp group — collapse
+// single newlines into one run-on paragraph.
+const pasteText = `${title}\n\n${excerpt}\n\n${url}`;
+
+const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${url}`)}`;
+---
+
+<section class="share not-prose" aria-labelledby="share-heading">
+	<h2 id="share-heading" class="text-lg font-bold text-primary">Share this report</h2>
+
+	<ul class="mt-3 flex flex-wrap gap-2">
+		<li>
+			{/*
+			  rel="noopener" so the opened tab cannot reach back into this one, and
+			  "noreferrer" so Facebook is not told which page the visitor came from
+			  before they have chosen to share anything.
+			*/}
+			<a
+				class="btn btn-sm btn-outline"
+				href={facebookUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Share on Facebook
+			</a>
+		</li>
+		<li>
+			<a
+				class="btn btn-sm btn-outline"
+				href={whatsappUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Share on WhatsApp
+			</a>
+		</li>
+	</ul>
+
+	<div class="mt-5">
+		<h3 class="text-sm font-bold text-base-content">Copy for social</h3>
+		<p class="mt-1 text-sm text-base-content/70">
+			For Instagram, or anywhere else. Paste it in and add your own photo.
+		</p>
+
+		{/*
+		  The text is real, selectable content, not something a script writes in.
+		  With JavaScript off it can still be read and copied by hand — the copy
+		  button is the convenience, the text is the feature.
+		*/}
+		<pre
+			id="share-paste-text"
+			class="share-paste mt-2 rounded border border-base-300 bg-base-200 p-3 text-sm whitespace-pre-wrap">{pasteText}</pre>
+
+		{/*
+		  hidden until the script removes it. A copy button cannot work without
+		  JavaScript — the clipboard is not reachable from HTML — so rather than
+		  showing a dead button to anyone with JS off, it does not exist for them.
+		*/}
+		<div class="mt-2 flex flex-wrap gap-2">
+			<button type="button" class="btn btn-sm btn-primary" data-copy="#share-paste-text" hidden>
+				Copy this
+			</button>
+			<button type="button" class="btn btn-sm btn-outline" data-copy-text={url} hidden>
+				Copy just the link
+			</button>
+		</div>
+
+		{/*
+		  role="status" so the confirmation is announced, not only seen — a screen
+		  reader gets nothing from a button whose own label never changes.
+		*/}
+		<p class="mt-2 text-sm text-success" role="status" data-copy-status></p>
+	</div>
+</section>
+
+<style>
+	/*
+	  <pre> for the whitespace — the blank lines between the title, the sentence
+	  and the link are the point of it. Not for the monospace that comes with it,
+	  which makes a paragraph somebody is about to post on Instagram look like
+	  source code.
+	*/
+	.share-paste {
+		font-family: inherit;
+	}
+</style>
+
+<script>
+	// Progressive enhancement, and nothing more. Everything above works without
+	// this file; it only saves a long-press and a fiddly text selection on a
+	// phone, which is where most of these will be shared from.
+	const status = document.querySelector<HTMLElement>('[data-copy-status]');
+	const buttons = document.querySelectorAll<HTMLButtonElement>('[data-copy], [data-copy-text]');
+
+	// navigator.clipboard is unavailable over plain http on some browsers, so
+	// the buttons stay hidden rather than appearing and then failing.
+	if (navigator.clipboard) {
+		for (const button of buttons) {
+			button.hidden = false;
+
+			button.addEventListener('click', async () => {
+				const selector = button.dataset.copy;
+				const text = selector
+					? (document.querySelector<HTMLElement>(selector)?.textContent ?? '')
+					: (button.dataset.copyText ?? '');
+
+				try {
+					await navigator.clipboard.writeText(text);
+					if (status) status.textContent = 'Copied.';
+				} catch {
+					// Denied permission, or an insecure context. Say so rather than
+					// leaving somebody to paste whatever was in the clipboard before.
+					if (status) status.textContent = 'Could not copy — select the text and copy it by hand.';
+				}
+			});
+		}
+	}
+</script>
