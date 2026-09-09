@@ -19,7 +19,7 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 
 <section id="hero" class="site-hero relative overflow-hidden bg-primary text-primary-content">
 	<ContourBackdrop />
-	<div class="hero-content relative mx-auto flex max-w-3xl flex-col items-center justify-center gap-8 px-4 pb-16 text-center sm:px-6 lg:px-8">
+	<div class="hero-content relative mx-auto flex max-w-3xl flex-col items-center gap-8 px-4 text-center sm:px-6 lg:px-8">
 		<div>
 			{/*
 			  The mark sits above the heading rather than replacing it: the club
@@ -46,34 +46,48 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 </section>
 
 <style>
+	/*
+	  DELIBERATELY BORING. This hero rendered as contours alone on iOS Safari
+	  until the first scroll, when the logo, heading and buttons appeared —
+	  reproduced on two phones, on a device that had never loaded the site.
+
+	  Two attempts to diagnose it from the outside failed, so the construction
+	  is gone rather than adjusted. Both suspects are removed together:
+
+	  1. The section was `display: flex`, making .hero-content a flex ROW item
+	     with no width of its own. It is a plain block now, so its width is the
+	     section's width and nothing has to be measured.
+	  2. The height came from `clamp(28rem, 70svh, 44rem)`. A viewport unit on
+	     iOS resolves against a toolbar that is still settling at first paint,
+	     and is the usual suspect in "correct itself on scroll" bugs. The height
+	     now comes from the content plus padding, so it cannot change when the
+	     toolbar does.
+
+	  The 404 page uses the same backdrop this way and has never done it.
+
+	  If a viewport-height hero is ever wanted back, test it on a real iPhone
+	  in Safari from a cold load, not in a desktop browser — nothing in a
+	  desktop engine reproduces this.
+	*/
 	.site-hero {
-		display: flex;
-		min-height: clamp(28rem, 70svh, 44rem);
+		/* A floor, in rem, so a short strapline cannot squash it. Not vh. */
+		min-height: 30rem;
 	}
 
 	.hero-content {
-		padding-top: var(--header-height, 4rem);
+		/* Clears the fixed header, which is transparent over this section. */
+		padding-top: calc(var(--header-height, 4rem) + 3.5rem);
+		padding-bottom: 5.5rem;
 
-		/*
-		  The hero is a flex ROW, so without this the content is a flex item with
-		  no width of its own — the browser sizes it from max-content and
-		  `mx-auto` merely centres whatever it decided. That is the one thing
-		  structurally different about this hero and the 404 page, which uses the
-		  same backdrop in a plain block and has never misbehaved. flex:1 makes
-		  the width the row's width instead of a measurement, and min-width:0
-		  stops the long strapline forcing an overflow the parent then clips.
-		*/
-		flex: 1;
-		min-width: 0;
-
-		/*
-		  Above the two absolutely-positioned contour layers, explicitly. All
-		  three are positioned with no z-index, so paint order was left to DOM
-		  order — which is correct per spec, and which iOS has a long history of
-		  getting wrong until something forces a recomposite. A scroll is
-		  exactly such a force.
-		*/
+		/* Above the contour layers explicitly rather than by DOM order. */
 		z-index: 1;
+	}
+
+	@media (min-width: 640px) {
+		.hero-content {
+			padding-top: calc(var(--header-height, 4rem) + 4.5rem);
+			padding-bottom: 7rem;
+		}
 	}
 
 	/*
