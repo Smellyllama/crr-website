@@ -124,3 +124,31 @@ Marathon**, **Bovington**, **New Forest**, the three **Bad Cow** entries, and
 **Chard Chaser** (in its second year in 2017). They shipped rather than being
 dropped, on the basis that retiring one is easier than inventing it back. This
 is the toggle for doing that.
+
+---
+
+## What the first review found, September 2026
+
+The thirty seed entries were checked against the organisers a day after they
+shipped. **Every entry whose only evidence was a 2017 or 2018 report was wrong.
+Every entry with a recent report was still real.**
+
+Seven races had stopped: the three Bad Cow entries (White Star Running became
+Keep Running Rural, which has held its last event), Bovington, Chard Chaser and
+both Dartmoor Vale entries. They are retired rather than deleted, each carrying
+the evidence and the date it was checked.
+
+Four were still running but wrongly described. The Bicton Blister is now the
+Budleigh Blister, moved and shortened to 9.5 miles. Dark Valley is now a 10km
+night trail run by BigFeat Events — same name, different race. The Humdinger
+moved from February to March. And Forde Abbey, the club's own race, was
+recorded from the one year it was postponed.
+
+That last one is the lesson in miniature: the rule was derived from a single
+observation, and the single observation was the exception.
+
+**Age predicted wrongness better than anything else**, which is what
+`npm run check:diary` now reports — every unconfirmed entry whose newest
+published report is over three years old. It runs as part of the build and
+prints a worklist without failing anything, because those entries are not
+wrong, only unverified, and the page already renders them as approximate.

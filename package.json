@@ -8,9 +8,10 @@
   "scripts": {
     "dev": "astro dev",
     "check:cms": "node scripts/check-cms-schema.mjs",
-    "build": "node scripts/check-cms-schema.mjs && astro build",
+    "build": "node scripts/check-cms-schema.mjs && node scripts/check-diary-freshness.mjs && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:diary": "node scripts/check-diary-freshness.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
