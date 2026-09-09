@@ -20,6 +20,12 @@ import contoursMobile from '../assets/hero-contours-mobile.svg?raw';
 		/* Stroke colours are baked into the SVGs (#8AABC6 / #c5d6e6, both
 		   already club secondary shades) — no currentColor to drive here. */
 		opacity: 0.5;
+
+		/* Explicitly behind the content that sits on top of it, rather than
+		   relying on DOM order alone. Decorative, so it never wants the tap
+		   either. */
+		z-index: 0;
+		pointer-events: none;
 	}
 
 	.contours :global(svg) {

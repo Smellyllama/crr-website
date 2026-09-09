@@ -53,6 +53,27 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 
 	.hero-content {
 		padding-top: var(--header-height, 4rem);
+
+		/*
+		  The hero is a flex ROW, so without this the content is a flex item with
+		  no width of its own — the browser sizes it from max-content and
+		  `mx-auto` merely centres whatever it decided. That is the one thing
+		  structurally different about this hero and the 404 page, which uses the
+		  same backdrop in a plain block and has never misbehaved. flex:1 makes
+		  the width the row's width instead of a measurement, and min-width:0
+		  stops the long strapline forcing an overflow the parent then clips.
+		*/
+		flex: 1;
+		min-width: 0;
+
+		/*
+		  Above the two absolutely-positioned contour layers, explicitly. All
+		  three are positioned with no z-index, so paint order was left to DOM
+		  order — which is correct per spec, and which iOS has a long history of
+		  getting wrong until something forces a recomposite. A scroll is
+		  exactly such a force.
+		*/
+		z-index: 1;
 	}
 
 	/*
