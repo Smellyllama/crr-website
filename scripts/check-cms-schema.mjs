@@ -177,6 +177,25 @@ for (const collection of config.collections) {
       }
       checkEntry(file, frontMatter, declared, media, `${collection.name}/${entry.name}`);
     }
+
+    // A `files` collection names its files one by one, so the loop above only
+    // ever sees the ones the CMS already knows about. A new Markdown file
+    // dropped into the same folder is invisible to it — which is the failure
+    // this script exists to catch, one level down: the page builds, renders,
+    // and cannot be edited by anybody without a text editor and a Git client.
+    // src/content/pages/contact.md was exactly that for a build.
+    for (const dir of new Set((collection.files ?? []).map((e) => dirname(e.file)))) {
+      const declaredFiles = new Set(
+        (collection.files ?? []).map((e) => join(ROOT, e.file)),
+      );
+      for (const file of markdownIn(join(ROOT, dir))) {
+        if (!declaredFiles.has(file)) {
+          problems.push(
+            `${relative(ROOT, file)} is not listed under the "${collection.name}" CMS collection, so nobody can edit it.`,
+          );
+        }
+      }
+    }
   }
 }
 
