@@ -1,6 +1,20 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
+/**
+ * True until the site is announced.
+ *
+ * Turns on a noindex tag on every page and a blanket Disallow in robots.txt,
+ * so the site can be built, deployed and shown to the committee without
+ * turning up in a search for the club. It is not security — anyone with the
+ * address can read the site, and the repository is public — it is only about
+ * not being found by accident before the club is ready to say so.
+ *
+ * The build prints a reminder while this is true. Set it to false on launch
+ * day, in its own commit, and check that /robots.txt has changed.
+ */
+export const PRE_LAUNCH = true;
+
 export const SITE_TITLE = 'Chard Road Runners';
 export const SITE_DESCRIPTION =
 	'Sociable England Athletics affiliated running club in Chard, Somerset. Established 1981.';

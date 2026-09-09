@@ -5,7 +5,7 @@ import '../styles/app.css';
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
-import { SITE_TITLE } from '../consts';
+import { PRE_LAUNCH, SITE_TITLE } from '../consts';
 import { Font } from 'astro:assets';
 
 interface Props {
@@ -21,6 +21,15 @@ const { title, description, image = FallbackImage } = Astro.props;
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
+{
+	/*
+	  Keeps the site out of search results until it is announced. robots.txt
+	  asks crawlers not to visit; this tells the ones that visit anyway not to
+	  list what they found, which is the half that actually removes a page from
+	  results. Both come off together when PRE_LAUNCH goes false.
+	*/
+	PRE_LAUNCH && <meta name="robots" content="noindex, nofollow" />
+}
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- Icons, all generated from the logo mark. SVG for modern browsers, .ico
      (16/32/48) for older ones, and a PNG for iOS: Safari ignores SVG icons

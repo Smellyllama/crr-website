@@ -24,6 +24,14 @@ See `crr-sitemap.md` for the page structure and content plan. Read it before pro
 - **Deployment: live.** Cloudflare Workers, connected to the GitHub repo
   (`Smellyllama/crr-website`). Push to `main` and it builds and deploys itself.
   No manual `wrangler deploy` needed.
+- **Not announced yet.** `PRE_LAUNCH` in `src/consts.ts` puts a `noindex` tag on
+  every page and makes `/robots.txt` disallow everything, so the site can be
+  built, deployed and shown to the committee without turning up in a search for
+  the club. It is not security — anyone with the address can read it, and this
+  repository is public. Setting it to `false` is the launch switch, and the
+  build prints a reminder until somebody does. `site` in `astro.config.mjs` is
+  already the real domain: that string publishes nothing on its own, it only
+  makes canonical URLs, share links, RSS and the sitemap correct.
 - **A second, separate Worker** — `diary-rebuild` in `workers/diary-rebuild/` —
   pings a deploy hook once a week so the race diary rolls forward on its own. It
   has its own Workers Build against this same repository, with the root

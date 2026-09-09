@@ -7,7 +7,14 @@ import { defineConfig, fontProviders, passthroughImageService } from 'astro/conf
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
+	// The real domain, used to build every canonical URL, share link, RSS item
+	// and sitemap entry. Setting it publishes nothing on its own — it is a string
+	// baked into the built HTML. What makes the site reachable is DNS and the
+	// custom domain in Cloudflare, which are separate and still to be done.
+	//
+	// While PRE_LAUNCH in src/consts.ts is true, every page also carries a
+	// noindex tag and robots.txt disallows everything.
+	site: 'https://chardroadrunners.com',
 	integrations: [mdx(), sitemap()],
 	// Cloudflare's build environment can't run Sharp, so build-time image
 	// resizing/webp conversion silently fails there (it works fine locally,
