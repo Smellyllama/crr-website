@@ -29,9 +29,12 @@ See `crr-sitemap.md` for the page structure and content plan. Read it before pro
   built, deployed and shown to the committee without turning up in a search for
   the club. It is not security — anyone with the address can read it, and this
   repository is public. Setting it to `false` is the launch switch, and the
-  build prints a reminder until somebody does. `site` in `astro.config.mjs` is
-  already the real domain: that string publishes nothing on its own, it only
-  makes canonical URLs, share links, RSS and the sitemap correct.
+  build prints a reminder until somebody does — and there is no
+  `public/robots.txt` to edit as well, because it is generated from that same
+  flag on purpose. `site` in `astro.config.mjs` is already the real domain:
+  that string publishes nothing on its own, it only makes canonical URLs,
+  share links, RSS and the sitemap correct.
+  **`docs/launch-checklist.md` is the list of everything else still to do.**
 - **A second, separate Worker** — `diary-rebuild` in `workers/diary-rebuild/` —
   pings a deploy hook once a week so the race diary rolls forward on its own. It
   has its own Workers Build against this same repository, with the root
