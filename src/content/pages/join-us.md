@@ -64,7 +64,6 @@ membership:
   connectMyClubCode: "67a1c8f4"
   # TODO: confirm this code is still current — it came from the old Webador site.
   formUrl: ""
-  membershipSecretary: "Hannah Grinter"
   membershipEmail: "membership@chardroadrunners.com"
 
 couchTo5k:

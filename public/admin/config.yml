@@ -722,7 +722,6 @@ collections:
                   Leave empty until there is a form to point at. Nothing is
                   shown on the page while it is empty, so there is never a
                   dead link.
-              - { label: Membership secretary, name: membershipSecretary, widget: string }
               - label: Membership email
                 name: membershipEmail
                 widget: string

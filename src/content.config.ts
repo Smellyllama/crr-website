@@ -230,7 +230,6 @@ const joinUsPage = z.object({
     // Empty until there's a form to point at. Nothing renders while it is,
     // so the page never shows a dead link.
     formUrl: z.string().default(""),
-    membershipSecretary: z.string(),
     membershipEmail: z.string().email(),
   }),
   couchTo5k: z.object({
