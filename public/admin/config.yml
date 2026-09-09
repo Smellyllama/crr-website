@@ -857,7 +857,19 @@ collections:
         widget: string
         hint: >-
           Must match the race name used in race reports exactly, or the diary
-          entry cannot list the reports about it. For example "Bicton Blister 10".
+          entry cannot list the reports about it. For example "Budleigh Blister".
+
+      - label: Former names
+        name: formerNames
+        widget: list
+        required: false
+        field: { label: Name, name: name, widget: string }
+        hint: >-
+          If the race has been renamed, put its old names here, spelled as the
+          old race reports spell them - "Bicton Blister 10", for instance. That
+          is what keeps those reports listed against this race. Do not edit the
+          old reports themselves: they are somebody's account of a race that
+          really was called that at the time.
 
       - label: Month
         name: month

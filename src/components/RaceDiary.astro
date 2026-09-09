@@ -9,7 +9,7 @@
 //
 // Confirmed and approximate are told apart by wording, weight and a solid vs
 // dashed rule — never by colour alone.
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 import { formatDistance } from '../utils/distance';
 import { getEarliestRaceDate, sortByRaceDateDesc } from '../utils/race-reports';
@@ -42,6 +42,32 @@ for (const report of reports) {
 	}
 }
 
+/**
+ * Every report about a race, including under names it has since dropped.
+ *
+ * The Budleigh Blister was the Bicton Blister until Exmouth Harriers moved it.
+ * Matching on the current name alone would lose the 2017 report — the oldest
+ * ones are exactly the ones a rename strands, and they are the ones nobody
+ * would think to look for.
+ */
+const reportsFor = (entry: (typeof events)[number]) => {
+	const seen = new Set<(typeof reports)[number]>();
+	for (const name of [entry.data.name, ...entry.data.formerNames]) {
+		for (const report of reportsByRace.get(name) ?? []) seen.add(report);
+	}
+	return [...seen];
+};
+
+// Each entry's body: terrain, where it starts, whether the date has moved
+// before. Rendered on the card because that is where somebody deciding whether
+// to enter is looking — a note saying a race caps at 200 with no entries on
+// the day is useless filed one click away.
+const bodies = new Map(
+	await Promise.all(
+		events.map(async (event) => [event.id, (await render(event)).Content] as const),
+	),
+);
+
 const cutoff = diaryCutoff(now, 12);
 
 const months = groupByMonth(
@@ -64,7 +90,8 @@ const months = groupByMonth(
 				<ul class="mt-4 flex flex-col gap-3">
 					{items.map(({ event, date }) => {
 						const exact = hasExactDate(event.data);
-						const related = sortByRaceDateDesc(reportsByRace.get(event.data.name) ?? []);
+						const related = sortByRaceDateDesc(reportsFor(event));
+						const Body = bodies.get(event.id);
 						return (
 							<li class:list={['diary-entry', exact ? 'is-exact' : 'is-approximate']}>
 								<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -93,6 +120,12 @@ const months = groupByMonth(
 								<p class="diary-certainty">
 									{exact ? 'Date confirmed' : 'Approximate — check before entering'}
 								</p>
+
+								{Body && (
+									<div class="diary-note">
+										<Body />
+									</div>
+								)}
 
 								{related.length > 0 && (
 									<p class="diary-reports">
@@ -154,6 +187,18 @@ const months = groupByMonth(
 		font-size: 0.8rem;
 		color: var(--color-base-content);
 		opacity: 0.6;
+	}
+
+	/*
+	  The body is Markdown, so it arrives wrapped in <p>. Global, because the
+	  content comes from render() rather than from this file's own markup and
+	  scoped styles would not reach it.
+	*/
+	.diary-note :global(p) {
+		margin: 0.35rem 0 0;
+		font-size: 0.875rem;
+		color: var(--color-base-content);
+		opacity: 0.75;
 	}
 
 	.diary-reports {

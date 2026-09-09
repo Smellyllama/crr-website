@@ -289,6 +289,19 @@ const calendarEvents = defineCollection({
   schema: z
     .object({
       name: z.string(),
+
+      // Names this race used to go by.
+      //
+      // A race that is renamed keeps its history: the diary links each entry to
+      // the reports that mention it, matched on the race name in the report's
+      // frontmatter, and a rename would otherwise orphan every report written
+      // before it. The Bicton Blister became the Budleigh Blister; the 2017
+      // report still says Bicton, and still belongs to the entry.
+      //
+      // Never rewrite the name in an old report to match — that is a member's
+      // own account of a race that really was called that at the time.
+      formerNames: z.array(z.string()).default([]),
+
       month: z.number().int().min(1).max(12),
 
       // Two ways of saying when a race happens.
