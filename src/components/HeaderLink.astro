@@ -15,8 +15,13 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 		className,
 		// Explicit colour: the header sits on navy, so it opts out of the
 		// dark-navy default link colour set in global.css.
-		'text-primary-content transition-colors hover:text-secondary',
-		{ 'font-semibold text-secondary': isActive },
+		//
+		// Sky rather than the pale blue, because this is blue on the purple:
+		// 8.67:1 against the pale blue's 4.6:1. Both pass, but the current-page
+		// marker is the one thing here that has to be seen at a glance, and it
+		// is doing that on a header that goes transparent over the hero.
+		'text-primary-content transition-colors hover:text-sky',
+		{ 'font-semibold text-sky': isActive },
 	]}
 	aria-current={isActive ? 'page' : undefined}
 	{...props}
