@@ -39,6 +39,30 @@ const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${ur
 <section class="share not-prose" aria-labelledby="share-heading">
 	<h2 id="share-heading" class="text-lg font-bold text-primary">Share this report</h2>
 
+	{/*
+	  The phone's own share sheet, when there is one: one tap to whichever app
+	  the member actually uses, Instagram and Messenger included.
+
+	  hidden in the HTML and revealed by script, like the copy buttons. It is
+	  purely additional — the two links below are plain anchors that never depend
+	  on it, so if the sheet is missing, refuses, or throws, what is left is a
+	  working page rather than a button that does nothing.
+	*/}
+	<div class="mt-3">
+		<button
+			type="button"
+			class="btn btn-sm btn-primary"
+			data-share
+			data-share-title={title}
+			data-share-text={excerpt}
+			data-share-url={url}
+			hidden
+		>
+			Share…
+		</button>
+		<p class="share-status mt-2 text-sm" role="status" data-share-status></p>
+	</div>
+
 	<ul class="mt-3 flex flex-wrap gap-2">
 		<li>
 			{/*
@@ -100,7 +124,7 @@ const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${ur
 		  role="status" so the confirmation is announced, not only seen — a screen
 		  reader gets nothing from a button whose own label never changes.
 		*/}
-		<p class="mt-2 text-sm text-success" role="status" data-copy-status></p>
+		<p class="share-status mt-2 text-sm" role="status" data-copy-status></p>
 	</div>
 </section>
 
@@ -114,13 +138,92 @@ const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${ur
 	.share-paste {
 		font-family: inherit;
 	}
+
+	/* Empty until something is said, so neither line reserves space. */
+	.share-status:empty {
+		display: none;
+	}
+
+	.share-status.is-ok {
+		color: var(--color-success);
+	}
+
+	/*
+	  Not the error red. Nothing has gone wrong with the page — a shortcut is
+	  unavailable and the message says what to do instead, which is a note
+	  rather than an alarm.
+	*/
+	.share-status.is-problem {
+		color: var(--color-base-content);
+		opacity: 0.75;
+	}
 </style>
 
 <script>
 	// Progressive enhancement, and nothing more. Everything above works without
 	// this file; it only saves a long-press and a fiddly text selection on a
 	// phone, which is where most of these will be shared from.
-	const status = document.querySelector<HTMLElement>('[data-copy-status]');
+	/**
+	 * Write a message into one of the two live regions.
+	 *
+	 * The tone is set here rather than baked into the markup, because the same
+	 * line carries both "Copied." and "that did not work" — and a failure
+	 * rendered in the success colour tells somebody the opposite of the truth.
+	 */
+	const setStatus = (el: HTMLElement | null, message: string, ok: boolean) => {
+		if (!el) return;
+		el.textContent = message;
+		el.classList.toggle('is-ok', ok);
+		el.classList.toggle('is-problem', !ok);
+	};
+
+	const copyStatus = document.querySelector<HTMLElement>('[data-copy-status]');
+	const shareStatus = document.querySelector<HTMLElement>('[data-share-status]');
+
+	// --- The native share sheet -------------------------------------------
+	//
+	// Three separate ways this is unavailable, and they need different answers:
+	//
+	//   1. navigator.share is missing. Most desktop browsers. The button never
+	//      appears — better than a button that does nothing.
+	//   2. It exists but refuses this payload, or the browser blocks it outside
+	//      a secure context. canShare() catches most of that up front; a throw
+	//      catches the rest, and the button removes itself so the second tap is
+	//      not another dead end.
+	//   3. The sheet opened and the reader backed out. That is not a failure and
+	//      must stay silent — it rejects with AbortError exactly as a successful
+	//      cancel, so treating every rejection as an error would tell somebody
+	//      their share broke when they simply changed their mind.
+	//
+	// Underneath all three, the Facebook and WhatsApp links are plain anchors
+	// that were never conditional on any of this.
+	const shareButton = document.querySelector<HTMLButtonElement>('[data-share]');
+
+	if (shareButton && navigator.share) {
+		const payload = {
+			title: shareButton.dataset.shareTitle ?? '',
+			text: shareButton.dataset.shareText ?? '',
+			url: shareButton.dataset.shareUrl ?? '',
+		};
+
+		// canShare is newer than share itself, so its absence is not a refusal.
+		if (!navigator.canShare || navigator.canShare(payload)) {
+			shareButton.hidden = false;
+
+			shareButton.addEventListener('click', async () => {
+				try {
+					await navigator.share(payload);
+				} catch (error) {
+					if ((error as Error)?.name === 'AbortError') return;
+					// Genuinely broken rather than cancelled. Take the button away
+					// and point at what is still there and still works.
+					shareButton.hidden = true;
+					setStatus(shareStatus, 'Sharing is not available here — use the links below.', false);
+				}
+			});
+		}
+	}
+
 	const buttons = document.querySelectorAll<HTMLButtonElement>('[data-copy], [data-copy-text]');
 
 	// navigator.clipboard is unavailable over plain http on some browsers, so
@@ -137,11 +240,11 @@ const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${ur
 
 				try {
 					await navigator.clipboard.writeText(text);
-					if (status) status.textContent = 'Copied.';
+					setStatus(copyStatus, 'Copied.', true);
 				} catch {
 					// Denied permission, or an insecure context. Say so rather than
 					// leaving somebody to paste whatever was in the clipboard before.
-					if (status) status.textContent = 'Could not copy — select the text and copy it by hand.';
+					setStatus(copyStatus, 'Could not copy — select the text and copy it by hand.', false);
 				}
 			});
 		}

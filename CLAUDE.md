@@ -180,11 +180,60 @@ and troubleshooting, but learning this stack as I go. So:
   graphics `aria-hidden`.
 - **Alt text on every lead image**, not just in-body ones. Absent alt beats wrong
   alt — never ship the literal word "TODO" as alt text.
-- **No client-side JavaScript on the homepage.** Keep it minimal elsewhere.
+- **Client-side JavaScript is the exception, not the default** — see below.
 - Social previews (`og:image`) use the post's own hero image, falling back to the
   contour graphic — never a generic placeholder.
 - Images through Astro's image component so dimensions are known and the page
   doesn't shift as they load.
+
+## Client-side JavaScript
+
+The standing rule is minimal. Not none — the site ships two scripts, listed
+below — but each one had to earn its place, and every one of them is
+**progressive enhancement**: the page is complete and usable with JavaScript
+off, and the script only removes friction.
+
+This list exists so the next person can tell a deliberate exception from an
+accumulated one. **Adding a third means adding it here, in the same commit.**
+
+Three rules for any new script:
+
+1. **Server-render the working version first.** The unit switcher failed this:
+   its `data-units` attribute was only ever set by script, so with JS off both
+   spans stayed hidden and *no distance rendered at all*. A feature that
+   disappears without JS is not enhancement.
+2. **Hide, don't break.** A control that cannot work without a script carries
+   `hidden` in the HTML and is revealed by the script. Nobody is offered a
+   button that does nothing.
+3. **Feature-detect the specific thing, and handle it refusing.** Presence is
+   not availability: `navigator.share` exists in some browsers that then reject,
+   and the clipboard is unreachable outside a secure context.
+
+### The two exceptions
+
+**`Header.astro` — the header over the hero.** Sets `data-scrolled` past 72px so
+the transparent header goes solid, and publishes the header height as a CSS
+variable. Only loads on pages passing `overlayHeader`, which today is the
+homepage alone. Without it the header stays transparent over the hero: less
+tidy, still perfectly readable, because the scrim behind it is pure CSS.
+
+**`ShareRaceReport.astro` — sharing a race report.** Two copy buttons and the
+phone's native share sheet, all three `hidden` in the HTML and revealed only
+where the API exists. Without it the Facebook and WhatsApp links are plain
+anchors that work as normal, and the paste block is ordinary selectable text.
+Nothing is lost but a long-press.
+
+Note the homepage carries the first of these. An earlier version of this file
+said the homepage had no JavaScript at all; the built HTML disagreed, which is
+what this section is for.
+
+### Rejected
+
+**The miles/kilometres switcher.** Built, then rolled back — not for the
+JavaScript but because a distance that changes unit depending on a setting
+nobody noticed makes a 10k race harder to read, not easier. Distances now show
+both units at once, worked out at build time, and `formatDistance` needs no
+script at all. If somebody proposes it again, this is why it went.
 
 ## Measurement and verification
 
