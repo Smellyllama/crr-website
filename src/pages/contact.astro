@@ -1,10 +1,130 @@
 ---
+// Who to email, and what about.
+//
+// The page holds one address of its own — the general one. Membership, welfare
+// and the two races each already have an owner, so this reads from there. That
+// is deliberate: a copy of the welfare address here would go stale silently the
+// day somebody updated the welfare page, and a safeguarding concern would go
+// into a dead mailbox with nothing failing.
+import { getCollection, getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+
+const page = await getEntry('pages', 'contact');
+if (!page || page.data.page !== 'contact') {
+	throw new Error('src/content/pages/contact.md is missing or is not a contact page.');
+}
+const { hero, intro, general, membership, welfare, races: racesCopy, committee } = page.data;
+
+const [joinUs, welfarePage, races] = await Promise.all([
+	getEntry('pages', 'join-us'),
+	getEntry('legal', 'welfare'),
+	getCollection('races'),
+]);
+
+const membershipEmail =
+	joinUs?.data.page === 'join-us' ? joinUs.data.membership.membershipEmail : undefined;
+const welfareOfficer = welfarePage?.data.welfareOfficer;
+
+const raceContacts = races
+	.sort((a, b) => a.data.order - b.data.order)
+	.filter((race) => race.data.contactEmail)
+	.map((race) => ({ title: race.data.title, email: race.data.contactEmail! }));
 ---
 
-<Layout title="Contact" description="Get in touch with Chard Road Runners.">
-	<section class="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6 lg:px-8">
-		<h1 class="text-4xl font-bold text-primary">Contact</h1>
-		<p class="mt-4 text-lg text-base-content/70">Page content coming soon.</p>
+<Layout title="Contact" description="Who to email at Chard Road Runners, and what about.">
+	<section class="bg-primary text-primary-content">
+		<div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8">
+			<h1 class="text-4xl font-bold sm:text-5xl">{hero.heading}</h1>
+			<p class="mt-4 text-lg text-primary-content/80">{hero.strapline}</p>
+		</div>
 	</section>
+
+	<div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+		<p class="text-base-content/80">{intro}</p>
+
+		<dl class="mt-8 flex flex-col gap-6">
+			<div class="contact-entry">
+				<dt class="font-bold text-primary">{general.label}</dt>
+				<dd class="mt-1 text-base-content/80">
+					<p>{general.detail}</p>
+					<a href={`mailto:${general.email}`} class="link link-primary">{general.email}</a>
+				</dd>
+			</div>
+
+			{
+				membershipEmail && (
+					<div class="contact-entry">
+						<dt class="font-bold text-primary">{membership.label}</dt>
+						<dd class="mt-1 text-base-content/80">
+							<p>{membership.detail}</p>
+							<a href={`mailto:${membershipEmail}`} class="link link-primary">
+								{membershipEmail}
+							</a>
+						</dd>
+					</div>
+				)
+			}
+
+			{
+				welfareOfficer && (
+					<div class="contact-entry">
+						<dt class="font-bold text-primary">{welfare.label}</dt>
+						<dd class="mt-1 text-base-content/80">
+							<p>{welfare.detail}</p>
+							<a href={`mailto:${welfareOfficer.email}`} class="link link-primary">
+								{welfareOfficer.email}
+							</a>
+							{/* Named, because who reads a welfare concern matters more than
+							    where it lands. */}
+							<p class="text-sm text-base-content/60">
+								Our welfare officer is {welfareOfficer.name}.{' '}
+								<a href="/welfare" class="link">What happens next</a>.
+							</p>
+						</dd>
+					</div>
+				)
+			}
+
+			{
+				raceContacts.length > 0 && (
+					<div class="contact-entry">
+						<dt class="font-bold text-primary">{racesCopy.label}</dt>
+						<dd class="mt-1 text-base-content/80">
+							<p>{racesCopy.detail}</p>
+							<ul class="mt-1 flex flex-col gap-1">
+								{raceContacts.map((race) => (
+									<li>
+										{race.title} —{' '}
+										<a href={`mailto:${race.email}`} class="link link-primary">
+											{race.email}
+										</a>
+									</li>
+								))}
+							</ul>
+						</dd>
+					</div>
+				)
+			}
+		</dl>
+
+		{/*
+		  committee.body is stripped by the schema while it is still a TODO, so
+		  the heading goes with it rather than standing over nothing.
+		*/}
+		{
+			committee.body && (
+				<section class="mt-12 border-t border-base-300 pt-8">
+					<h2 class="text-2xl font-bold text-primary">{committee.heading}</h2>
+					<p class="mt-3 text-base-content/80">{committee.body}</p>
+				</section>
+			)
+		}
+	</div>
 </Layout>
+
+<style>
+	.contact-entry {
+		padding-left: 1rem;
+		border-left: 3px solid var(--color-base-300);
+	}
+</style>
