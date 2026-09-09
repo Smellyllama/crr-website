@@ -75,8 +75,22 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 	}
 
 	.hero-content {
-		/* Clears the fixed header, which is transparent over this section. */
-		padding-top: calc(var(--header-height, 4rem) + 3.5rem);
+		/*
+		  Clears the fixed header, which is transparent over this section.
+		
+		  A PLAIN NUMBER, not a JavaScript measurement. This was
+		  calc(var(--header-height) + 3.5rem), where --header-height was set by
+		  the header script from header.offsetHeight. Measure that a moment too
+		  early — before the header has laid out, on an engine that runs the
+		  script at a different point — and the variable comes back short, the
+		  padding shrinks, and the logo ends up underneath the bar. Which is
+		  what iOS Safari was doing.
+		
+		  The header is 64px on a phone and 68px on a desktop, by design. 7.5rem
+		  leaves 52px of clearance under the worst of those, and it cannot be
+		  wrong at the moment it matters, because nothing has to run first.
+		*/
+		padding-top: 7.5rem;
 		padding-bottom: 5.5rem;
 
 		/* Above the contour layers explicitly rather than by DOM order. */
@@ -85,7 +99,7 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 
 	@media (min-width: 640px) {
 		.hero-content {
-			padding-top: calc(var(--header-height, 4rem) + 4.5rem);
+			padding-top: 8.5rem;
 			padding-bottom: 7rem;
 		}
 	}

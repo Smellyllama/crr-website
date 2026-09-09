@@ -165,17 +165,25 @@ const { overlay = false } = Astro.props;
 
 			const header = document.getElementById('site-header');
 			if (header) {
-				const setHeaderHeight = () => {
-					document.documentElement.style.setProperty('--header-height', `${header.offsetHeight}px`);
-				};
 				const onScroll = () => {
 					header.dataset.scrolled = String(window.scrollY > SOLID_AFTER_PX);
 				};
-				setHeaderHeight();
+
+				// Ran once here and once on load. iOS can report a transient
+				// scroll position while the page is still settling, and this
+				// only listens for scroll events afterwards — so a wrong first
+				// reading would otherwise leave the bar solid over an unscrolled
+				// page until somebody touched it.
 				onScroll();
-				window.addEventListener('resize', setHeaderHeight);
+				window.addEventListener('load', onScroll);
 				window.addEventListener('scroll', onScroll, { passive: true });
 			}
+
+			// This script no longer publishes a --header-height variable. It
+			// used to, and the hero's top padding was calculated from it, which
+			// meant the layout of the first thing anybody sees depended on a
+			// measurement taken at whatever moment the script happened to run.
+			// The hero uses a plain value now. Don't reintroduce it.
 		</script>
 	)
 }
