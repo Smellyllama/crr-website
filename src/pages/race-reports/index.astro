@@ -24,12 +24,12 @@ const posts = sortByRaceDateDesc(await getCollection('race-reports', ({ data }) 
 								)}
 							</div>
 							<div class="flex items-center gap-2">
-								<h4 class:list={['font-bold text-base-content group-hover:text-secondary', index === 0 ? 'text-3xl' : 'text-xl']}>
+								<h4 class:list={['font-bold text-base-content group-hover:underline', index === 0 ? 'text-3xl' : 'text-xl']}>
 									{post.data.title}
 								</h4>
 								{post.data.clubRace && <span class="badge badge-secondary badge-sm">Club race</span>}
 							</div>
-							<p class="text-base-content/60 group-hover:text-secondary">
+							<p class="text-base-content/60">
 								<FormattedDate date={getEarliestRaceDate(post.data.races)} approximate={post.data.dateApproximate} />
 							</p>
 							<p class="mt-1 text-base-content/70">{post.data.excerpt}</p>

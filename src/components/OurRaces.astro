@@ -45,7 +45,7 @@ const races = (await getCollection('races')).sort((a, b) => a.data.order - b.dat
 								)}
 							</div>
 							<div class="p-4">
-								<h3 class="text-lg font-bold text-base-content group-hover:text-secondary">{race.data.title}</h3>
+								<h3 class="text-lg font-bold text-base-content group-hover:underline">{race.data.title}</h3>
 								<p class="text-sm text-base-content/60">
 									{race.data.nextDate && (
 										<>
