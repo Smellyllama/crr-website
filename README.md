@@ -1,63 +1,43 @@
-# Astro Starter Kit: Blog
+# Chard Road Runners
 
-```sh
-npm create astro@latest -- --template blog
-```
+The website for [Chard Road Runners](https://www.strava.com/clubs/246805), an
+England Athletics affiliated running club in Chard, Somerset, established 1981.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Astro, Tailwind and daisyUI, deployed to Cloudflare Workers. Content is
+Markdown, edited by committee members through [Sveltia CMS](https://github.com/sveltia/sveltia-cms)
+at `/admin` — no code, no terminal.
 
-Features:
+> ### ⚠️ Not announced yet
+>
+> `PRE_LAUNCH` in `src/consts.ts` is `true`, which puts a `noindex` tag on
+> every page and makes `/robots.txt` disallow everything. Setting it to `false`
+> is the launch switch. **See [docs/launch-checklist.md](docs/launch-checklist.md).**
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+## Working on it
 
-## 🚀 Project Structure
+| Command | What it does |
+| :------ | :----------- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Local preview at `localhost:4321` |
+| `npm run build` | Run the checks, then build to `dist/` |
+| `npm run check:cms` | Check the two schemas still describe the same fields |
+| `npm run check:diary` | List diary entries running on stale evidence |
 
-Inside of your Astro project, you'll see the following folders and files:
+Push to `main` and Cloudflare builds and deploys it. There is no manual deploy
+step.
 
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
+## Where things are
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| | |
+| :-- | :-- |
+| [CLAUDE.md](CLAUDE.md) | How the project works, and the rules that are not obvious from the code. **Read this first.** |
+| [docs/launch-checklist.md](docs/launch-checklist.md) | Everything still to do before launch |
+| [docs/content-model.md](docs/content-model.md) | The five content collections and their frontmatter |
+| [docs/handover.md](docs/handover.md) | The CMS, and the things about it that have bitten us |
+| [docs/race-diary.md](docs/race-diary.md) | How the race diary works and why it is deliberately vague about dates |
+| [crr-sitemap.md](crr-sitemap.md) | Page structure and the content plan |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+`src/content.config.ts` and `public/admin/config.yml` describe the same fields
+twice. **A change to one is a change to the other, in the same commit** — if
+they drift, the CMS accepts a post the build then rejects, and the failure
+lands on the committee member who wrote it.
