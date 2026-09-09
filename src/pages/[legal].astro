@@ -109,7 +109,8 @@ const showContents = contents.length >= 8;
 	  separator. The page's own <h1> is the title in the banner above.
 	*/
 	.legal-body :global(h2) {
-		font-size: 1.75rem;
+		/* Size comes from the base scale in global.css — the one place it is
+		   set. This rule is spacing and the separator only. */
 		margin-top: 3rem;
 		padding-top: 1.5rem;
 		border-top: 1px solid var(--color-base-300);
@@ -122,12 +123,10 @@ const showContents = contents.length >= 8;
 	}
 
 	.legal-body :global(h3) {
-		font-size: 1.25rem;
 		margin-top: 2rem;
 	}
 
 	.legal-body :global(h4) {
-		font-size: 1.05rem;
 		margin-top: 1.5rem;
 	}
 

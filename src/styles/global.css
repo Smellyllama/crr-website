@@ -6,7 +6,14 @@
 
 body {
 	font-family: var(--font-inter);
-	line-height: 1.7;
+	/*
+	  17px, on body rather than :root. Tailwind's whole spacing scale is rem,
+	  so moving the root would have inflated every padding, margin and
+	  max-width on the site by 6.25% — and pulled the heading utilities away
+	  from the base scale below, which is the one thing this is meant to fix.
+	*/
+	font-size: 17px;
+	line-height: 1.6;
 }
 
 /*
@@ -15,6 +22,27 @@ body {
   `a` here silently overrides `text-3xl`, `link-primary`, `btn-secondary` and
   every other Tailwind or daisyUI class on the same element. Inside the layer
   these are defaults that any class can override, which is the point of them.
+*/
+/*
+  THE HEADING SCALE. One source of truth, and it is this one.
+
+  Sizes are rem, and they are Tailwind's own steps to the pixel: h2 is
+  2.25rem, which is exactly `text-4xl`. So a Markdown h2 and a component h2
+  are the same size, which they were not before — headings were being set in
+  three competing places, and the em-based scale that used to live here lost
+  to a page-level rule wherever Markdown actually rendered, making it look
+  authoritative while doing nothing.
+
+  em was the reason it could never line up: it resolved against the body,
+  while every `text-*` utility resolves against the root, so the two drifted
+  apart the moment the body size changed. Keep these in rem.
+
+    h1  3rem      48px   text-5xl
+    h2  2.25rem   36px   text-4xl
+    h3  1.875rem  30px   text-3xl
+    h4  1.5rem    24px   text-2xl
+    h5  1.25rem   20px   text-xl
+    h6  1.125rem  18px   text-lg
 */
 @layer base {
 	h1,
@@ -27,21 +55,39 @@ body {
 		font-family: var(--font-outfit);
 		font-weight: 600;
 		line-height: 1.2;
+		/*
+		  Outfit and Inter are both geometric sans, so a heading does not
+		  separate from body copy on size alone — CLAUDE.md. Tightening the
+		  tracking is half of what does the separating; the weight below is
+		  the other half.
+		*/
+		letter-spacing: -0.02em;
 	}
+
+	/* The two that carry a page. Below h2, 600 is enough and 700 starts to
+	   shout at paragraph scale. */
+	h1,
+	h2 {
+		font-weight: 700;
+	}
+
 	h1 {
-		font-size: 3.052em;
+		font-size: 3rem;
 	}
 	h2 {
-		font-size: 2.441em;
+		font-size: 2.25rem;
 	}
 	h3 {
-		font-size: 1.953em;
+		font-size: 1.875rem;
 	}
 	h4 {
-		font-size: 1.563em;
+		font-size: 1.5rem;
 	}
 	h5 {
-		font-size: 1.25em;
+		font-size: 1.25rem;
+	}
+	h6 {
+		font-size: 1.125rem;
 	}
 
 	/*
@@ -113,6 +159,12 @@ hr {
 	border-top: 1px solid var(--color-base-300);
 }
 
+/*
+  Kept at 18px rather than dropped to the new 17px. Most visitors are on a
+  phone, held at arm's length, and the point of the change was to make body
+  copy bigger — taking a pixel off the majority to make desktop match would
+  have been the opposite. Nobody goes down: desktop 16 to 17, mobile stays 18.
+*/
 @media (max-width: 720px) {
 	body {
 		font-size: 18px;

@@ -148,7 +148,21 @@ properties `--font-outfit` and `--font-inter`. The `fonts` config in
 
 Both are geometric sans faces, so the contrast between heading and body is
 subtle. Headings need weight and tighter letter-spacing to separate clearly from
-body copy — don't rely on size alone.
+body copy — don't rely on size alone. That is why `@layer base` sets headings to
+`letter-spacing: -0.02em`, and h1 and h2 to 700.
+
+**The heading scale lives in one place: `@layer base` in `src/styles/global.css`.**
+Its sizes are rem, and they are Tailwind's own steps to the pixel — base `h2` is
+`2.25rem`, which is exactly `text-4xl` — so a Markdown heading and a component
+heading are the same size. Keep them in rem: `em` resolves against the body
+while every `text-*` utility resolves against the root, which is how the two
+systems silently drifted apart before.
+
+Don't set heading sizes in a page or component style block. Three places used to
+set them, and the base scale lost to a page-level rule wherever Markdown
+actually rendered — it looked authoritative and did nothing. Body copy is 17px,
+18px below 720px, set on `body` and never on `:root`: Tailwind's spacing scale
+is rem, so moving the root scales every margin and max-width on the site.
 
 **Self-hosted.** Astro's Fonts API (`fonts` in `astro.config.mjs`) downloads the
 files at build time and serves them from our own domain, so no visitor's IP
