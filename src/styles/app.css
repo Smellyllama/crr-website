@@ -5,10 +5,8 @@
 
 /*
   Club theme. Base/neutral/status colours and spacing are copied from
-  daisyUI's stock "light" theme as placeholders — only primary and secondary
-  are the real club colours so far. The third accent colour (for calls to
-  action) is still to be chosen per CLAUDE.md; swap --color-accent and
-  --color-accent-content once that's picked.
+  daisyUI's stock "light" theme as placeholders — primary, secondary and
+  accent are the real club colours.
 */
 @plugin 'daisyui/theme' {
 	name: 'crr';
@@ -21,13 +19,27 @@
 	--color-secondary: #8aabc6; /* PMS 4149 — pale blue */
 	--color-secondary-content: #262141;
 
+	/*
+	  The logo's sky blue, chosen as the call-to-action colour.
+	
+	  ONLY EVER AS A FILL. Dark purple on a sky-blue button measures 8.67:1 —
+	  the strongest pairing in the palette, ahead of the pale blue's 6.34:1,
+	  which is why it won. The same colour as TEXT on white is 1.76:1, worse
+	  than anything else here and a clear AA failure. The two facts are not in
+	  tension: one is ink on a light ground, the other is a light ground under
+	  dark ink.
+	
+	  So `btn-accent` yes. `link-accent`, `text-accent` on a light background,
+	  never — there is no size or weight at which 1.76:1 becomes readable.
+	*/
+	--color-accent: #96c8fa;
+	--color-accent-content: #262141;
+
 	/* Placeholder — daisyUI "light" theme defaults */
 	--color-base-100: oklch(100% 0 0);
 	--color-base-200: oklch(98% 0 0);
 	--color-base-300: oklch(95% 0 0);
 	--color-base-content: oklch(21% 0.006 285.885);
-	--color-accent: oklch(77% 0.152 181.912);
-	--color-accent-content: oklch(38% 0.063 188.416);
 	--color-neutral: oklch(14% 0.005 285.823);
 	--color-neutral-content: oklch(92% 0.004 286.32);
 	--color-info: oklch(74% 0.16 232.661);
@@ -58,13 +70,13 @@
 	--color-primary-tint-2: #7d7a8d; /* primary, 40% lighter */
 
 	/*
-	  The logo's sky blue. Named for what it is, NOT accent — the accent colour
-	  for calls to action is still an open decision, and taking that name here
-	  would quietly settle it.
+	  The logo's sky blue. Also the theme's accent, above — this is the raw
+	  colour, `accent` is the job it does. Kept separate because it does other
+	  work too: the footer lockup, and text on the purple, where it measures
+	  8.67:1 and beats the pale blue.
 
-	  Measured contrast: 8.49:1 on the purple, better than the pale blue.
-	  1.76:1 on white, which is worse than the pale blue and already failing.
-	  So: text on dark, and accents. Never on a light background.
+	  On white it is 1.76:1. Text on dark and fills only, never ink on a light
+	  ground.
 
 	  Note this sits alongside Tailwind's own sky-50…sky-950 scale, so `bg-sky`
 	  is the club colour while `bg-sky-500` is Tailwind's. Reach for the former.

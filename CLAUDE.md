@@ -80,25 +80,40 @@ and `--color-chalk`:
 - **sky blue** — `#96C8FA` — the logo's wordmark colour.
 - **chalk** — `#F2EFE9` — the logo's mark colour, an off-white.
 
-An accent colour for calls to action is **still to be chosen**, and the sky blue
-is **not** it. It is named `--color-sky`, for what it is, rather than
-`--color-accent` precisely so that naming it does not quietly settle that
-decision. Three blues still give nothing to make a primary button stand out,
-which is how a `btn-secondary` with matching foreground and background shipped
-invisible at 1:1 contrast.
+The sky blue is now also the **accent — the call-to-action colour**, set as
+`--color-accent` with `--color-accent-content` the dark purple. Measured, that
+pairing is 8.67:1, the strongest in the palette and ahead of the pale blue
+button's 6.34:1. It is the brightest thing available, which is what a call to
+action needs against a page of purple and white.
+
+The name `--color-sky` stays for the raw colour, because it does other work
+too — the footer lockup, text on the purple. `accent` is the job; `sky` is the
+paint.
+
+**It won as a fill and only as a fill.** The same colour as text on white is
+1.76:1, the worst number in the palette. Those two facts are not in tension:
+one is a light ground under dark ink, the other is light ink on a light ground.
+So `btn-accent` yes, `link-accent` and `text-accent` on anything light never —
+there is no size or weight at which 1.76:1 becomes readable.
 
 ### Palette rules — not optional
 
 - Pale blue on white is **2.41:1 and fails WCAG AA**. Never use it for text on a
   light background.
 - Sky blue on white is **1.76:1 — worse than the pale blue**. Same rule, harder:
-  text on dark and accents only, never on a light background.
+  fills, text on dark, and accents only. Never as text on a light background.
+- **Neither blue is a link colour on white.** `link-secondary` was used for five
+  text links on white — 2.41:1, against the rule two lines above this one, live
+  on the site for weeks. They are `link-primary` now: 15.26:1, underlined.
 - Sky blue on the purple is **8.49:1**, better than the pale blue's 4.6:1. Where a
   blue goes on the purple and the contrast matters, sky is the stronger choice.
 - Dark purple for text on light backgrounds. Pale blue and sky blue for accents,
   borders, and text on dark only.
-- Buttons need a foreground colour explicitly different from their fill. Pale
-  blue fill with dark purple text gives ~5.7:1 and stays inside the palette.
+- Buttons need a foreground colour explicitly different from their fill. The
+  accent does this: sky-blue fill, dark purple text, 8.67:1. That is what
+  `btn-accent` is for, and calls to action should use it rather than
+  `btn-secondary`. This is also how a `btn-secondary` with matching foreground
+  and background once shipped invisible at 1:1.
 - Check contrast by measuring, not by eye.
 - A link in body copy needs a non-colour indicator — underline it. Colour plus
   a hover state is not enough: the default link colour is the dark purple,

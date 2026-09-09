@@ -67,9 +67,6 @@ this repository is public. It only stops the site being found by accident.
   carries `championship: false` with a `TODO`. One list settles all of them.
 - **Forde Abbey's slot** — fourth Wednesday in June, or last? 2026 was both, so
   the diary is guessing. It is the club's own race; somebody knows.
-- **An accent colour for calls to action.** See CLAUDE.md — the pale blue and
-  the sky blue are both ruled out on contrast, so buttons have nothing to make
-  them stand out.
 
 ### Loose ends worth closing
 
