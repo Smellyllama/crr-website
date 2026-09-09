@@ -101,6 +101,13 @@ const races = defineCollection({
       juniorRaceNote: z.string().optional(),
 
       raceDirector: z.string().optional(),
+
+      // The race's own address, for entrants asking about the race itself —
+      // road closures, parking, whether the junior race is on. A club address
+      // per race rather than the director's own, so it survives them handing
+      // the job on and no volunteer's personal inbox goes on the website.
+      contactEmail: z.string().email().optional(),
+
       timing: z.string().optional(),
       resultsUrl: z.string().url().optional(),
       facebookEventUrl: z.string().url().optional(),
@@ -239,12 +246,49 @@ const joinUsPage = z.object({
   }),
 });
 
+// src/content/pages/contact.md
+//
+// Only ONE address is stored here — the general one, which has nowhere else to
+// live. The membership, welfare and race addresses belong to the join-us page,
+// the welfare page and the races collection, and the contact page reads them
+// from there. Restating them would be a second source of truth for a thing that
+// changes rarely and silently: the day somebody updates the welfare address on
+// the welfare page, a stale copy here would send a safeguarding concern into a
+// dead mailbox, and nothing would fail.
+const contactPage = z.object({
+  page: z.literal("contact"),
+  hero: z.object({
+    heading: z.string(),
+    strapline: z.string(),
+  }),
+  intro: z.string(),
+
+  general: z.object({
+    label: z.string(),
+    detail: z.string(),
+    email: z.string().email(),
+  }),
+
+  // Label and wording only. Each of these three renders the address owned by
+  // the collection named above.
+  membership: z.object({ label: z.string(), detail: z.string() }),
+  welfare: z.object({ label: z.string(), detail: z.string() }),
+  races: z.object({ label: z.string(), detail: z.string() }),
+
+  committee: z.object({
+    heading: z.string(),
+    // Nothing renders while this is a TODO — a committee list is names and
+    // roles of real people, and inventing one is worse than not having it.
+    body: draftable,
+  }),
+});
+
 // One collection, one file per page, each page its own shape. The `page`
 // field picks the branch — which also means a validation error names the
 // field that's wrong instead of listing every page's fields at once.
 const pages = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/pages" }),
-  schema: z.discriminatedUnion("page", [homePage, joinUsPage]),
+  schema: z.discriminatedUnion("page", [homePage, joinUsPage, contactPage]),
 });
 
 // Welfare, privacy, inclusion, and the rules and constitution. Deliberately

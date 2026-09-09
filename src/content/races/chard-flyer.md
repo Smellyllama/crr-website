@@ -11,6 +11,7 @@ series: "Somerset Series"
 seriesNote: "First race in the Somerset Series"
 juniorRace: false
 raceDirector: "TODO"
+contactEmail: "chardflyer@chardroadrunners.com"
 heroImage: "./images/chard-flyer-hero.jpg"
 heroImageAlt: ""
 order: 1

@@ -460,6 +460,19 @@ collections:
         widget: string
         required: false
 
+      - label: Race email
+        name: contactEmail
+        widget: string
+        required: false
+        hint: >-
+          Where entrants ask about this race - parking, road closures, whether
+          the junior race is on. Use the race's own club address rather than
+          the director's own, so it survives them handing the job on.
+        # Single-quoted so the backslashes stay literal, as on the welfare page.
+        pattern:
+          - '^[^@\s]+@[^@\s]+\.[^@\s]+$'
+          - Enter a valid email address
+
       - label: Timing provider
         name: timing
         widget: string
@@ -736,6 +749,87 @@ collections:
             fields:
               - { label: Heading, name: heading, widget: string }
               - { label: Body, name: body, widget: text }
+
+      - name: contact
+        label: Contact page
+        file: src/content/pages/contact.md
+        fields:
+          - { name: page, widget: hidden, default: contact }
+
+          - label: Top of the page
+            name: hero
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Strapline, name: strapline, widget: text }
+
+          - label: Introduction
+            name: intro
+            widget: text
+
+          # ONLY the general address lives here. Membership, welfare and the two
+          # races are shown on this page but owned elsewhere — the join us page,
+          # the welfare page, and each race. Change one of those in its own place
+          # and the contact page follows. There is deliberately no box for them
+          # here: a second copy would go stale silently, and a stale welfare
+          # address sends a safeguarding concern into a dead mailbox.
+          - label: General enquiries
+            name: general
+            widget: object
+            collapsed: false
+            fields:
+              - { label: Heading, name: label, widget: string }
+              - { label: What to use it for, name: detail, widget: text }
+              - label: Email
+                name: email
+                widget: string
+                pattern:
+                  - '^[^@\s]+@[^@\s]+\.[^@\s]+$'
+                  - Enter a valid email address
+
+          - label: Membership
+            name: membership
+            widget: object
+            hint: >-
+              Wording only. The address comes from the join us page.
+            fields:
+              - { label: Heading, name: label, widget: string }
+              - { label: What to use it for, name: detail, widget: text }
+
+          - label: Welfare
+            name: welfare
+            widget: object
+            hint: >-
+              Wording only. The address and the officer's name come from the
+              welfare page.
+            fields:
+              - { label: Heading, name: label, widget: string }
+              - { label: What to use it for, name: detail, widget: text }
+
+          - label: Our races
+            name: races
+            widget: object
+            hint: >-
+              Wording only. Each race's address comes from the race itself,
+              under Our Races.
+            fields:
+              - { label: Heading, name: label, widget: string }
+              - { label: What to use it for, name: detail, widget: text }
+
+          - label: The committee
+            name: committee
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Names and roles
+                name: body
+                widget: text
+                required: false
+                hint: >-
+                  Roles and names only - never anyone's personal email or
+                  address. Nothing shows on the page while this starts with
+                  TODO, so it is safe to leave until the committee has said who
+                  is happy to be listed.
 
   # =========================================================================
   # LEGAL AND POLICY PAGES

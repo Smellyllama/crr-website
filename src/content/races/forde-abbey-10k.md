@@ -12,6 +12,7 @@ seriesNote: ""
 juniorRace: true
 juniorRaceNote: "Free to enter, with bespoke medals. 100 finishers in 2026."
 raceDirector: "Simon Hall"
+contactEmail: "fordeabbey@chardroadrunners.com"
 timing: "Timing Monkey"
 heroImage: "./images/2026-07-15-forde-abbey-01-abbey-and-flyer.jpg"
 heroImageAlt: "Forde Abbey with the race flag flying"

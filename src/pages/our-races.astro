@@ -63,6 +63,20 @@ const races = (await getCollection('races')).sort((a, b) => a.data.order - b.dat
 										</a>
 									)}
 								</div>
+								{/*
+								  Below the buttons rather than beside them: it is what you want
+								  when the entry link has not answered your question, so it reads
+								  after them. A real mailto, per CLAUDE.md — an address somebody
+								  has to retype is an address they do not use.
+								*/}
+								{data.contactEmail && (
+									<p class="mt-4 border-t border-base-300 pt-3 text-sm text-base-content/70">
+										Questions about this race?{' '}
+										<a href={`mailto:${data.contactEmail}`} class="link link-primary">
+											{data.contactEmail}
+										</a>
+									</p>
+								)}
 							</div>
 						</li>
 					);
