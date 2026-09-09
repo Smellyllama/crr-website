@@ -1,13 +1,14 @@
 ---
 name: "Herepath Half Marathon"
-month: 10   # October
-nth: "last"
+month: 11   # November
+nth: "first"
 weekday: "Sunday"
-distance: { value: 13.1, unit: "mi" }
-status: "expected"
+distance: { value: 13.7, unit: "mi" }
+status: "confirmed"
+confirmedDate: 2026-11-01
 lastSeen: 2017-10-29   # the date we have evidence for, from a club race report
 championship: false   # TODO confirm which races count
 # entryUrl: add when entries open
 ---
 
-Same weekend as Dartmoor Vale in 2017.
+13.7 miles, not the 13.1 the name suggests. Capped at 200 with no entries on the day. Same date as the Cornish Marathon this year.

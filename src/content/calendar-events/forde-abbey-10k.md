@@ -1,7 +1,7 @@
 ---
 name: "Forde Abbey 10k"
-month: 7   # July
-nth: "third"
+month: 6   # June
+nth: "fourth"
 weekday: "Wednesday"
 distance: { value: 10, unit: "km" }
 status: "expected"
@@ -11,4 +11,4 @@ championship: false   # TODO confirm which races count
 # entryUrl: add when entries open
 ---
 
-A club race, usually a Wednesday evening in June. 2026 moved to 15 July after a red weather warning, so the observed date is not the usual one.
+A club race, on a Wednesday evening in late June. The Somerset Series lists 24 June 2026; the 15 July in our own report is the postponed date after a red weather warning, which is why the report and the rule disagree. Somebody on the committee knows whether the slot is the fourth Wednesday or the last one — worth setting this to confirmed rather than leaving it worked out.

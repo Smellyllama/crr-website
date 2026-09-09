@@ -10,4 +10,4 @@ championship: false   # TODO confirm which races count
 # entryUrl: add when entries open
 ---
 
-White Star Running, Moors Valley Country Park. Night race, evening start.
+Still running under new management after White Star Running stopped. The 2026 running was 10 January, which matches the rule here. Listings differ on the name — "Dark Moors Neon Edition" appears alongside plain "Dark Moors" — so check what it is called before entering. 5 mile and 10 mile options.

@@ -4,6 +4,7 @@ month: 12   # December
 nth: "third"
 weekday: "Saturday"
 distance: { value: 26.2, unit: "mi" }
+retired: true
 status: "expected"
 lastSeen: 2017-12-16   # the date we have evidence for, from a club race report
 championship: false   # TODO confirm which races count
@@ -11,3 +12,5 @@ championship: false   # TODO confirm which races count
 ---
 
 Tank Museum. Four river crossings.
+
+**Retired — this race no longer runs.** The website is still up, but the date it advertises is 11 December 2022. Abandoned rather than moved. Checked 2026-09-09.
