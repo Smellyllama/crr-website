@@ -65,7 +65,7 @@ membership:
   # TODO: confirm this code is still current — it came from the old Webador site.
   formUrl: ""
   membershipSecretary: "Hannah Grinter"
-  membershipEmail: "chardroadrunners.membership@outlook.com"
+  membershipEmail: "membership@chardroadrunners.com"
 
 couchTo5k:
   heading: "Couch to 5k"

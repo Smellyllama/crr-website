@@ -6,9 +6,10 @@ intro: >
   serious, and you don't need to have evidence.
 welfareOfficer:
   name: "Lizzie Cox"
-  email: "lizsmith1990@hotmail.co.uk"
-  # TODO confirm with Lizzie that she's happy to be listed here, and that this
-  # email is still the right one. Carried over from the old site.
+  email: "welfare@chardroadrunners.com"
+  # A club address rather than a personal one, so the role survives the person
+  # holding it and nobody's own inbox is published. Lizzie still needs to
+  # confirm she is happy to be named here.
 # Committee notes, not published. They live here rather than in the body
 # because an HTML comment in Markdown reaches the page source.
 #
