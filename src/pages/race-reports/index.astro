@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 import ImageFallback from '../../components/ImageFallback.astro';
+import ContourDivider from '../../components/ContourDivider.astro';
 import Layout from '../../layouts/Layout.astro';
 import { getEarliestRaceDate, sortByRaceDateDesc } from '../../utils/race-reports';
 
@@ -14,6 +15,14 @@ const posts = sortByRaceDateDesc(await getCollection('race-reports', ({ data }) 
 		<ul class="grid grid-cols-1 gap-8 sm:grid-cols-2">
 			{
 				posts.map((post, index) => (
+					<>
+						{/* After the lead report, which already spans both columns:
+						    the break between the newest one and the archive. */}
+						{index === 1 && (
+							<li class="overflow-hidden rounded-box sm:col-span-2">
+								<ContourDivider />
+							</li>
+						)}
 					<li class:list={[{ 'sm:col-span-2': index === 0 }]}>
 						<a href={`/race-reports/${post.id}/`} class="group block">
 							<div class="mb-2 aspect-[2/1] overflow-hidden rounded-box">
@@ -35,6 +44,7 @@ const posts = sortByRaceDateDesc(await getCollection('race-reports', ({ data }) 
 							<p class="mt-1 text-base-content/70">{post.data.excerpt}</p>
 						</a>
 					</li>
+					</>
 				))
 			}
 		</ul>

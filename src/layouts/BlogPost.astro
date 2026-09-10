@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import ContourBackdrop from '../components/ContourBackdrop.astro';
+import ContourDivider from '../components/ContourDivider.astro';
 import ImageFallback from '../components/ImageFallback.astro';
 import ShareRaceReport from '../components/ShareRaceReport.astro';
 import Layout from './Layout.astro';
@@ -92,6 +93,16 @@ const showPosted = postedIsMeaningfullyLater(posted, earliestRaceDate);
 		<div class="prose py-8">
 			<slot />
 		</div>
+		{
+			/* Only where there are photos: the divider marks the report ending
+			   and the pictures starting, so with no pictures it marks nothing. */
+			images && images.length > 0 && (
+				<div class="my-8 overflow-hidden rounded-box">
+					<ContourDivider />
+				</div>
+			)
+		}
+
 		{
 			images && images.length > 0 && (
 				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
