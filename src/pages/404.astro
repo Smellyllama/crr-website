@@ -22,7 +22,10 @@ import Layout from '../layouts/Layout.astro';
 	description="That page isn't here. Links to the main pages of the Chard Road Runners website."
 >
 	<section class="relative overflow-hidden bg-primary text-primary-content">
-		<ContourBackdrop />
+		{/* 0.25 for the same reason as the homepage hero: this page's line of
+		    explanation is the same 18px white-at-80% over the same contours, and
+		    it measured the same 3.29:1. */}
+		<ContourBackdrop opacity={0.25} />
 		<div
 			class="relative mx-auto flex max-w-2xl flex-col items-center gap-10 px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-24"
 		>

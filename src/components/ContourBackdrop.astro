@@ -13,7 +13,13 @@ import contoursMobile from '../assets/hero-contours-mobile.svg?raw';
 
 interface Props {
 	/**
-	 * How strongly the contours show, 0–1. Default 0.5, the hero's setting.
+	 * How strongly the contours show, 0–1. Default 0.25.
+	 *
+	 * The default is the value that is safe to put words on, not the value that
+	 * looks strongest, because the failure is silent: text over contours at 0.5
+	 * looks fine and measures 3.29:1. Anyone adding a backdrop without thinking
+	 * about it gets the readable one, and has to opt in to the louder setting
+	 * for a band with nothing written on it.
 	 *
 	 * MEASURED, because this decides whether text on top is readable. The
 	 * strokes are baked into the SVGs at #8AABC6 and #c5d6e6, and white text
@@ -23,13 +29,13 @@ interface Props {
 	 *     0.4  → 5.37:1
 	 *     0.25 → 8.01:1
 	 *
-	 * So 0.5 is for a backdrop nothing is written on. Anything carrying words
-	 * wants 0.25, which is what the race report band uses.
+	 * So anything carrying words stays at or below 0.25. Above that is for a
+	 * band with no text on it, like ContourDivider.
 	 */
 	opacity?: number;
 }
 
-const { opacity = 0.5 } = Astro.props;
+const { opacity = 0.25 } = Astro.props;
 ---
 
 <div

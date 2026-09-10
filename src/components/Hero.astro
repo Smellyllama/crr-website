@@ -18,7 +18,21 @@ const { heading, strapline, primaryCta, secondaryCta } = Astro.props;
 ---
 
 <section id="hero" class="site-hero relative overflow-hidden bg-primary text-primary-content">
-	<ContourBackdrop />
+	{/*
+	  0.25, the same value the race report masthead uses.
+	
+	  At 0.5 the strapline measured 3.29:1 where the lighter contour stroke ran
+	  under it — white at 80% opacity, 18px, needing 4.5. The h1 scraped through
+	  at 4.13:1 only because large text is allowed 3:1. Both are comfortable now:
+	  5.86:1 and 8.01:1.
+	
+	  A scrim behind the text was the alternative, and it would have kept the
+	  contours at full strength. It was not taken because a gradient is only as
+	  good as its weakest edge, and the text sits across the whole block — one
+	  number that is right at every pixel beats a gradient that has to be argued
+	  about. The masthead already shows 0.25 reads perfectly well.
+	*/}
+	<ContourBackdrop opacity={0.25} />
 	<div class="hero-content relative mx-auto flex max-w-3xl flex-col items-center gap-8 px-4 text-center sm:px-6 lg:px-8">
 		<div>
 			{/*
