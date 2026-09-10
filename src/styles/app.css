@@ -35,10 +35,27 @@
 	--color-accent: #96c8fa;
 	--color-accent-content: #262141;
 
-	/* Placeholder — daisyUI "light" theme defaults */
+	/*
+	  Base surfaces. 100 is the page, 200 is the alternating section, 300 is
+	  the borders.
+	
+	  200 and 300 lean very slightly toward the club purple rather than being
+	  neutral greys. The homepage and Join Us already alternated white and
+	  base-200, but at oklch(0.98) the step was 1.04:1 — technically a rhythm
+	  and visually nothing. This makes the step visible AND makes it the club's
+	  colour rather than a grey, which was the point of the exercise.
+	
+	  300 had to move with it. Against the old #FAFAFA a neutral border was
+	  1.12:1; against the new 200 it fell to 1.03:1, which is a card with no
+	  edge. Tinted it is 1.16:1 on the section and 1.32:1 on white — slightly
+	  stronger than before in both places.
+	
+	  Body text is 11.07:1 on the new 200, down from 12.1:1 and far above the
+	  4.5:1 it needs.
+	*/
 	--color-base-100: oklch(100% 0 0);
-	--color-base-200: oklch(98% 0 0);
-	--color-base-300: oklch(95% 0 0);
+	--color-base-200: #f1eff5;
+	--color-base-300: #e2deea;
 	--color-base-content: oklch(21% 0.006 285.885);
 	--color-neutral: oklch(14% 0.005 285.823);
 	--color-neutral-content: oklch(92% 0.004 286.32);
@@ -85,6 +102,38 @@
 
 	/* The logo's off-white, for the mark on a purple ground. */
 	--color-chalk: #f2efe9;
+}
+
+/*
+  Badges, in the two directions the palette allows.
+
+  Measured, both of them 13.3:1 — chalk and the purple are the strongest pair
+  on the site after plain white. What is NOT allowed is the pale blue as text
+  on white, which is 2.41:1 and is what these replace.
+*/
+
+/* On a light background. Purple fill, chalk text. */
+@utility badge-purple {
+	background-color: var(--color-primary);
+	border-color: var(--color-primary);
+	color: var(--color-chalk);
+}
+
+/* On the purple. Chalk fill, purple text. */
+@utility badge-chalk {
+	background-color: var(--color-chalk);
+	border-color: var(--color-chalk);
+	color: var(--color-primary);
+}
+
+/*
+  On the purple, quieter. Chalk outline and chalk text — 13.3:1 for the text,
+  and the border carries the same colour so it does not rely on the fill.
+*/
+@utility badge-chalk-outline {
+	background-color: transparent;
+	border-color: color-mix(in oklab, var(--color-chalk) 60%, transparent);
+	color: var(--color-chalk);
 }
 
 /*

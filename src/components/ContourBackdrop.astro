@@ -10,17 +10,43 @@
 // absolutely, and the SVGs use `slice` so they crop rather than letterbox.
 import contoursDesktop from '../assets/hero-contours-desktop.svg?raw';
 import contoursMobile from '../assets/hero-contours-mobile.svg?raw';
+
+interface Props {
+	/**
+	 * How strongly the contours show, 0–1. Default 0.5, the hero's setting.
+	 *
+	 * MEASURED, because this decides whether text on top is readable. The
+	 * strokes are baked into the SVGs at #8AABC6 and #c5d6e6, and white text
+	 * where the lighter one crosses a letter comes to:
+	 *
+	 *     0.5  → 4.13:1   fails AA for body text
+	 *     0.4  → 5.37:1
+	 *     0.25 → 8.01:1
+	 *
+	 * So 0.5 is for a backdrop nothing is written on. Anything carrying words
+	 * wants 0.25, which is what the race report band uses.
+	 */
+	opacity?: number;
+}
+
+const { opacity = 0.5 } = Astro.props;
 ---
 
-<div class="contours contours--desktop absolute inset-0 hidden sm:block" set:html={contoursDesktop} />
-<div class="contours contours--mobile absolute inset-0 sm:hidden" set:html={contoursMobile} />
+<div
+	class="contours contours--desktop absolute inset-0 hidden sm:block"
+	style={`opacity:${opacity}`}
+	set:html={contoursDesktop}
+/>
+<div
+	class="contours contours--mobile absolute inset-0 sm:hidden"
+	style={`opacity:${opacity}`}
+	set:html={contoursMobile}
+/>
 
 <style>
 	.contours {
 		/* Stroke colours are baked into the SVGs (#8AABC6 / #c5d6e6, both
 		   already club secondary shades) — no currentColor to drive here. */
-		opacity: 0.5;
-
 		/* Explicitly behind the content that sits on top of it, rather than
 		   relying on DOM order alone. Decorative, so it never wants the tap
 		   either. */

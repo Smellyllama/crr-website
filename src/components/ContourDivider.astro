@@ -1,0 +1,27 @@
+---
+// A thin band of contour lines, for breaking a long page between sections.
+//
+// Decoration only: aria-hidden, no text on it, and nothing depends on seeing
+// it. Use it sparingly — it is a breath between sections, and a page with
+// several of them turns into stripes.
+import ContourBackdrop from './ContourBackdrop.astro';
+---
+
+<div class="contour-divider relative overflow-hidden bg-primary" aria-hidden="true">
+	<ContourBackdrop opacity={0.55} />
+</div>
+
+<style>
+	/*
+	  24px. Tried at 64px first and it read as a section of its own rather than
+	  a break between two — the same page then had three things on it instead of
+	  two with a join. At this height the contours still register as the club's
+	  motif and the band is clearly punctuation.
+	
+	  Nothing is written on it, so the contours sit at full strength: the
+	  measured 0.25 limit applies only where there is text on top.
+	*/
+	.contour-divider {
+		height: 1.5rem;
+	}
+</style>
