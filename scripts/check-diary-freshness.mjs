@@ -65,6 +65,10 @@ for (const { file, data } of read('src/content/calendar-events')) {
   // trusted — the same guard the page applies before printing a day.
   const status = data.status ?? 'active';
   if (status === 'dormant' || status === 'retired') continue;
+
+  // A fixed date cannot drift — the Chard Flyer is New Year's Day whatever the
+  // year — so there is nothing for anybody to go and check.
+  if (data.fixedDate) continue;
   if (data.dateConfirmed && data.date && new Date(data.date) >= new Date()) continue;
 
   const names = [data.name, ...(data.aliases ?? [])];
