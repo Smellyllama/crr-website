@@ -1,0 +1,36 @@
+---
+// The purple band at the top of an inside page.
+//
+// Five pages had this markup copied out — calendar, contact, results, join us,
+// and the four legal pages through their shared template. Adding the contours
+// meant touching all five the same way, which is the point at which a repeated
+// block should stop being repeated.
+//
+// The contours come from ContourBackdrop at its default, which is the opacity
+// that is safe to put words on. Do not raise it here: the strapline is 18px
+// white at 80%, and that is the exact combination that measured 3.29:1 on the
+// homepage hero before it was fixed.
+import ContourBackdrop from './ContourBackdrop.astro';
+
+interface Props {
+	heading: string;
+	strapline?: string;
+	/** Join Us centres its header; the rest are left-aligned. */
+	center?: boolean;
+}
+
+const { heading, strapline, center = false } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-primary text-primary-content">
+	<ContourBackdrop />
+	<div
+		class:list={[
+			'relative z-1 mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8',
+			center && 'text-center',
+		]}
+	>
+		<h1 class="text-4xl font-bold sm:text-5xl">{heading}</h1>
+		{strapline && <p class="mt-4 text-lg text-primary-content/80">{strapline}</p>}
+	</div>
+</section>

@@ -8,6 +8,7 @@
 // into a dead mailbox with nothing failing.
 import { getCollection, getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
 
 const page = await getEntry('pages', 'contact');
 if (!page || page.data.page !== 'contact') {
@@ -32,12 +33,7 @@ const raceContacts = races
 ---
 
 <Layout title="Contact" description="Who to email at Chard Road Runners, and what about.">
-	<section class="bg-primary text-primary-content">
-		<div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8">
-			<h1 class="text-4xl font-bold sm:text-5xl">{hero.heading}</h1>
-			<p class="mt-4 text-lg text-primary-content/80">{hero.strapline}</p>
-		</div>
-	</section>
+	<PageHeader heading={hero.heading} strapline={hero.strapline} />
 
 	<div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
 		<p class="text-base-content/80">{intro}</p>

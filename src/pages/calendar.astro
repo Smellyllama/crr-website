@@ -11,6 +11,7 @@
 import ContourDivider from '../components/ContourDivider.astro';
 import RaceDiary from '../components/RaceDiary.astro';
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import { GOOGLE_CALENDAR_ID } from '../consts';
 
 // Agenda view: a list of what is coming, which reads far better on a phone
@@ -27,14 +28,10 @@ const embedUrl = GOOGLE_CALENDAR_ID
 	title="Calendar"
 	description="The club calendar, plus the race diary — what members are running over the next twelve months."
 >
-	<section class="bg-primary text-primary-content">
-		<div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8">
-			<h1 class="text-4xl font-bold sm:text-5xl">Calendar</h1>
-			<p class="mt-4 text-lg text-primary-content/80">
-				Club nights, socials and the races members are heading for.
-			</p>
-		</div>
-	</section>
+	<PageHeader
+		heading="Calendar"
+		strapline="Club nights, socials and the races members are heading for."
+	/>
 
 	<div class="mx-auto max-w-3xl px-4 pt-12 pb-10 sm:px-6 lg:px-8">
 		<section id="club-calendar" class="scroll-mt-20">

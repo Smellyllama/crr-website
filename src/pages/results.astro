@@ -9,6 +9,7 @@
 // is wired up yet, so each section says so plainly rather than showing an
 // empty table.
 import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
 
 const sections = [
 	{
@@ -33,14 +34,10 @@ const sections = [
 	title="Results"
 	description="Club championship standings, the monthly handicap and club records."
 >
-	<section class="bg-primary text-primary-content">
-		<div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8">
-			<h1 class="text-4xl font-bold sm:text-5xl">Results</h1>
-			<p class="mt-4 text-lg text-primary-content/80">
-				Championship standings, the monthly handicap, and the club records.
-			</p>
-		</div>
-	</section>
+	<PageHeader
+		heading="Results"
+		strapline="Championship standings, the monthly handicap, and the club records."
+	/>
 
 	<div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
 		{
