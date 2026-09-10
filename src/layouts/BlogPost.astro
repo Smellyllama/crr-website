@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+import ContourBackdrop from '../components/ContourBackdrop.astro';
 import ImageFallback from '../components/ImageFallback.astro';
 import ShareRaceReport from '../components/ShareRaceReport.astro';
 import Layout from './Layout.astro';
@@ -34,6 +35,52 @@ const showPosted = postedIsMeaningfullyLater(posted, earliestRaceDate);
 ---
 
 <Layout title={title} description={excerpt} image={heroImage}>
+	{/*
+	  The masthead. Everything about the post — what it is, what it covers, who
+	  wrote it — on the club colour, then white for the reading. The purple did
+	  branding work in the homepage hero and nowhere else on the site; this is
+	  the same idea applied to the page type there are most of.
+	*/}
+	<header class="report-masthead relative overflow-hidden bg-primary text-primary-content">
+		{/*
+		  0.25, not the hero's 0.5. Measured: white text where the lighter
+		  contour stroke crosses a letter is 4.13:1 at 0.5, which fails AA for
+		  anything at body size. At 0.25 it is 8.01:1.
+		*/}
+		<ContourBackdrop opacity={0.25} />
+		<div class="relative mx-auto max-w-3xl px-4 py-10 text-center sm:px-6 sm:py-12 lg:px-8">
+			<div>
+				<span class="badge badge-chalk badge-sm">{category}</span>
+				{clubRace && <span class="badge badge-chalk-outline badge-sm ml-2">Club race</span>}
+			</div>
+			<h1 class="mt-3 text-3xl font-bold text-balance sm:text-4xl">{title}</h1>
+			<div class="mt-3 text-sm text-primary-content/85">
+				{sameDay && <FormattedDate date={earliestRaceDate} approximate={dateApproximate} />}
+				{author && <span> · {author}</span>}
+			</div>
+			{
+				showPosted && (
+					<div class="text-xs text-primary-content/70 italic">
+						Posted <FormattedDate date={posted!} />
+					</div>
+				)
+			}
+			<ul class="mt-5 flex flex-wrap justify-center gap-2">
+				{races.map((race) => (
+					<li class="badge badge-chalk-outline gap-1 whitespace-normal py-3">
+						<span class="font-semibold">{race.name}</span>
+						{race.distance && <span>· {formatDistance(race.distance)}</span>}
+						{!sameDay && (
+							<span>
+								· <FormattedDate date={race.raceDate} approximate={dateApproximate} />
+							</span>
+						)}
+					</li>
+				))}
+			</ul>
+		</div>
+	</header>
+
 	<article class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
 		<div class="aspect-[2/1] overflow-hidden rounded-box shadow-md">
 			{heroImage ? (
@@ -43,38 +90,6 @@ const showPosted = postedIsMeaningfullyLater(posted, earliestRaceDate);
 			)}
 		</div>
 		<div class="prose py-8">
-			<div class="mb-8 text-center">
-				<div class="text-sm text-base-content/60">
-					<span class="badge badge-secondary badge-outline">{category}</span>
-					{clubRace && <span class="badge badge-secondary ml-2">Club race</span>}
-				</div>
-				<h1 class="mt-2">{title}</h1>
-				<div class="text-sm text-base-content/60">
-					{sameDay && <FormattedDate date={earliestRaceDate} approximate={dateApproximate} />}
-					{author && <span> · {author}</span>}
-				</div>
-				{
-					showPosted && (
-						<div class="text-xs text-base-content/40 italic">
-							Posted <FormattedDate date={posted!} />
-						</div>
-					)
-				}
-				<ul class="not-prose mt-4 flex flex-wrap justify-center gap-2">
-					{races.map((race) => (
-						<li class="badge badge-outline badge-lg gap-1 whitespace-normal py-4">
-							<span class="font-semibold">{race.name}</span>
-							{race.distance && <span>· {formatDistance(race.distance)}</span>}
-							{!sameDay && (
-								<span>
-									· <FormattedDate date={race.raceDate} approximate={dateApproximate} />
-								</span>
-							)}
-						</li>
-					))}
-				</ul>
-				<hr class="border-base-300" />
-			</div>
 			<slot />
 		</div>
 		{

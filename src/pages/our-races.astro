@@ -35,7 +35,7 @@ const races = (await getCollection('races')).sort((a, b) => a.data.order - b.dat
 							<div class="p-5">
 								<div class="flex flex-wrap items-center gap-2">
 									<h2 class="text-xl font-bold text-base-content">{data.title}</h2>
-									{data.juniorRace && <span class="badge badge-secondary badge-outline">Junior race</span>}
+									{data.juniorRace && <span class="badge badge-purple">Junior race</span>}
 								</div>
 								<p class="mt-1 text-sm text-base-content/60">
 									{data.nextDate ? <FormattedDate date={data.nextDate} /> : 'Date to be confirmed'}

@@ -42,7 +42,7 @@ const posts = sortByRaceDateDesc(await getCollection('race-reports', ({ data }) 
 									<ImageFallback />
 								)}
 							</div>
-							<span class="badge badge-secondary badge-outline badge-sm mt-3">{post.data.category}</span>
+							<span class="badge badge-purple badge-sm mt-3">{post.data.category}</span>
 							<h3 class="mt-2 text-lg font-bold text-base-content group-hover:underline">{post.data.title}</h3>
 							<p class="text-sm text-base-content/60">
 								<FormattedDate date={getEarliestRaceDate(post.data.races)} approximate={post.data.dateApproximate} />
