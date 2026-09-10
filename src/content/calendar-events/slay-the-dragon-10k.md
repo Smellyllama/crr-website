@@ -1,13 +1,14 @@
 ---
 name: "Slay the Dragon 10k"
 month: 2   # February
-nth: "last"
+nth: "second"
 weekday: "Sunday"
-distance: { value: 10, unit: "km" }
-status: "expected"
-lastSeen: 2018-02-25   # the date we have evidence for, from a club race report
+distances: [{ value: 10, unit: "km" }, { value: 5, unit: "km" }, { value: 2, unit: "km" }]
+status: "active"
+dateConfirmed: false
+lastSeen: 2026-02-08   # the date we have evidence for, from a club race report
 championship: false   # TODO confirm which races count
-# entryUrl: add when entries open
+# entryUrl: entries are taken on the day at the village hall
 ---
 
-Trail race. Club members have run it in 2018 and 2026.
+Hinton St George, four miles from Chard — the closest race on this list by some way. A school PFA fundraiser, with a 5k Dragon's Tail and a 2k fun run alongside the 10k, and entries taken on the day at the village hall.

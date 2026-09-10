@@ -92,14 +92,28 @@ finishable job is one that still gets done in a year's time.
 
 ---
 
-## Retiring a race that no longer runs
+## The four statuses
 
-Some of the seed entries are races that have since stopped. **Tick "Retired -
-race no longer runs" in the CMS. Do not delete the entry.**
+Every entry is one of four things, and only the first two are listed on the
+website:
 
-A retired entry disappears from the diary and from the homepage's next three.
+| Status | Means | On the site |
+| --- | --- | --- |
+| `active` | Happening | Listed |
+| `renamed` | Happening under a new name; this entry is the new one | Listed, badged with the old name |
+| `dormant` | Did not run last time round, may return | Hidden |
+| `retired` | Gone | Hidden |
+
+`dormant` is the one people skip, and it is the useful one. The Battle of
+Sedgemoor had no race in 2024 for want of a race director and nothing since —
+that is not the same as the Bad Cow, whose organiser has closed. One is a
+question for whoever knows a Langport Runner; the other is settled.
+
+**Do not delete either.**
+
+A hidden entry disappears from the diary and from the homepage's next three.
 The file stays in the repository, which is the whole point of it: it is a record
-that somebody looked at this race and found it gone.
+that somebody looked at this race and what they found.
 
 **Deleting instead would undo itself.** The entries here were derived from the
 club's own race reports, and those reports are not going anywhere. Any later
@@ -113,17 +127,35 @@ So, for anything that derives diary entries from race reports:
 > whether or not that entry is retired. Existing entries win. New ones are only
 > for names that appear nowhere.
 
-The CMS entry list has **Still running** and **Retired** filters for finding
-them. There is no default filter, so the list shows everything until you narrow
-it.
+The CMS entry list has a filter per status for finding them. There is no
+default filter, so the list shows everything until you narrow it.
+
+## Dates, and the one rule about them
+
+Two separate questions, and they used to be muddled into one field:
+
+- **`date`** — when the next running is, if we know. Fill it in even when it is
+  a guess from a listings site: it puts the race in the right place in the
+  order, and it will not be printed.
+- **`dateConfirmed`** — has a human checked that date with the organiser? Only
+  a true here earns a specific day on the page. Everything else gets "usually
+  the second Sunday in February".
+
+The page's wording is derived from that boolean, so there is no "check before
+entering" note anybody has to remember to delete once a date is confirmed.
+
+**A date in the past counts as unconfirmed however the boolean is set.** That
+is checked in `hasExactDate`, not left to whoever edits the entry, because a
+stale confirmed date rendering as fact is precisely what produced a diary full
+of 2017 dates presented as certainties.
 
 ### The ones flagged as worth reviewing
 
-The notes above single these out as possibly not belonging: **Cornish
+The notes above singled these out as possibly not belonging: **Cornish
 Marathon**, **Bovington**, **New Forest**, the three **Bad Cow** entries, and
-**Chard Chaser** (in its second year in 2017). They shipped rather than being
-dropped, on the basis that retiring one is easier than inventing it back. This
-is the toggle for doing that.
+**Chard Chaser**. All are now resolved — Cornish and New Forest have confirmed
+2026 dates, the rest are retired. What remains open is listed under the second
+review below.
 
 ---
 
@@ -152,3 +184,32 @@ observation, and the single observation was the exception.
 published report is over three years old. It runs as part of the build and
 prints a worklist without failing anything, because those entries are not
 wrong, only unverified, and the page already renders them as approximate.
+
+
+---
+
+## What the second review found, September 2026
+
+The remaining eleven entries, checked against the organisers. Ten resolved.
+
+**Three were wrong about what the race even is.** The Axmouth Challenge is four
+distances and our 9 miles was the long option, not the event. Blackmore Vale
+starts at Bishop's Caundle, not Gillingham. The Cider Challenge is not a
+distance race at all — it is a timed lap event on a farm, 8, 12 or 24 hours.
+
+**Bridgwater was one event listed as two.** A half, a 10k and a 5k from a single
+start, written up by members under both names, and sitting in the diary as two
+races on the same day. That is what `distances` and `aliases` are for, and the
+merged entry carries both old names so both reports still find it.
+
+**One is dormant rather than dead.** Battle of Sedgemoor had no race in 2024
+for want of a race director, organisers hoped for 2025, nothing since. That is a
+different answer from the Bad Cow, whose organiser has shut, and the statuses
+now say so.
+
+**One needs a human.** Our own 2026 report puts the Cider Challenge on 27 June;
+the organiser's 2026 edition is listed as 17–18 July at Blandford Forum, "on
+tour". Both cannot be right about the same running, and the club's own report is
+not evidence to overwrite from a listings page.
+
+The pattern from the first review held. Everything wrong was old.

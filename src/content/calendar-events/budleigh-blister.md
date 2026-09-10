@@ -1,11 +1,12 @@
 ---
 name: "Budleigh Blister"
-formerNames: ["Bicton Blister 10"]
+aliases: ["Bicton Blister 10"]
 month: 11   # November
 nth: "fourth"
 weekday: "Sunday"
-distance: { value: 9.5, unit: "mi" }
-status: "expected"
+distances: [{ value: 9.5, unit: "mi" }]
+status: "renamed"
+dateConfirmed: false
 lastSeen: 2017-11-26   # the date we have evidence for, from a club race report
 championship: false   # TODO confirm which races count
 # entryUrl: add when entries open

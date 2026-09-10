@@ -3,9 +3,9 @@ name: "Full MontyCute 10"
 month: 12   # December
 nth: "first"
 weekday: "Sunday"
-distance: { value: 10, unit: "mi" }
-status: "confirmed"
-confirmedDate: 2026-12-06
+distances: [{ value: 10, unit: "mi" }]
+dateConfirmed: true
+date: 2026-12-06
 lastSeen: 2017-12-03   # the date we have evidence for, from a club race report
 championship: false   # TODO confirm which races count
 # entryUrl: entries are via Race Nation — add the actual event link

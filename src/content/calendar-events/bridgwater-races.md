@@ -1,13 +1,17 @@
 ---
-name: "Bridgwater 10k"
+name: "Bridgwater Half Marathon"
+aliases: ["Bridgwater 10k", "Bridgwater Half Marathon"]
 month: 9   # September
 nth: "first"
 weekday: "Sunday"
-distance: { value: 10, unit: "km" }
-status: "expected"
-lastSeen: 2017-09-03   # the date we have evidence for, from a club race report
+distances: [{ value: 13.1, unit: "mi" }, { value: 10, unit: "km" }, { value: 5, unit: "km" }]
+status: "active"
+dateConfirmed: false
+lastSeen: 2026-09-06   # the date we have evidence for, from a club race report
 championship: false   # TODO confirm which races count
 # entryUrl: add when entries open
 ---
 
-Same day as the Bridgwater Half.
+One event, three distances, all from a single start — it was two diary entries until somebody read the listing properly. Both old names are kept as aliases so the reports written up under either still appear here.
+
+Brand new route for 2026: it has moved from Morganians Rugby Club to The Green, Wembdon.

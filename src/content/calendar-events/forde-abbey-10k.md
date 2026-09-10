@@ -3,8 +3,8 @@ name: "Forde Abbey 10k"
 month: 6   # June
 nth: "fourth"
 weekday: "Wednesday"
-distance: { value: 10, unit: "km" }
-status: "expected"
+distances: [{ value: 10, unit: "km" }]
+dateConfirmed: false
 lastSeen: 2026-07-15   # the date we have evidence for, from a club race report
 clubRace: true
 championship: false   # TODO confirm which races count
