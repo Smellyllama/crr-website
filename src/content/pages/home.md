@@ -21,10 +21,12 @@ clubNights:
       summary: Usually four groups of different paces
       detail: |-
         Most weeks there are 4 groups- The distances are a rough guide the leaders work with but they vary the route every week.
+
         - 4 miles (7km) group
         - 6 miles (10km) group
         - 8 miles (13km) group
         - 9 miles (15km) group
+
         All routes aim to be back at the club by an hour and a quarter later - This gives you an idea of pace of each group.
         The cricket club is then open for us to use the showers and the bar afterwards, staying after the run means you get to socialise with people in others groups that you might not of run with!
 

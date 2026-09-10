@@ -1,0 +1,20 @@
+---
+// A frontmatter string, rendered as Markdown.
+//
+// For the prose fields the CMS offers as a Markdown box — the club night
+// details, the handicap description. Use it wherever an editor might reasonably
+// write a list or a second paragraph, which is anywhere the CMS field is a
+// Markdown widget. The pairing matters: a Markdown box in the CMS whose output
+// is printed as plain text is a promise the page does not keep.
+import { renderMarkdown } from '../utils/markdown';
+
+interface Props {
+	text: string;
+	class?: string;
+}
+
+const { text, class: className } = Astro.props;
+const html = await renderMarkdown(text);
+---
+
+<div class:list={['rich-text', className]} set:html={html} />

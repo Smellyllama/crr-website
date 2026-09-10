@@ -129,6 +129,40 @@ input {
 	font-size: 16px;
 }
 
+/*
+  Markdown rendered from a frontmatter field — see RichText.astro.
+  
+  Tailwind's reset strips list markers and paragraph margins, so anything
+  coming out of the Markdown processor needs them putting back. Scoped to this
+  class rather than set globally, because the site's own markup relies on the
+  reset everywhere else.
+*/
+.rich-text > * + * {
+	margin-top: 0.75em;
+}
+
+.rich-text ul,
+.rich-text ol {
+	margin-left: 1.25em;
+	list-style: disc;
+}
+
+.rich-text ol {
+	list-style: decimal;
+}
+
+.rich-text li + li {
+	margin-top: 0.25em;
+}
+
+.rich-text a {
+	text-decoration: underline;
+}
+
+.rich-text strong {
+	font-weight: 700;
+}
+
 table {
 	width: 100%;
 }

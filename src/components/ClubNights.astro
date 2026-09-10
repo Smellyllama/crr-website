@@ -1,4 +1,5 @@
 ---
+import RichText from './RichText.astro';
 interface Night {
 	day: string;
 	time: string;
@@ -20,7 +21,7 @@ const { heading, intro, nights, reassurance } = Astro.props;
 <section id="club-nights" class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
 	<div class="mx-auto max-w-2xl text-center">
 		<h2 class="text-3xl sm:text-4xl font-bold text-base-content">{heading}</h2>
-		<p class="mt-3 text-base-content/70">{intro}</p>
+		<RichText text={intro} class="mt-3 text-base-content/70" />
 	</div>
 	<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
 		{
@@ -33,7 +34,7 @@ const { heading, intro, nights, reassurance } = Astro.props;
 						</h3>
 						<p class="text-sm font-medium text-base-content/80">{night.venue}</p>
 						<span class="badge badge-purple w-fit">{night.summary}</span>
-						<p class="mt-2 text-base-content/70">{night.detail}</p>
+						<RichText text={night.detail} class="mt-2 text-base-content/70" />
 					</div>
 				</li>
 			))

@@ -571,7 +571,9 @@ collections:
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
-              - { label: Introduction, name: intro, widget: text }
+              - label: Introduction
+                name: intro
+                widget: markdown
               - label: The nights
                 name: nights
                 widget: list
@@ -586,7 +588,9 @@ collections:
                     hint: For example 7:00pm.
                   - { label: Venue, name: venue, widget: string }
                   - { label: Short summary, name: summary, widget: string }
-                  - { label: Detail, name: detail, widget: text }
+                  - label: Detail
+                    name: detail
+                    widget: markdown
               - { label: Reassurance, name: reassurance, widget: text }
 
           - label: Handicap race
@@ -594,14 +598,18 @@ collections:
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
-              - { label: Body, name: body, widget: text }
+              - label: Body
+                name: body
+                widget: markdown
 
           - label: Couch to 5k
             name: couchTo5k
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
-              - { label: Body, name: body, widget: text }
+              - label: Body
+                name: body
+                widget: markdown
               - label: Next course dates
                 name: nextCourse
                 widget: string
@@ -639,7 +647,9 @@ collections:
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
-              - { label: Introduction, name: intro, widget: text }
+              - label: Introduction
+                name: intro
+                widget: markdown
               - { label: Link text, name: linkLabel, widget: string }
 
       - name: join-us
@@ -710,7 +720,9 @@ collections:
                     name: price
                     widget: string
                     hint: Include the pound sign, for example £18.
-                  - { label: Detail, name: detail, widget: text }
+                  - label: Detail
+                    name: detail
+                    widget: markdown
               - { label: Renewal, name: renewal, widget: text, required: false }
               - { label: How to pay, name: howToPay, widget: text }
               - { label: Connect My Club code, name: connectMyClubCode, widget: string }
@@ -734,7 +746,9 @@ collections:
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
-              - { label: Body, name: body, widget: text }
+              - label: Body
+                name: body
+                widget: markdown
               - label: Next course dates
                 name: nextCourse
                 widget: string
@@ -747,7 +761,9 @@ collections:
             widget: object
             fields:
               - { label: Heading, name: heading, widget: string }
-              - { label: Body, name: body, widget: text }
+              - label: Body
+                name: body
+                widget: markdown
 
       - name: contact
         label: Contact page
