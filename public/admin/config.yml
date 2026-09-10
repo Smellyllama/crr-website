@@ -929,21 +929,29 @@ collections:
     # in docs/handover.md. Removing a race is a Git job.
     delete: false
     summary: "{{name}}"
-    sortable_fields: [month, name, retired]
+    sortable_fields: [month, name, status]
     # No `default` on purpose. A default filter of retired=false would hide
     # every entry written before the field existed, because their files have no
     # `retired` key at all — the schema defaults it, the file does not carry it.
     # The list shows everything and these narrow it on request.
     view_filters:
       filters:
-        - name: still-running
-          label: Still running
-          field: retired
-          pattern: false
+        - name: active
+          label: Active
+          field: status
+          pattern: active
+        - name: renamed
+          label: Renamed
+          field: status
+          pattern: renamed
+        - name: dormant
+          label: Dormant
+          field: status
+          pattern: dormant
         - name: retired
           label: Retired
-          field: retired
-          pattern: true
+          field: status
+          pattern: retired
     fields:
       - label: Race name
         name: name
@@ -952,17 +960,18 @@ collections:
           Must match the race name used in race reports exactly, or the diary
           entry cannot list the reports about it. For example "Budleigh Blister".
 
-      - label: Former names
-        name: formerNames
+      - label: Also known as
+        name: aliases
         widget: list
         required: false
         field: { label: Name, name: name, widget: string }
         hint: >-
-          If the race has been renamed, put its old names here, spelled as the
-          old race reports spell them - "Bicton Blister 10", for instance. That
-          is what keeps those reports listed against this race. Do not edit the
-          old reports themselves: they are somebody's account of a race that
-          really was called that at the time.
+          Every other name this race goes by, or used to - spelled the way the
+          old race reports spell it. "Bicton Blister 10" belongs on the Budleigh
+          Blister; "Bridgwater 10k" and "Bridgwater Half Marathon" both belong
+          on the one Bridgwater entry. This is what keeps those reports listed
+          against the race. Do not edit the old reports themselves: they are
+          somebody's account of a race that really was called that at the time.
 
       - label: Month
         name: month
@@ -986,7 +995,7 @@ collections:
         hint: >-
           Only for a race on the same calendar date every year, like
           "1 January". Leave empty and use the two boxes below instead if the
-          race moves — most do.
+          race moves - most do.
 
       - label: Which one
         name: nth
@@ -1003,21 +1012,25 @@ collections:
         required: false
         options: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
 
-      - label: Distance
-        name: distance
-        widget: object
+      - label: Distances
+        name: distances
+        widget: list
         required: false
-        collapsed: false
+        label_singular: Distance
+        summary: "{{fields.value}}{{fields.unit}}"
         hint: >-
-          Leave "Add Distance" unticked for timed events — a 12-hour, a lapped
-          ultra — that have no fixed distance.
+          One row per distance the event offers. Bridgwater is a half, a 10k
+          and a 5k from one start, which is why this is a list - it was two
+          separate diary entries until somebody noticed. Add nothing at all for
+          a timed event, a 12-hour or a lapped ultra, which has a duration
+          rather than a distance.
         fields:
           - label: How far
             name: value
             widget: number
             value_type: float
             step: 0.01
-            hint: Just the number — 10 for a 10k, 13.1 for a half marathon.
+            hint: Just the number - 10 for a 10k, 13.1 for a half marathon.
           - label: Miles or kilometres
             name: unit
             widget: select
@@ -1029,24 +1042,42 @@ collections:
       - label: Status
         name: status
         widget: select
-        default: expected
+        default: active
         options:
-          - { label: Expected - shown as approximate, value: expected }
-          - { label: Confirmed - shows the real date, value: confirmed }
+          - { label: "Active - happening, show it", value: active }
+          - { label: "Renamed - happening under a new name", value: renamed }
+          - { label: "Dormant - did not run, may return", value: dormant }
+          - { label: "Retired - gone", value: retired }
         hint: >-
-          Leave as Expected unless you have checked this year's date with the
-          organiser. Expected entries never show a specific day, because
-          somebody turning up a week late is worse than a page that says it
-          does not know.
+          Dormant and Retired both hide the race from the website and both keep
+          the entry here. That is the point of them: a deleted race leaves
+          nothing to say we checked, so the next trawl through the race reports
+          adds it straight back. Say what you found in the Notes box.
 
-      - label: Confirmed date
-        name: confirmedDate
+      - label: Date
+        name: date
         widget: datetime
         required: false
         format: "YYYY-MM-DD"
         date_format: "DD/MM/YYYY"
         time_format: false
-        hint: The real date for this year. Only used when Status is Confirmed.
+        hint: >-
+          The date of the next running, if we have one. Fill it in even when it
+          is not confirmed - it puts the race in the right place in the order,
+          and it will not be shown as a date until the box below is ticked.
+
+      - label: Date confirmed with the organiser
+        name: dateConfirmed
+        widget: boolean
+        required: false
+        default: false
+        hint: >-
+          Only tick this once you have checked the date on the organiser's own
+          page. Until it is ticked the website says roughly when the race
+          happens - "usually the last Sunday in November" - and never a
+          specific day, because somebody turning up a week early is worse than
+          a page that admits it does not know. A date that has already passed
+          counts as unconfirmed whatever this says.
 
       - label: Last seen
         name: lastSeen
@@ -1058,18 +1089,6 @@ collections:
         hint: >-
           The date we have evidence for, from a club race report. It is what
           the rule was worked out from, not a prediction.
-
-      - label: Retired - race no longer runs
-        name: retired
-        widget: boolean
-        required: false
-        default: false
-        hint: >-
-          Tick this when a race has stopped happening. It disappears from the
-          diary on the website, and the entry stays here as a record that we
-          already checked. Do not delete the race instead - a deleted entry
-          leaves nothing to say it was looked at, so the next trawl through
-          the race reports would add it straight back.
 
       - label: One of our own races
         name: clubRace

@@ -37,7 +37,7 @@ const next = (await getCollection('calendar-events'))
 			) : (
 				<ul class="mx-auto mt-8 flex max-w-md flex-col gap-3">
 					{next.map(({ event, date }) => {
-						const exact = hasExactDate(event.data);
+						const exact = hasExactDate(event.data, now);
 						return (
 							<li class:list={['coming-up-entry', exact ? 'is-exact' : 'is-approximate']}>
 								<span class="font-bold text-primary">{event.data.name}</span>

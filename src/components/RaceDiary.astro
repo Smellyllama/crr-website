@@ -45,14 +45,15 @@ for (const report of reports) {
 /**
  * Every report about a race, including under names it has since dropped.
  *
- * The Budleigh Blister was the Bicton Blister until Exmouth Harriers moved it.
+ * The Budleigh Blister was the Bicton Blister until Exmouth Harriers moved it,
+ * and Bridgwater was written up twice, once per distance.
  * Matching on the current name alone would lose the 2017 report — the oldest
  * ones are exactly the ones a rename strands, and they are the ones nobody
  * would think to look for.
  */
 const reportsFor = (entry: (typeof events)[number]) => {
 	const seen = new Set<(typeof reports)[number]>();
-	for (const name of [entry.data.name, ...entry.data.formerNames]) {
+	for (const name of [entry.data.name, ...entry.data.aliases]) {
 		for (const report of reportsByRace.get(name) ?? []) seen.add(report);
 	}
 	return [...seen];
@@ -89,7 +90,7 @@ const months = groupByMonth(
 				</h3>
 				<ul class="mt-4 flex flex-col gap-3">
 					{items.map(({ event, date }) => {
-						const exact = hasExactDate(event.data);
+						const exact = hasExactDate(event.data, now);
 						const related = sortByRaceDateDesc(reportsFor(event));
 						const Body = bodies.get(event.id);
 						return (
@@ -97,7 +98,12 @@ const months = groupByMonth(
 								<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
 									<h4 class="font-bold text-primary">{event.data.name}</h4>
 									<div class="flex flex-wrap gap-1">
-										{event.data.clubRace && <span class="badge badge-secondary badge-sm">Our race</span>}
+										{/* So somebody looking for the old name finds it, rather than
+											    concluding their race has dropped out of the diary. */}
+											{event.data.status === 'renamed' && event.data.aliases[0] && (
+												<span class="badge badge-outline badge-sm">Was {event.data.aliases[0]}</span>
+											)}
+											{event.data.clubRace && <span class="badge badge-secondary badge-sm">Our race</span>}
 										{event.data.championship && (
 											<span class="badge badge-outline badge-sm">Championship</span>
 										)}
@@ -110,8 +116,11 @@ const months = groupByMonth(
 									) : (
 										describeTiming(event.data)
 									)}
-									{event.data.distance && (
-										<span class="text-base-content/60"> · {formatDistance(event.data.distance)}</span>
+									{event.data.distances.length > 0 && (
+										<span class="text-base-content/60">
+											{' · '}
+											{event.data.distances.map(formatDistance).join(' / ')}
+										</span>
 									)}
 								</p>
 

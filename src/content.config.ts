@@ -331,19 +331,21 @@ const calendarEvents = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/calendar-events" }),
   schema: z
     .object({
+      // The name the race goes by now.
       name: z.string(),
 
-      // Names this race used to go by.
+      // Every other name this race is known by, or has been known by.
       //
-      // A race that is renamed keeps its history: the diary links each entry to
-      // the reports that mention it, matched on the race name in the report's
-      // frontmatter, and a rename would otherwise orphan every report written
-      // before it. The Bicton Blister became the Budleigh Blister; the 2017
-      // report still says Bicton, and still belongs to the entry.
+      // The diary lists the reports about each race by matching the race name
+      // in the report's frontmatter, so without this a rename orphans every
+      // report written before it, and merging two entries orphans one of them.
+      // Both have happened here: the Bicton Blister became the Budleigh
+      // Blister, and the Bridgwater 10k and Half turned out to be one event
+      // with two distances, written up under both names.
       //
-      // Never rewrite the name in an old report to match — that is a member's
-      // own account of a race that really was called that at the time.
-      formerNames: z.array(z.string()).default([]),
+      // Never edit an old report to match the current name. It is a member's
+      // account of a race that really was called that at the time.
+      aliases: z.array(z.string()).default([]),
 
       month: z.number().int().min(1).max(12),
 
@@ -362,32 +364,52 @@ const calendarEvents = defineCollection({
         ])
         .optional(),
 
-      // Optional: timed and lapped events have no fixed distance.
-      distance: distance.optional(),
+      // One event can offer several. Bridgwater is a half, a 10k and a 5k from
+      // a single start, which is why this is a list and not a field — it was
+      // two calendar entries until somebody noticed. Empty is meaningful: a
+      // timed lap event has no distance at all, only a duration.
+      distances: z.array(distance).default([]),
 
-      // confirmed — a human has checked this year's date with the organiser.
-      // expected  — computed from the rule, and rendered as approximate.
-      status: z.enum(["confirmed", "expected"]).default("expected"),
+      // Where a race is in its life, which is not the same question as whether
+      // we know its date.
+      //
+      //   active   — happening, list it.
+      //   renamed  — happening under a new name; this entry is the new one and
+      //              `aliases` carries the old, so the history follows it.
+      //   dormant  — did not run last time round and may return. Not listed.
+      //   retired  — gone. Not listed.
+      //
+      // dormant and retired stay in the repository on purpose. Deleting them
+      // loses the fact that somebody checked, and the next pass over the race
+      // reports re-adds the Bad Cow from a 2017 write-up.
+      status: z
+        .enum(["active", "renamed", "dormant", "retired"])
+        .default("active"),
 
-      // Set when status is "confirmed". Ignored otherwise.
-      confirmedDate: z.date().optional(),
+      // The date of the next running, when we have one.
+      //
+      // Used for ordering whether or not it is confirmed — a date from an
+      // aggregator still sorts the entry correctly. What it must not do is
+      // print as a specific day unless dateConfirmed is true.
+      date: z.date().optional(),
+
+      // Has a human checked this date with the organiser?
+      //
+      // A boolean, and the page's wording is derived from it, so nothing has to
+      // be edited in two places and no "check before entering" note can be left
+      // behind after a date is confirmed.
+      dateConfirmed: z.boolean().default(false),
 
       // The most recent date we have evidence for, from a club race report.
       // What the rule was derived from — not a prediction.
       lastSeen: z.date().optional(),
 
-      // A race that has stopped running. The entry stays — that is the point.
-      //
-      // Deleting it would leave nothing saying "we looked at this one and it is
-      // gone", so the next pass through the race reports would find the same
-      // 2017 result and add it straight back. A retired entry is a tombstone:
-      // hidden from the diary, and a record that the decision was already made.
-      // Anything deriving entries from race reports must skip a name that
-      // already has a retired entry. See docs/race-diary.md.
-      retired: z.boolean().default(false),
-
       clubRace: z.boolean().default(false),
       championship: z.boolean().default(false),
+
+      // Whoever takes the entries, which is usually not the organiser: Race
+      // Nation, FullOnSport, a club's own page. Optional — several of these
+      // have no booking link at all and take entries on the day.
       entryUrl: z.string().url().optional(),
       resultsUrl: z.string().url().optional(),
     })

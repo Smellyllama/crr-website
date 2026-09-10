@@ -59,11 +59,15 @@ cutoff.setFullYear(cutoff.getFullYear() - YEARS);
 
 const stale = [];
 for (const { file, data } of read('src/content/calendar-events')) {
-  // A retired entry has already been decided about, and a confirmed one has
-  // had a human check it with the organiser. Neither needs chasing.
-  if (data.retired || data.status === 'confirmed') continue;
+  // Anything not being listed has already been decided about, and a date a
+  // human has checked with the organiser needs no chasing. A confirmed date
+  // that has already passed does, which is why it is compared rather than
+  // trusted — the same guard the page applies before printing a day.
+  const status = data.status ?? 'active';
+  if (status === 'dormant' || status === 'retired') continue;
+  if (data.dateConfirmed && data.date && new Date(data.date) >= new Date()) continue;
 
-  const names = [data.name, ...(data.formerNames ?? [])];
+  const names = [data.name, ...(data.aliases ?? [])];
   const newest = names
     .map((name) => newestByRace.get(name))
     .filter(Boolean)
@@ -91,8 +95,9 @@ if (!stale.length) {
     dim(
       '\n  Not an error — these render as approximate, which is honest. But when\n' +
         '  the seed entries were checked, being this old was what predicted being\n' +
-        '  wrong. Confirm one with the organiser and set status: confirmed, or\n' +
-        '  retire it. See docs/race-diary.md.\n',
+        '  wrong. Check one with the organiser, then set its date and tick\n' +
+        '  dateConfirmed \u2014 or set its status to dormant or retired.\n' +
+        '  See docs/race-diary.md.\n',
     ),
   );
 }

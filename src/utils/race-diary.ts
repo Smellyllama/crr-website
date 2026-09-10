@@ -17,14 +17,16 @@ export type Weekday =
 	| "Saturday"
 	| "Sunday";
 
+export type DiaryStatus = "active" | "renamed" | "dormant" | "retired";
+
 export interface DiaryRule {
 	month: number;
 	fixedDate?: string;
 	nth?: Nth;
 	weekday?: Weekday;
-	status?: "confirmed" | "expected";
-	confirmedDate?: Date;
-	retired?: boolean;
+	status?: DiaryStatus;
+	date?: Date;
+	dateConfirmed?: boolean;
 }
 
 const WEEKDAY_INDEX: Record<Weekday, number> = {
@@ -53,13 +55,16 @@ const NTH_WORDS: Record<Nth, string> = {
 /**
  * Whether an entry belongs on the site at all.
  *
- * One predicate rather than `!data.retired` written at each call site, so the
+ * Listed while a race is happening, under whatever name it happens under. A
+ * dormant or retired one stays in the repository as the record that somebody
+ * checked and what they found — it is only hidden from readers.
+ *
+ * One predicate rather than the test written out at each call site, so the
  * diary and the homepage cannot come to disagree about which races still run.
- * A retired entry stays in the repository as a record that somebody checked —
- * it is only hidden from readers.
  */
 export function isRunning(entry: DiaryRule): boolean {
-	return !entry.retired;
+	const status = entry.status ?? "active";
+	return status === "active" || status === "renamed";
 }
 
 /** The nth given weekday of a month, e.g. the last Sunday in November 2026. */
@@ -105,9 +110,11 @@ export function occurrenceIn(entry: DiaryRule, year: number): Date | undefined {
  * occurrence if it is still ahead, and next year's if it has been and gone.
  */
 export function nextOccurrence(entry: DiaryRule, from: Date): Date | undefined {
-	// Only while it is still ahead. Last year's confirmed date left in place
-	// would otherwise pin the entry in the past for ever.
-	if (entry.confirmedDate && entry.confirmedDate >= startOfDay(from)) return entry.confirmedDate;
+	// A known date wins whether or not it is confirmed — an unconfirmed date
+	// from an aggregator still sorts the entry to the right place. Only while
+	// it is still ahead, though: last year's date left in place would otherwise
+	// pin the entry in the past for ever.
+	if (entry.date && entry.date >= startOfDay(from)) return entry.date;
 	const thisYear = occurrenceIn(entry, from.getUTCFullYear());
 	if (thisYear && thisYear >= startOfDay(from)) return thisYear;
 	return occurrenceIn(entry, from.getUTCFullYear() + 1);
@@ -125,9 +132,18 @@ const startOfDay = (d: Date): Date =>
  * from one observation, and a member turning up a week late is a worse outcome
  * than a page admitting it does not know.
  */
-export function hasExactDate(entry: DiaryRule): boolean {
+export function hasExactDate(entry: DiaryRule, now: Date): boolean {
+	// A date that cannot drift, because it is the same every year.
 	if (entry.fixedDate) return true;
-	return entry.status === "confirmed" && Boolean(entry.confirmedDate);
+
+	if (!entry.dateConfirmed || !entry.date) return false;
+
+	// The guard. A date confirmed for last year is not a confirmed date, and
+	// left unguarded it renders as one — a day, in bold, with "date confirmed"
+	// under it, for a race that has already been. This is the exact failure
+	// that produced a diary full of 2017 dates presented as fact, so it is
+	// checked here rather than trusted to whoever edits the entry next.
+	return entry.date >= startOfDay(now);
 }
 
 /** How to say when this race happens, when no exact date may be shown. */
