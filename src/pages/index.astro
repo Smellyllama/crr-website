@@ -18,7 +18,7 @@ if (home?.data.page !== 'home') throw new Error('Missing src/content/pages/home.
 const { hero, clubNights, handicap, couchTo5k, latestReports, upcoming, ourRaces } = home.data;
 ---
 
-<Layout title={SITE_TITLE} description={SITE_DESCRIPTION} overlayHeader>
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION} overlayHeader hideLogoUntilScrolled>
 	<Hero {...hero} />
 	<ClubNights {...clubNights} />
 	<Handicap {...handicap} />

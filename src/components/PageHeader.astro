@@ -10,6 +10,17 @@
 // that is safe to put words on. Do not raise it here: the strapline is 18px
 // white at 80%, and that is the exact combination that measured 3.29:1 on the
 // homepage hero before it was fixed.
+//
+// PAIR THIS WITH `overlayHeader` ON THE LAYOUT. The banner starts at the very
+// top of the page and the header floats over it, so one SVG sits behind both
+// the bar and the banner. Without that the bar is a separate purple block with
+// its own slice of the pattern, and the two meet at a visible seam — which is
+// what this looked like before, and no amount of adding contours to the bar
+// fixes it, because two sliced copies of the same drawing do not line up.
+//
+// The top padding clears the floating header. A plain number, not a measured
+// one, for the reason written on the hero: a value that has to be computed at
+// runtime is a value that can be wrong at the moment it matters.
 import ContourBackdrop from './ContourBackdrop.astro';
 
 interface Props {
@@ -26,7 +37,7 @@ const { heading, strapline, center = false } = Astro.props;
 	<ContourBackdrop />
 	<div
 		class:list={[
-			'relative z-1 mx-auto max-w-3xl px-4 py-14 sm:px-6 lg:px-8',
+			'relative z-1 mx-auto max-w-3xl px-4 pt-28 pb-14 sm:px-6 lg:px-8',
 			center && 'text-center',
 		]}
 	>

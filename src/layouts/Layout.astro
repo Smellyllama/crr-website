@@ -12,11 +12,26 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
-	/** Let the header float transparently over a page-level hero. */
+	/**
+	 * Let the header float transparently over a page-level banner.
+	 *
+	 * Pair this with a banner that starts at the very top of the page — Hero,
+	 * or PageHeader. It is what makes the contours run unbroken from the top of
+	 * the screen through the banner: one SVG behind both, rather than the bar
+	 * and the banner each slicing their own copy and meeting at a seam.
+	 */
 	overlayHeader?: boolean;
+	/** Homepage only — see Header's hideLogo. */
+	hideLogoUntilScrolled?: boolean;
 }
 
-const { title, description, image, overlayHeader = false } = Astro.props;
+const {
+	title,
+	description,
+	image,
+	overlayHeader = false,
+	hideLogoUntilScrolled = false,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -26,7 +41,7 @@ const { title, description, image, overlayHeader = false } = Astro.props;
 	</head>
 	<body class="flex min-h-screen flex-col bg-base-100 text-base-content">
 		<a class="skip-link" href={`#${MAIN_CONTENT_ID}`}>{SKIP_LINK_LABEL}</a>
-		<Header overlay={overlayHeader} />
+		<Header overlay={overlayHeader} hideLogo={hideLogoUntilScrolled} />
 		{/*
 		  tabindex="-1" so the skip link moves focus here, not just the scroll
 		  position. Without it some browsers scroll to main and leave focus

@@ -6,9 +6,17 @@ import HeaderLink from './HeaderLink.astro';
 interface Props {
 	/** Overlay transparently on a hero instead of sitting in normal flow. */
 	overlay?: boolean;
+	/**
+	 * Hide the logo until the bar goes solid.
+	 *
+	 * The homepage only. Its hero carries a large CRR mark directly below, and
+	 * two of them read as a duplicate. Inside pages have no such mark, so
+	 * hiding it there would just leave the corner empty.
+	 */
+	hideLogo?: boolean;
 }
 
-const { overlay = false } = Astro.props;
+const { overlay = false, hideLogo = false } = Astro.props;
 ---
 
 <header
@@ -19,6 +27,7 @@ const { overlay = false } = Astro.props;
 		overlay
 			? 'site-header--overlay fixed inset-x-0 top-0 z-50 bg-transparent data-[scrolled=true]:bg-primary data-[scrolled=true]:shadow-sm'
 			: 'bg-primary shadow-sm',
+		overlay && hideLogo && 'site-header--hide-logo',
 	]}
 >
 	{/*
@@ -140,7 +149,7 @@ const { overlay = false } = Astro.props;
 		opacity: 0;
 	}
 
-	.site-header--overlay .site-logo-link {
+	.site-header--hide-logo .site-logo-link {
 		visibility: hidden;
 		opacity: 0;
 		transition:
@@ -148,7 +157,7 @@ const { overlay = false } = Astro.props;
 			visibility 150ms ease;
 	}
 
-	.site-header--overlay[data-scrolled='true'] .site-logo-link {
+	.site-header--hide-logo[data-scrolled='true'] .site-logo-link {
 		visibility: visible;
 		opacity: 1;
 	}

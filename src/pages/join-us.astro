@@ -12,7 +12,9 @@ if (entry?.data.page !== 'join-us') throw new Error('Missing src/content/pages/j
 const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry.data;
 ---
 
-<Layout title={hero.heading} description={hero.strapline}>
+<Layout title={hero.heading} description={hero.strapline}
+	overlayHeader
+>
 	<PageHeader heading={hero.heading} strapline={hero.strapline} center />
 
 	<section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
