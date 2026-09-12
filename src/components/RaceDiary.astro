@@ -101,7 +101,7 @@ const months = groupByMonth(
 										{/* So somebody looking for the old name finds it, rather than
 											    concluding their race has dropped out of the diary. */}
 											{event.data.status === 'renamed' && event.data.aliases[0] && (
-												<span class="badge badge-outline badge-sm">Was {event.data.aliases[0]}</span>
+												<span class="badge badge-outline badge-wrap badge-sm">Was {event.data.aliases[0]}</span>
 											)}
 											{event.data.clubRace && <span class="badge badge-secondary badge-sm">Our race</span>}
 										{event.data.championship && (

@@ -112,6 +112,24 @@
   on white, which is 2.41:1 and is what these replace.
 */
 
+/*
+  A badge that may hold a sentence rather than a word.
+  
+  daisyUI's badge is one line at a fixed height, which is right for "Our race"
+  and wrong for anything an editor types. On a 320px screen the club night
+  summary wraps to two lines inside a 24px pill and the text spills out over
+  the edges — reported from a real handset, reproduced at 320 as a 24px box
+  holding 33px of content.
+  
+  Use it on any badge whose text comes from content rather than from the code.
+*/
+@utility badge-wrap {
+	height: auto;
+	white-space: normal;
+	padding-block: 0.3rem;
+	line-height: 1.3;
+}
+
 /* On a light background. Purple fill, chalk text. */
 @utility badge-purple {
 	background-color: var(--color-primary);

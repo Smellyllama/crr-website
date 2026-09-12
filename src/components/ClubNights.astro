@@ -33,7 +33,7 @@ const { heading, intro, nights, reassurance } = Astro.props;
 							<span class="text-base font-normal text-base-content/60">· {night.time}</span>
 						</h3>
 						<p class="text-sm font-medium text-base-content/80">{night.venue}</p>
-						<span class="badge badge-purple w-fit">{night.summary}</span>
+						<span class="badge badge-purple badge-wrap w-fit">{night.summary}</span>
 						<RichText text={night.detail} class="mt-2 text-base-content/70" />
 					</div>
 				</li>

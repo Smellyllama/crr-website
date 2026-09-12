@@ -68,7 +68,7 @@ const showPosted = postedIsMeaningfullyLater(posted, earliestRaceDate);
 			}
 			<ul class="mt-5 flex flex-wrap justify-center gap-2">
 				{races.map((race) => (
-					<li class="badge badge-chalk-outline gap-1 whitespace-normal py-3">
+					<li class="badge badge-chalk-outline badge-wrap gap-1">
 						<span class="font-semibold">{race.name}</span>
 						{race.distance && <span>· {formatDistance(race.distance)}</span>}
 						{!sameDay && (
