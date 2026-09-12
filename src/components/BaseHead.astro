@@ -4,7 +4,21 @@
 import '../styles/app.css';
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
-import FallbackImage from '../assets/blog-placeholder-1.jpg';
+/*
+ * The preview card for every page that has no hero of its own — the homepage,
+ * Join Us, Calendar, Results, Contact, Our Races, the four legal pages, the
+ * archive index and the 404. That is most of the site.
+ *
+ * It is a committed raster, not the contour SVG at runtime, for two reasons:
+ * the image service will not rasterise an SVG, and under
+ * passthroughImageService nothing is resized anyway. Generated once from
+ * hero-contours-desktop.svg at 1200x630 — the size every platform renders a
+ * card at — on the brand purple with the motif's own stroke colours at 0.5.
+ *
+ * No text is baked into it. CLAUDE.md forbids that, og:title already supplies
+ * the words beside the card, and a wordless image cannot go stale.
+ */
+import FallbackImage from '../assets/social-fallback.jpg';
 import { PRE_LAUNCH, SITE_TITLE } from '../consts';
 import { Font, getImage } from 'astro:assets';
 
