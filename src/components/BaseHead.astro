@@ -6,7 +6,7 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { PRE_LAUNCH, SITE_TITLE } from '../consts';
-import { Font } from 'astro:assets';
+import { Font, getImage } from 'astro:assets';
 
 interface Props {
 	title: string;
@@ -17,6 +17,33 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
+
+/**
+ * The preview card image, generated rather than passed through.
+ *
+ * `image.src` on an ImageMetadata object is the ORIGINAL file. Using it meant
+ * every page with a hero shipped that hero twice: once as the derivative its
+ * <Image> tag generated at the size the page actually uses, and once whole,
+ * for a preview card that renders at 1200x630 no matter what it is sent. On
+ * most pages the untouched original was the largest file on the page.
+ *
+ * Four things here are deliberate:
+ *
+ * - JPEG, not WebP. This is the one place on the site where WebP is the wrong
+ *   answer: support across preview scrapers is patchy and JPEG renders
+ *   everywhere. Do not change this to match the rest of the site.
+ * - `cover`, because 1200x630 is a wide letterbox and a portrait hero would
+ *   otherwise be squashed or padded.
+ * - The URL stays absolute. Scrapers reject relative paths.
+ * - The FallbackImage default stays, so pages without a hero still get a card.
+ */
+const ogImage = await getImage({
+	src: image,
+	width: 1200,
+	height: 630,
+	fit: 'cover',
+	format: 'jpeg',
+});
 ---
 
 <!-- Global Metadata -->
@@ -63,7 +90,7 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={new URL(ogImage.src, Astro.url)} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
