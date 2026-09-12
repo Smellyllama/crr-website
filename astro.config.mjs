@@ -16,21 +16,24 @@ export default defineConfig({
 	// noindex tag and robots.txt disallows everything.
 	site: 'https://chardroadrunners.com',
 	integrations: [mdx(), sitemap()],
-	// EXPERIMENT, not a settled decision. passthroughImageService() was set here
-	// because Cloudflare's build environment reportedly can't run Sharp. The cost
-	// of the workaround is total: every width and height in the codebase is
-	// declarative only, nothing is resized or converted, and source size is
-	// served size across the whole site — 15.0 MB of images in dist/_astro, with
-	// six large originals shipped twice under two hashes.
+	// No image service is set, which means Astro's default: Sharp, transforming
+	// at build time.
 	//
-	// The premise is worth testing. This is a static build: images are
-	// transformed in Node during `astro build`, not in the Workers runtime, and
-	// the Workers runtime is what the Cloudflare adapter's passthrough advice is
-	// actually about. Sharp is already a dependency and works locally.
+	// This used to be passthroughImageService(), on the grounds that Cloudflare's
+	// build environment can't run Sharp. That was tested on 12 September 2026 and
+	// is not true. Cloudflare Workers Builds runs `astro build` in Node, where
+	// Sharp is an ordinary dependency; the passthrough advice applies to the
+	// Cloudflare ADAPTER, which transforms in the Workers runtime, and this site
+	// has no adapter. Measured on the preview deployment, not locally:
 	//
-	// Removing the line lets Astro use its default Sharp service. If Cloudflare's
-	// build goes red, the error message is the point of the exercise: restore the
-	// line and record what it said. Nothing else changes.
+	//     homepage          1,408 kB -> 176 kB
+	//     /race-reports/    4,667 kB -> 702 kB
+	//     cold build           3.9 s -> 4.5 s
+	//
+	// Do not reintroduce passthrough without re-testing. Its cost is total: it
+	// makes every width and height in the codebase declarative only, so images
+	// silently ship at source size and the explicit sizes on each <Image> stop
+	// meaning anything.
 	vite: {
 		plugins: [tailwindcss()],
 	},
