@@ -3,6 +3,8 @@ import { getEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { splitWhat3Words } from '../utils/what3words';
+import RichText from '../components/RichText.astro';
+import ContourBackdrop from '../components/ContourBackdrop.astro';
 
 const entry = await getEntry('pages', 'join-us');
 // The `page` check both proves the file is there and narrows it to the
@@ -20,7 +22,7 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 	<section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
 		<div class="mx-auto max-w-2xl text-center">
 			<h2 class="text-3xl font-bold text-primary sm:text-4xl">{firstVisit.heading}</h2>
-			{firstVisit.intro && <p class="mt-4 text-lg text-base-content/80">{firstVisit.intro}</p>}
+			{firstVisit.intro && <RichText text={firstVisit.intro} class="mt-4 text-lg text-base-content/80" />}
 		</div>
 		<div class="card mt-10 border border-base-300 bg-base-100 shadow-sm">
 			<div class="card-body">
@@ -51,7 +53,7 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 				</dl>
 			</div>
 		</div>
-		<p class="mx-auto mt-10 max-w-2xl text-center text-lg text-base-content/80">{firstVisit.reassurance}</p>
+		<RichText text={firstVisit.reassurance} class="mx-auto mt-10 max-w-2xl text-center text-lg text-base-content/80" />
 	</section>
 
 	<section class="bg-base-200">
@@ -60,12 +62,12 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 			<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
 				<li class="card border border-base-300 bg-base-100 shadow-sm">
 					<div class="card-body">
-						<p class="text-base-content/80">{whichNight.tuesday}</p>
+						<RichText text={whichNight.tuesday} class="text-base-content/80" />
 					</div>
 				</li>
 				<li class="card border border-base-300 bg-base-100 shadow-sm">
 					<div class="card-body">
-						<p class="text-base-content/80">{whichNight.thursday}</p>
+						<RichText text={whichNight.thursday} class="text-base-content/80" />
 					</div>
 				</li>
 			</ul>
@@ -75,7 +77,7 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 	<section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
 		<div class="mx-auto max-w-2xl text-center">
 			<h2 class="text-3xl sm:text-4xl font-bold text-primary">{membership.heading}</h2>
-			{membership.intro && <p class="mt-3 text-base-content/80">{membership.intro}</p>}
+			{membership.intro && <RichText text={membership.intro} class="mt-3 text-base-content/80" />}
 		</div>
 		<ul class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
 			{
@@ -92,11 +94,11 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 		</ul>
 		<div class="card mt-6 border border-base-300 bg-base-200">
 			<div class="card-body items-center text-center">
-				<p class="text-base-content/80">{membership.howToPay}</p>
+				<RichText text={membership.howToPay} class="text-base-content/80" />
 				<p class="mt-1 select-all rounded-box bg-base-100 px-6 py-3 font-mono text-2xl font-bold tracking-widest text-primary">
 					{membership.connectMyClubCode}
 				</p>
-				{membership.renewal && <p class="mt-1 text-base-content/80">{membership.renewal}</p>}
+				{membership.renewal && <RichText text={membership.renewal} class="mt-1 text-base-content/80" />}
 				<p class="mt-1 text-base-content/80">
 					<a href={`mailto:${membership.membershipEmail}`} class="link link-primary font-medium">
 						{membership.membershipEmail}
@@ -106,10 +108,11 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 		</div>
 	</section>
 
-	<section class="bg-primary text-primary-content">
-		<div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
+	<section class="relative overflow-hidden bg-primary text-primary-content">
+		<ContourBackdrop />
+		<div class="relative z-1 mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
 			<h2 class="text-3xl sm:text-4xl font-bold">{couchTo5k.heading}</h2>
-			<p class="mt-4 text-primary-content/80">{couchTo5k.body}</p>
+			<RichText text={couchTo5k.body} class="mt-4 text-primary-content/80" />
 			{
 				couchTo5k.nextCourse ? (
 					<p class="mt-6 inline-block rounded-box bg-primary-content/10 px-5 py-2 font-semibold">
