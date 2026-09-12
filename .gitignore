@@ -33,3 +33,6 @@ docs/private/
 
 # wrangler local dev state, created by `wrangler dev`
 .wrangler/
+
+# The vendored CMS auth worker brings upstream's own dependency tree
+workers/cms-auth/node_modules/
