@@ -31,6 +31,28 @@ flag, deliberately, so there is only one thing to remember.
 This is not security. Anyone with the address can read every page today, and
 this repository is public. It only stops the site being found by accident.
 
+### And confirm ALLOWED_DOMAINS includes the live domain
+
+**On the `crr-cms-auth` Worker, not this one.** It is the GitHub sign-in proxy
+the CMS uses, and `ALLOWED_DOMAINS` is the list of hostnames allowed to use it.
+Today it names the `workers.dev` address. The moment `/admin` is served from
+`chardroadrunners.com` instead, sign-in fails with "Your domain is not allowed
+to use the authenticator" until the new domain is on that list.
+
+Set it to cover the naked domain and its subdomains, which need listing
+separately:
+
+```
+chardroadrunners.com, *.chardroadrunners.com
+```
+
+Keep the `workers.dev` hostname on the list too while that address is still in
+use, or the CMS stops working there the moment you change it.
+
+This one fails quietly from the outside. The website is completely fine — it is
+only the committee who cannot sign in to edit it, which is the one group who
+will not be looking at it on launch day.
+
 ---
 
 ## Before the day
