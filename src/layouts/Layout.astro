@@ -12,6 +12,8 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	/** Passed straight to BaseHead — which part of `image` the share card keeps. */
+	imagePosition?: 'centre' | 'top' | 'bottom';
 	/**
 	 * Let the header float transparently over a page-level banner.
 	 *
@@ -29,6 +31,7 @@ const {
 	title,
 	description,
 	image,
+	imagePosition,
 	overlayHeader = false,
 	hideLogoUntilScrolled = false,
 } = Astro.props;
@@ -37,7 +40,12 @@ const {
 <!doctype html>
 <html lang="en" data-theme="crr">
 	<head>
-		<BaseHead title={title} description={description} image={image} />
+		<BaseHead
+			title={title}
+			description={description}
+			image={image}
+			imagePosition={imagePosition}
+		/>
 	</head>
 	<body class="flex min-h-screen flex-col bg-base-100 text-base-content">
 		<a class="skip-link" href={`#${MAIN_CONTENT_ID}`}>{SKIP_LINK_LABEL}</a>

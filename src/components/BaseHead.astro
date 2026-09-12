@@ -12,11 +12,18 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	/** Which part of `image` survives the crop to a share card. */
+	imagePosition?: 'centre' | 'top' | 'bottom';
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const {
+	title,
+	description,
+	image = FallbackImage,
+	imagePosition = 'centre',
+} = Astro.props;
 
 /**
  * The preview card image, generated rather than passed through.
@@ -33,7 +40,11 @@ const { title, description, image = FallbackImage } = Astro.props;
  *   answer: support across preview scrapers is patchy and JPEG renders
  *   everywhere. Do not change this to match the rest of the site.
  * - `cover`, because 1200x630 is a wide letterbox and a portrait hero would
- *   otherwise be squashed or padded.
+ *   otherwise be squashed or padded. A portrait loses about two thirds of its
+ *   height to that crop, so where the crop is taken from is set per post —
+ *   centre beheaded three named members. Astro maps `fit: 'contain'` to
+ *   Sharp's `inside`, which resizes without padding rather than letterboxing,
+ *   so it is not the escape route it looks like.
  * - The URL stays absolute. Scrapers reject relative paths.
  * - The FallbackImage default stays, so pages without a hero still get a card.
  */
@@ -42,6 +53,7 @@ const ogImage = await getImage({
 	width: 1200,
 	height: 630,
 	fit: 'cover',
+	position: imagePosition,
 	format: 'jpeg',
 });
 ---
