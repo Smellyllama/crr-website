@@ -84,9 +84,8 @@ would have been a local error before the push rather than a red deploy.
 `media_libraries.default.config.slugify_filename: true` normalises uploaded
 filenames. Sveltia keeps the original name by default, which is how
 `Baltonsborough 5Mile.jpg` — spaces and capitals — reached the repository. The
-setting applies to new uploads only; that file still needs renaming by hand,
-along with the reference to it in
-`src/content/race-reports/2026-08-31-baltonsborough-somerset-village-show-5-mile-run-results-and-experience.md`.
+setting applies to new uploads only; the one file that predates it has since
+been renamed by hand.
 
 ## Content notes
 

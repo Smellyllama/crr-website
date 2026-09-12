@@ -63,6 +63,12 @@ npm run dev          # localhost:4321
 `npm run build` runs the checks first and **fails the build** on schema drift.
 That is deliberate — see [The two schemas](#the-two-schemas).
 
+`.claude/launch.json` is kept on purpose. It tells Claude Code's browser
+preview how to start this project's dev server — `npm run dev` on port 4321 —
+so a preview can be opened without a server being started by hand first. It
+affects nothing about the site or the build, and deleting it only means
+starting the server manually.
+
 ---
 
 ## Folder layout
