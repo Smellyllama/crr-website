@@ -72,9 +72,11 @@ will not be looking at it on launch day.
 - **Redirects from the old Webador URLs.** Needs the list of old addresses
   captured *before* that site is switched off. Without them, every link anyone
   has ever shared breaks on launch day.
-- **Confirm Lizzie Cox is happy to be named as welfare officer**
-  (`src/content/legal/welfare.md`). The address is now a club one; being named
-  on a public page is a separate question and hers to answer.
+- ~~**Confirm Lizzie Cox is happy to be named as welfare officer.**~~
+  **Done — consent given verbally on 12 September 2026.** Left here rather than
+  deleted so a future reader can see it was asked as well as answered. The
+  published contact is the forwarder, not a personal address; the detail is in
+  `docs/handover.md` under Content notes.
 
 ### Words nobody has written yet
 

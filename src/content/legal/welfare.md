@@ -8,8 +8,8 @@ welfareOfficer:
   name: "Lizzie Cox"
   email: "welfare@chardroadrunners.com"
   # A club address rather than a personal one, so the role survives the person
-  # holding it and nobody's own inbox is published. Lizzie still needs to
-  # confirm she is happy to be named here.
+  # holding it and nobody's own inbox is published. Consent to be named was
+  # given on 12 September 2026 — see docs/handover.md.
 # Committee notes, not published. They live here rather than in the body
 # because an HTML comment in Markdown reaches the page source.
 #
