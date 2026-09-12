@@ -35,9 +35,14 @@ this repository is public. It only stops the site being found by accident.
 
 **On the `crr-cms-auth` Worker, not this one.** It is the GitHub sign-in proxy
 the CMS uses, and `ALLOWED_DOMAINS` is the list of hostnames allowed to use it.
-Today it names the `workers.dev` address. The moment `/admin` is served from
-`chardroadrunners.com` instead, sign-in fails with "Your domain is not allowed
-to use the authenticator" until the new domain is on that list.
+`cms-install-plan.md` records it as set, but its value is only visible in the
+Cloudflare dashboard, so **read it before changing anything**. If it does not
+already include the live domain, sign-in fails with "Your domain is not allowed
+to use the authenticator" the moment `/admin` is served from
+`chardroadrunners.com`.
+
+The Worker the CMS calls is `crr-cms-auth.buddygoestravelling.workers.dev`,
+named as `base_url` in `public/admin/config.yml`.
 
 Set it to cover the naked domain and its subdomains, which need listing
 separately:
