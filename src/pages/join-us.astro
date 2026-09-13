@@ -38,7 +38,7 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 												href={part.href}
 												target="_blank"
 												rel="noopener noreferrer"
-												class="link link-primary font-medium"
+												class="link link-primary font-medium wrap-anywhere"
 											>
 												{part.text}
 											</a>
@@ -100,7 +100,7 @@ const { hero, firstVisit, whichNight, membership, couchTo5k, questions } = entry
 				</p>
 				{membership.renewal && <RichText text={membership.renewal} class="mt-1 text-base-content/80" />}
 				<p class="mt-1 text-base-content/80">
-					<a href={`mailto:${membership.membershipEmail}`} class="link link-primary font-medium">
+					<a href={`mailto:${membership.membershipEmail}`} class="link link-primary font-medium wrap-anywhere">
 						{membership.membershipEmail}
 					</a>
 				</p>

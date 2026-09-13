@@ -35,7 +35,7 @@ const posts = sortByRaceDateDesc(await getCollection('race-reports', ({ data }) 
 										width={480}
 										height={240}
 										src={post.data.heroImage}
-										alt=""
+										alt={post.data.heroImageAlt ?? ''}
 										class="h-full w-full object-cover object-hero"
 									/>
 								) : (

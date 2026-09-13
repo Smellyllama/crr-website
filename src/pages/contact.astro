@@ -46,7 +46,7 @@ const raceContacts = races
 				<dt class="font-bold text-primary">{general.label}</dt>
 				<dd class="mt-1 text-base-content/80">
 					<RichText text={general.detail} />
-					<a href={`mailto:${general.email}`} class="link link-primary">{general.email}</a>
+					<a href={`mailto:${general.email}`} class="link link-primary wrap-anywhere">{general.email}</a>
 				</dd>
 			</div>
 
@@ -56,7 +56,7 @@ const raceContacts = races
 						<dt class="font-bold text-primary">{membership.label}</dt>
 						<dd class="mt-1 text-base-content/80">
 							<RichText text={membership.detail} />
-							<a href={`mailto:${membershipEmail}`} class="link link-primary">
+							<a href={`mailto:${membershipEmail}`} class="link link-primary wrap-anywhere">
 								{membershipEmail}
 							</a>
 						</dd>
@@ -70,7 +70,7 @@ const raceContacts = races
 						<dt class="font-bold text-primary">{welfare.label}</dt>
 						<dd class="mt-1 text-base-content/80">
 							<RichText text={welfare.detail} />
-							<a href={`mailto:${welfareOfficer.email}`} class="link link-primary">
+							<a href={`mailto:${welfareOfficer.email}`} class="link link-primary wrap-anywhere">
 								{welfareOfficer.email}
 							</a>
 							{/* Named, because who reads a welfare concern matters more than
@@ -94,7 +94,7 @@ const raceContacts = races
 								{raceContacts.map((race) => (
 									<li>
 										{race.title} —{' '}
-										<a href={`mailto:${race.email}`} class="link link-primary">
+										<a href={`mailto:${race.email}`} class="link link-primary wrap-anywhere">
 											{race.email}
 										</a>
 									</li>

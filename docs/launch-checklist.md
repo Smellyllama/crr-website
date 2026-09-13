@@ -1,7 +1,16 @@
 # Launch checklist
 
 Everything that has to happen before the site is announced, and the one thing
-that has to happen on the day. Target is **November 2026**.
+that has to happen on the day.
+
+**Two dates, not one.**
+
+- **November 2026 — committee review.** The site is live at its address and the
+  committee are asked to read it. `PRE_LAUNCH` stays `true`: readable by anyone
+  with the link, not findable by anyone without it. That is not a compromise,
+  it is exactly what a review period wants.
+- **December 2026 — public launch.** `PRE_LAUNCH` goes `false` and the site
+  becomes findable.
 
 Nothing here is broken. These are decisions and facts nobody has supplied yet,
 left as gaps on purpose rather than filled with guesses.
@@ -24,6 +33,11 @@ screen and starts advertising the sitemap. **Check `chardroadrunners.com/robots.
 after the deploy** — if it still says `Disallow: /`, the change did not deploy,
 and the site will never appear in a search for the club with nothing looking
 broken.
+
+Then check the page as well as the file: fetch the live homepage and confirm
+`noindex` is **absent** from it. The tag and `robots.txt` come from the same
+flag, but they are two different things a crawler reads, and a cached page can
+still carry the tag after the file has changed.
 
 There is no separate `public/robots.txt` to edit. It is generated from that
 flag, deliberately, so there is only one thing to remember.
@@ -72,9 +86,28 @@ will not be looking at it on launch day.
 - **Redirects from the old Webador URLs.** Needs the list of old addresses
   captured *before* that site is switched off. Without them, every link anyone
   has ever shared breaks on launch day.
-- **Confirm Lizzie Cox is happy to be named as welfare officer**
-  (`src/content/legal/welfare.md`). The address is now a club one; being named
-  on a public page is a separate question and hers to answer.
+- **Capture every old Webador URL by 30 September 2026**, before the old site
+  is cancelled. Once it is gone the list cannot be recovered, and every link
+  anyone has ever shared breaks with nothing to redirect it to.
+- **Test every published email address end to end.** Not "the address is
+  spelled right" — send a real message to each and have the recipient confirm
+  it arrived. Covers `welfare@`, `membership@`, `hello@` and the two race
+  addresses. A safeguarding address that looks official and quietly routes
+  nowhere is the worst failure this site could have, and it is invisible from
+  the outside.
+- **Verify CMS sign-in on the final domain, after the switch, in a fresh
+  browser, by somebody who is not the maintainer.** A maintainer with a live
+  session cannot detect this class of failure, and `ALLOWED_DOMAINS` above is
+  the thing most likely to cause it.
+- **Domain: transfer unlock on 20 September 2026.**
+- **Domain: confirm auto-renew is on and the card on file will not expire.**
+  Losing the domain takes the website and every published email address with
+  it, including the safeguarding one.
+- ~~**Confirm Lizzie Cox is happy to be named as welfare officer.**~~
+  **Done — consent given verbally on 12 September 2026.** Left here rather than
+  deleted so a future reader can see it was asked as well as answered. The
+  published contact is the forwarder, not a personal address; the detail is in
+  `docs/handover.md` under Content notes.
 
 ### Words nobody has written yet
 

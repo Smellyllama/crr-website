@@ -251,11 +251,21 @@ Three rules for any new script:
 
 ### The two exceptions
 
-**`Header.astro` — the header over the hero.** Sets `data-scrolled` past 72px so
-the transparent header goes solid, and publishes the header height as a CSS
-variable. Only loads on pages passing `overlayHeader`, which today is the
-homepage alone. Without it the header stays transparent over the hero: less
-tidy, still perfectly readable, because the scrim behind it is pure CSS.
+**`Header.astro` — the header over a banner.** Sets `data-scrolled` past 72px so
+the transparent header goes solid, and re-checks on `load` because iOS can
+report a transient scroll position while a page is still settling. That is all
+it does. It used to publish the header height as a CSS variable too, and the
+hero's top padding was calculated from it — which meant the position of the
+first thing anybody sees depended on a measurement taken at whatever moment the
+script happened to run. On iOS it ran too early, the padding came up short and
+the logo sat under the bar. Both the variable and that dependency are gone;
+banner padding is a plain number. **Don't reintroduce it.**
+
+It loads on every page with a purple banner, which is all of them except Our
+Races and the race reports index: those start with white content and keep a
+solid bar. Without the script the header stays transparent over the banner —
+less tidy, still perfectly readable, because the scrim behind it is pure CSS
+and the contours sit at an opacity measured to be safe under text.
 
 **`ShareRaceReport.astro` — sharing a race report.** Two copy buttons and the
 phone's native share sheet, all three `hidden` in the HTML and revealed only

@@ -84,9 +84,30 @@ would have been a local error before the push rather than a red deploy.
 `media_libraries.default.config.slugify_filename: true` normalises uploaded
 filenames. Sveltia keeps the original name by default, which is how
 `Baltonsborough 5Mile.jpg` — spaces and capitals — reached the repository. The
-setting applies to new uploads only; that file still needs renaming by hand,
-along with the reference to it in
-`src/content/race-reports/2026-08-31-baltonsborough-somerset-village-show-5-mile-run-results-and-experience.md`.
+setting applies to new uploads only; the one file that predates it has since
+been renamed by hand.
+
+## Content notes
+
+### The welfare officer is named with consent
+
+`src/content/legal/welfare.md` names **Lizzie Cox** as welfare officer, and the
+welfare page and the contact page both print that name. That is deliberate and
+consented to: **consent was given verbally on 12 September 2026.**
+
+It is recorded here rather than as a comment in the content file because the
+CMS rebuilds each file from the fields it knows about, and erases comments on
+save.
+
+The published contact is the forwarder, **welfare@chardroadrunners.com**, not a
+personal address. A safeguarding contact should outlive the person holding the
+role, and no volunteer's own inbox belongs on a public website. If the role
+changes hands, the forwarder is repointed and the name here is updated — the
+address on the page does not change.
+
+There is a separate, unresolved question about the personal address that was
+published before this, which is still in the git history. That is the
+maintainer's decision and nothing here touches it.
 
 ## Who can edit the site
 
