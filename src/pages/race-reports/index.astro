@@ -50,7 +50,7 @@ const posts = sortByRaceDateDesc(await getCollection('race-reports', ({ data }) 
 								<h2 class:list={['font-bold text-base-content group-hover:underline', index === 0 ? 'text-3xl' : 'text-xl']}>
 									{post.data.title}
 								</h2>
-								{post.data.clubRace && <span class="badge badge-secondary badge-sm">Club race</span>}
+								{post.data.clubRace && <span class="badge badge-secondary badge-sm badge-wrap w-fit shrink-0">Club race</span>}
 							</div>
 							<p class="text-base-content/60">
 								<FormattedDate date={getEarliestRaceDate(post.data.races)} approximate={post.data.dateApproximate} />

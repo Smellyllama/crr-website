@@ -286,6 +286,23 @@ collections:
           the image fails to load. Name the runners if you know who they are.
           Required whenever there is a photo.
 
+      # Matches heroImagePosition in src/content.config.ts. Only affects the
+      # preview card on Facebook and WhatsApp, never the page itself.
+      - label: Share card crop
+        name: heroImagePosition
+        widget: select
+        required: false
+        default: centre
+        options:
+          - { label: "Middle of the photo", value: centre }
+          - { label: "Top of the photo", value: top }
+          - { label: "Bottom of the photo", value: bottom }
+        hint: >-
+          When someone shares this post, the photo is cut to a wide strip. Tall
+          photos lose about two thirds of their height, so pick the part with
+          the faces in it. Middle suits most photos; use Top if heads are being
+          cut off.
+
       - label: More photos
         name: images
         widget: list

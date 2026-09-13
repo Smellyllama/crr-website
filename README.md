@@ -39,9 +39,8 @@ memory, and why the reasoning is written into the files rather than left in chat
 | **Cloudflare Workers** | Static assets. Push to `main` and it builds and deploys itself. |
 
 Node 22.12 or newer. Eight runtime dependencies, one dev dependency (`yaml`, used
-by the schema-drift check). `sharp` is present for local image processing;
-Cloudflare's build environment cannot run it, which is why `astro.config.mjs`
-sets `passthroughImageService` — see [Known trade-offs](#known-trade-offs).
+by the schema-drift check). `sharp` resizes and converts every image at build
+time, on Cloudflare's builder as well as locally.
 
 ---
 
@@ -200,8 +199,8 @@ Two consequences worth understanding:
 
 `wrangler.jsonc` is assets-only with no `main` script, deliberately. Without the
 file, Wrangler tries to detect a Worker, silently runs `astro add cloudflare`,
-and bolts on the SSR adapter — which overrides `passthroughImageService` and
-breaks every image on the site.
+and bolts on the SSR adapter — which swaps the build-time Sharp pipeline for a
+runtime one and breaks every image on the site.
 
 **A second, separate Worker** lives in `workers/diary-rebuild/`. It runs on a
 weekly cron and pings a deploy hook, so the race diary rolls forward — past races
@@ -242,11 +241,16 @@ the first review of the seed data, predicted being wrong almost perfectly.
 
 Things a reviewer will notice, and which are choices rather than oversights:
 
-**Images are not resized.** Cloudflare's build environment cannot run Sharp, so
-`passthroughImageService` serves originals rather than generated variants. A
-1600px hero downloads whole for a 480px card. Building in GitHub Actions and
-deploying the artefact would fix it; it is on the backlog and is the largest
-remaining performance item.
+**Every imported image is built twice and one copy is never used.** Astro emits
+the original alongside each derivative, and the HTML only ever points at the
+derivative. That leaves roughly 7 MB of `dist/_astro` deployed and publicly
+reachable but referenced by nothing. It costs no visitor bandwidth, and it is
+the largest remaining item in the build.
+
+This entry used to read "images are not resized", on the grounds that
+Cloudflare's builder cannot run Sharp. That was tested on 12 September 2026 and
+is false — see the comment in `astro.config.mjs`. The GitHub Actions plan that
+depended on it has been dropped.
 
 **`site` is `chardroadrunners.com`, which does not resolve yet.** DNS is not
 pointed there, so canonical URLs, RSS items and share links name a domain that is

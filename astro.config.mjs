@@ -3,7 +3,7 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig, fontProviders, passthroughImageService } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,14 +16,24 @@ export default defineConfig({
 	// noindex tag and robots.txt disallows everything.
 	site: 'https://chardroadrunners.com',
 	integrations: [mdx(), sitemap()],
-	// Cloudflare's build environment can't run Sharp, so build-time image
-	// resizing/webp conversion silently fails there (it works fine locally,
-	// which is what made this hard to spot). Passthrough serves the original
-	// files as static assets instead of transformed ones — bigger downloads,
-	// but no dependency on Sharp being available at build time.
-	image: {
-		service: passthroughImageService(),
-	},
+	// No image service is set, which means Astro's default: Sharp, transforming
+	// at build time.
+	//
+	// This used to be passthroughImageService(), on the grounds that Cloudflare's
+	// build environment can't run Sharp. That was tested on 12 September 2026 and
+	// is not true. Cloudflare Workers Builds runs `astro build` in Node, where
+	// Sharp is an ordinary dependency; the passthrough advice applies to the
+	// Cloudflare ADAPTER, which transforms in the Workers runtime, and this site
+	// has no adapter. Measured on the preview deployment, not locally:
+	//
+	//     homepage          1,408 kB -> 176 kB
+	//     /race-reports/    4,667 kB -> 702 kB
+	//     cold build           3.9 s -> 4.5 s
+	//
+	// Do not reintroduce passthrough without re-testing. Its cost is total: it
+	// makes every width and height in the codebase declarative only, so images
+	// silently ship at source size and the explicit sizes on each <Image> stop
+	// meaning anything.
 	vite: {
 		plugins: [tailwindcss()],
 	},
