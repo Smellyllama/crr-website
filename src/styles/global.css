@@ -99,7 +99,18 @@ body {
 	a {
 		color: var(--color-primary);
 	}
-	a:hover {
+	/*
+	  Cards opt out, which is what the .prose note below already assumes.
+	  A card is a single anchor wrapping a heading, a date and an excerpt, so
+	  a blanket hover underline draws a line under all three — and on a phone
+	  the hover sticks after a tap, so it stays there until something else is
+	  touched. Every anchor carrying `group` is a card (LatestRaceReports,
+	  OurRaces, the race reports index) and every one of them already
+	  underlines its own title with group-hover:underline, which is the
+	  affordance that was wanted. Buttons need no exclusion: .btn sets
+	  text-decoration-line: none itself.
+	*/
+	a:not(.group):hover {
 		text-decoration: underline;
 	}
 
