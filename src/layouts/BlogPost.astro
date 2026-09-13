@@ -26,6 +26,7 @@ const {
 	clubRace,
 	heroImage,
 	heroImageAlt,
+	heroImagePosition,
 	images,
 	excerpt,
 } = Astro.props;
@@ -35,7 +36,13 @@ const sameDay = allRacesSameDay(races);
 const showPosted = postedIsMeaningfullyLater(posted, earliestRaceDate);
 ---
 
-<Layout title={title} description={excerpt} image={heroImage} overlayHeader>
+<Layout
+	title={title}
+	description={excerpt}
+	image={heroImage}
+	imagePosition={heroImagePosition}
+	overlayHeader
+>
 	{/*
 	  The masthead. Everything about the post — what it is, what it covers, who
 	  wrote it — on the club colour, then white for the reading. The purple did

@@ -65,6 +65,20 @@ const raceReports = defineCollection({
       // on posts that have no photo at all. New content gets alt text; old
       // content is left alone. See the matching note in public/admin/config.yml.
       heroImageAlt: z.string().optional(),
+      // Which part of the hero survives the crop to a 1200x630 share card.
+      //
+      // Facebook and WhatsApp render a preview at a wide letterbox shape, so a
+      // portrait photo loses roughly two thirds of its height. Cropping from
+      // the centre decapitated three named members; cropping from the top fixed
+      // those and broke a fourth photo whose subjects stand low in the frame.
+      // There is no correct global value, so it is set per post.
+      //
+      // Only the share card is affected — the hero on the page itself is
+      // unchanged. Sharp's own position names; "centre" is the default and is
+      // what every post that omits this gets.
+      heroImagePosition: z
+        .enum(["centre", "top", "bottom"])
+        .default("centre"),
       images: z
         .array(z.object({ src: image(), alt: z.string() }))
         .default([]),
